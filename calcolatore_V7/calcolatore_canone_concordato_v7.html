@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calcolatore Canone Concordato — Allegato 6</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#1F2937;--accent:#F03E6B;--accent-light:#FFF0F3;--accent-hover:#D81B60;
+  --bg:#F6F6F6;--white:#FFFFFF;--text:#374151;--muted:#9CA3AF;--border:#E5E7EB;
+  --radius:8px;--blue:#1565C0;--blue-bg:#E3F2FD;
+  --green:#10B981;--green-bg:#ECFDF5;--green-border:#6EE7B7;
+  --gray-btn:#9CA3AF;--gray-bg:#F3F4F6;--gray-border:#D1D5DB;
+}
+html{-webkit-font-smoothing:antialiased;height:100%}
+body{font-family:'Montserrat',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--text);background:var(--bg);height:100%;overflow:hidden}
+
+.app{display:flex;height:100vh}
+.form-col{width:50%;position:relative;height:100%;background:var(--white);overflow:hidden;display:flex;flex-direction:column}
+.map-col{width:50%;height:100%;position:relative}
+#map{width:100%;height:100%;background:#e8e8e8}
+
+.progress-area{padding:14px 32px;border-bottom:1px solid var(--border);background:var(--white);z-index:10;flex:0 0 auto}
+.progress-text{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;letter-spacing:.3px}
+.progress-track{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 350ms ease;width:7%}
+
+.steps-area{overflow-y:auto;padding:28px 36px 12px;flex:1 1 0%;min-height:0}
+.step{display:none}
+.step.active{display:flex;flex-direction:column;animation:slideIn 250ms ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.step-title{font-size:19px;font-weight:700;color:var(--primary);margin-bottom:4px;line-height:1.3}
+.step-note{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.step-body{flex:1;display:flex;flex-direction:column;gap:16px}
+
+.q-block{margin-bottom:20px}
+.q-label{font-size:14px;font-weight:600;color:var(--primary);margin-bottom:10px;line-height:1.4;display:block}
+.q-buttons{display:flex;gap:10px;flex-wrap:wrap}
+.q-btn{flex:1;min-width:100px;padding:14px 16px;border:2px solid var(--border);border-radius:var(--radius);background:var(--white);font-family:inherit;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;transition:all .15s;text-align:center;user-select:none}
+.q-btn:hover{border-color:var(--accent)}
+.q-btn.selected-yes{border-color:var(--green);background:var(--green-bg);color:#059669}
+.q-btn.selected-no{border-color:var(--gray-btn);background:var(--gray-bg);color:#6B7280}
+.q-btn.selected-radio{border-color:var(--accent);background:var(--accent-light);color:var(--accent)}
+.q-btn .pts-badge{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);margin-left:6px}
+
+.option-cards{display:grid;gap:10px}
+.o-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .15s;user-select:none}
+.o-card:hover{border-color:var(--accent)}
+.o-card.sel{border-color:var(--accent);background:var(--accent-light)}
+.o-card .c-label{font-size:14px;font-weight:600;color:var(--primary);display:block}
+.o-card .c-desc{font-size:12px;color:var(--muted);margin-top:2px;display:block}
+.o-card .c-badge{display:inline-block;font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-light);padding:2px 8px;border-radius:10px;margin-top:4px}
+
+.cond-warn{font-size:12px;color:#C62828;background:#FFEBEE;padding:10px 14px;border-radius:var(--radius);margin-top:10px;line-height:1.5;display:none}
+.cond-warn.vis{display:block}
+
+.field{margin-bottom:14px}
+.field-label{display:block;font-size:12px;font-weight:600;color:var(--primary);margin-bottom:5px}
+.req{color:var(--accent)}
+input[type="text"],input[type="email"],input[type="tel"],input[type="number"],select{
+  width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius);
+  font-family:inherit;font-size:14px;color:var(--primary);background:var(--white);
+  transition:border-color .2s;outline:none}
+input:focus,select:focus{border-color:var(--accent)}
+input::placeholder{color:var(--muted)}
+input:disabled,select:disabled{background:#F3F4F6;color:var(--muted);cursor:not-allowed;border-color:#E5E7EB}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%239CA3AF' d='M1.41.59L6 5.17 10.59.59 12 2l-6 6-6-6z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+input[type="number"]{-moz-appearance:textfield}
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+.zone-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;color:var(--white);margin-top:8px;margin-bottom:8px}
+.zone-err{font-size:12px;color:#C62828;background:#FFEBEE;padding:8px 12px;border-radius:var(--radius);margin-top:8px;display:none}
+.zone-err.vis{display:block}
+
+.surf-table{width:100%;border-collapse:collapse}
+.surf-table th{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;padding:8px 10px;text-align:left;border-bottom:2px solid var(--border)}
+.surf-table th:last-child{text-align:right}
+.surf-table td{padding:8px 10px;font-size:13px;border-bottom:1px solid #f5f5f5}
+.surf-table td:last-child{text-align:right;font-weight:600;color:var(--primary)}
+.surf-table .coeff{color:var(--muted);font-size:12px}
+.surf-table input{width:80px;padding:7px 10px;font-size:13px;text-align:right;border:1.5px solid var(--border);border-radius:var(--radius);font-family:inherit;outline:none}
+.surf-table input:focus{border-color:var(--accent)}
+.surf-total{margin-top:12px;padding:12px 16px;background:var(--accent-light);border-radius:var(--radius);display:flex;justify-content:space-between;align-items:center}
+.surf-total span:first-child{font-size:13px;font-weight:600;color:var(--primary)}
+.surf-total .t-val{font-size:18px;font-weight:700;color:var(--accent)}
+
+.corr-card{padding:14px 16px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;background:var(--white)}
+.corr-card.auto{background:var(--bg);border-style:dashed}
+.corr-card .corr-title{font-size:13px;font-weight:600;color:var(--primary);margin-bottom:4px}
+.corr-card .corr-value{font-size:12px;color:var(--muted)}
+.corr-badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px}
+.corr-badge.plus{background:#ECFDF5;color:#059669}
+.corr-badge.minus{background:#FEF2F2;color:#DC2626}
+.corr-badge.neutral{background:var(--bg);color:var(--muted)}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.role-options{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
+.role-opt{padding:8px 16px;border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;color:var(--text);cursor:pointer;transition:all .15s;background:var(--white);font-family:inherit}
+.role-opt:hover{border-color:var(--accent)}
+.role-opt.sel{border-color:var(--accent);background:var(--accent-light);color:var(--accent)}
+
+.app .btn-calc{display:block;width:100%;max-width:400px;margin:16px auto 0;padding:16px;background:var(--accent);color:var(--white);border:none;border-radius:var(--radius);font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s;text-align:center}
+.app .btn-calc:hover{background:var(--accent-hover)}
+.app .btn-calc:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+.privacy-note{font-size:11px;color:var(--muted);text-align:center;margin-top:8px}
+
+.result-box{background:var(--white);border:2px solid var(--accent);border-radius:12px;padding:24px;text-align:center;margin-bottom:16px}
+.result-box .r-meta{font-size:13px;color:var(--muted);margin-top:2px}
+.result-box .r-sep{border-top:1px solid var(--border);margin:14px 0}
+.result-box .r-label{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.result-box .r-range{font-size:28px;font-weight:700;color:var(--accent);line-height:1.2}
+.result-box .r-annual{font-size:12px;color:var(--muted);margin-top:4px}
+.result-box .r-floor-wrap{margin-top:14px;padding:10px 16px;background:var(--blue-bg);border-radius:var(--radius);text-align:left}
+.result-box .r-floor-label{font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.result-box .r-floor-val{font-size:16px;font-weight:700;color:var(--blue)}
+.result-box .r-floor-note{font-size:11px;color:#42A5F5;margin-top:2px;line-height:1.4}
+
+.result-portion{background:var(--blue-bg);border-radius:var(--radius);padding:16px;margin-top:12px;text-align:center}
+.result-portion .rp-label{font-size:13px;color:var(--blue);font-weight:500}
+.result-portion .rp-range{font-size:20px;font-weight:700;color:var(--blue);margin-top:4px}
+.result-portion .rp-note{font-size:12px;color:#42A5F5;margin-top:4px}
+
+.cap-info{margin-top:12px;padding:12px 16px;border-radius:var(--radius);font-size:13px;line-height:1.5}
+.cap-info.applied{background:#FEF2F2;border:1px solid #FECACA;color:#991B1B}
+.cap-info.not-applied{background:var(--green-bg);border:1px solid var(--green-border);color:#065F46}
+
+.result-corr{margin-top:16px}
+.result-corr h4{font-size:14px;font-weight:600;color:var(--primary);margin-bottom:6px}
+.corr-item{font-size:12px;color:var(--text);padding:3px 0;display:flex;align-items:center;gap:6px}
+.corr-item::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.corr-item.plus::before{background:#10B981}
+.corr-item.minus::before{background:var(--accent)}
+
+.result-disclaimer{font-size:11px;color:var(--muted);line-height:1.5;margin-top:12px;padding:12px;background:var(--bg);border-radius:var(--radius)}
+
+.collapse-box{margin-top:12px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.collapse-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--white);border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;color:var(--primary)}
+.collapse-toggle .c-arrow{transition:transform .2s;font-size:12px}
+.collapse-toggle.open .c-arrow{transform:rotate(180deg)}
+.collapse-content{display:none;padding:16px;background:var(--bg)}
+.collapse-content.vis{display:block}
+.collapse-content ul{list-style:none;padding:0}
+.collapse-content li{font-size:13px;color:var(--text);padding:6px 0;border-bottom:1px solid var(--border);line-height:1.4}
+.collapse-content li:last-child{border-bottom:none}
+.collapse-content li strong{color:var(--primary)}
+
+.result-actions{display:flex;gap:12px;margin-top:20px}
+.app .btn-cta{flex:1;padding:14px;border-radius:var(--radius);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;text-align:center;transition:all .2s;border:none;display:inline-flex;align-items:center;justify-content:center}
+.app .btn-cta.primary{background:var(--accent);color:var(--white)}
+.app .btn-cta.primary:hover{background:var(--accent-hover)}
+.app .btn-cta.secondary{background:var(--white);color:var(--text);border:1.5px solid var(--border)}
+.app .btn-cta.secondary:hover{border-color:var(--primary)}
+
+.footer-area{border-top:1px solid var(--border);background:var(--white);z-index:10;flex:0 0 auto}
+.score-bar{padding:10px 36px;border-bottom:1px solid var(--border);display:none}
+.score-bar.vis{display:block}
+.score-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.score-label{font-size:13px;font-weight:600;color:var(--primary)}
+.sf-indicators{display:flex;gap:6px}
+.sf-ind{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid var(--border);color:var(--muted);transition:all .2s}
+.sf-ind.active{border-color:var(--accent);background:var(--accent);color:var(--white)}
+.score-track{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.score-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .3s ease}
+
+.nav-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 36px 16px;gap:12px;min-height:56px}
+.app .btn{display:inline-block;padding:12px 28px;border-radius:var(--radius);font-family:inherit;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s;border:none;line-height:normal}
+.app .btn-back{background:var(--white);color:var(--muted);padding:12px 16px;font-size:13px;border:1.5px solid var(--border)}
+.app .btn-back:hover{color:var(--primary);border-color:var(--primary)}
+.app .btn-next{background:var(--accent);color:var(--white)}
+.app .btn-next:hover{background:var(--accent-hover)}
+.app .btn-next:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+
+.webhook-err{font-size:12px;color:#C62828;text-align:center;margin-top:8px}
+
+@media(max-width:767px){
+  body{overflow:auto}
+  .app{flex-direction:column;height:auto;min-height:100vh}
+  .form-col{width:100%;height:auto;overflow:visible;flex:none}
+  .map-col{width:100%;height:35vh;order:-1}
+  .steps-area{padding:20px 20px 8px}
+  .progress-area{padding:12px 20px}
+  .nav-bar{padding:10px 20px 14px}
+  .score-bar{padding:8px 20px}
+  .contact-grid{grid-template-columns:1fr}
+  .q-buttons{flex-wrap:wrap}
+  .q-btn{min-width:calc(50% - 6px)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="form-col">
+
+<div class="progress-area">
+  <div class="progress-text" id="progress-text">Step 1 di 13</div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+</div>
+
+<!-- Hidden: logged-in user from Softr -->
+<input type="hidden" id="softr-user-email" value="">
+<input type="hidden" id="softr-user-name" value="">
+<input type="hidden" id="softr-user-record-id" value="">
+
+<div class="steps-area" id="steps-area">
+
+<!-- STEP 1 — Comune + Indirizzo -->
+<div class="step active" id="step-1">
+  <div class="step-title">Indirizzo dell'immobile</div>
+  <div class="step-note">Seleziona il comune e inserisci l'indirizzo completo dell'immobile per rilevare automaticamente la zona OMI.</div>
+  <div class="step-body">
+    <div class="field">
+      <label class="field-label">In quale comune si trova l'immobile? <span class="req">*</span></label>
+      <select id="select_comune">
+        <option value="" disabled selected>Seleziona il comune...</option>
+        <option value="milano">Milano</option>
+        <option value="sesto">Sesto San Giovanni</option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="field-label">Indirizzo (incluso il numero civico) <span class="req">*</span></label>
+      <input type="text" id="address-input" placeholder="Seleziona prima il comune..." disabled>
+      <div id="zone-badge-wrap" style="display:none"><span class="zone-badge" id="zone-badge"></span></div>
+      <div class="zone-err" id="zone-err">Indirizzo non coperto dall'Accordo Territoriale del comune selezionato.</div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2 — Piano e tipo locazione -->
+<div class="step" id="step-2">
+  <div class="step-title">Piano e tipo di locazione</div>
+  <div class="step-note">Indica il piano dell'immobile e se viene locato interamente o solo una porzione.</div>
+  <div class="step-body">
+    <div class="q-block" id="q-piano">
+      <label class="q-label">A che piano si trova l'immobile?</label>
+      <div class="q-buttons" id="piano-btns">
+        <button class="q-btn" data-val="seminterrato" type="button">Piano seminterrato</button>
+        <button class="q-btn" data-val="terra" type="button">Piano terra / rialzato</button>
+        <button class="q-btn" data-val="primo" type="button">Piano 1&deg;</button>
+        <button class="q-btn" data-val="secondo_su" type="button">Dal 2&deg; piano in su</button>
+      </div>
+      <div class="cond-warn" id="semi-warn">Piano seminterrato: riduzione del 10% sul canone massimo.</div>
+    </div>
+    <div class="q-block" id="q-ascensore" style="display:none">
+      <label class="q-label">&Egrave; presente l'ascensore?</label>
+      <div class="q-buttons" id="asc-btns">
+        <button class="q-btn" data-val="si" type="button">S&igrave; <span class="pts-badge">+3 pt</span></button>
+        <button class="q-btn" data-val="no" type="button">No</button>
+      </div>
+    </div>
+    <div class="q-block" id="q-locazione">
+      <label class="q-label">Tipo di locazione</label>
+      <div class="q-buttons" id="loc-btns">
+        <button class="q-btn" data-val="intero" type="button">Intero alloggio</button>
+        <button class="q-btn" data-val="parziale" type="button">Porzione (stanza)</button>
+      </div>
+    </div>
+    <div class="field" id="field-porzione-s2" style="display:none">
+      <label class="field-label">Superficie porzione locata (mq) <span class="req">*</span></label>
+      <input type="number" id="mq-porzione-s2" min="1" max="999" placeholder="Es. 15">
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3 — Tipo e durata contratto -->
+<div class="step" id="step-3">
+  <div class="step-title">Tipo e durata del contratto</div>
+  <div class="step-note">Scegli il tipo di contratto a canone concordato.</div>
+  <div class="step-body">
+    <div class="q-block">
+      <label class="q-label">Tipo di contratto</label>
+      <div class="option-cards" id="cards-tipo">
+        <div class="o-card" data-val="agevolato"><span class="c-label">Contratto Ordinario</span><span class="c-desc">3+2, 4+2, 5+2, 6+2 o 7+2 anni</span></div>
+        <div class="o-card" data-val="transitorio"><span class="c-label">Contratto Transitorio</span><span class="c-desc">Da 1 a 18 mesi</span></div>
+        <div class="o-card" data-val="studenti"><span class="c-label">Contratto per Studenti</span><span class="c-desc">Da 6 a 36 mesi</span></div>
+      </div>
+    </div>
+    <div id="durata-section" style="display:none">
+      <div id="dur-agevolato" style="display:none">
+        <label class="q-label">Durata del contratto ordinario</label>
+        <div class="step-note">Una durata superiore al minimo (3+2) consente una maggiorazione sul canone.</div>
+        <div class="option-cards" id="cards-durata">
+          <div class="o-card" data-val="3+2"><span class="c-label">3+2 anni</span><span class="c-desc">Nessuna maggiorazione</span></div>
+          <div class="o-card" data-val="4+2"><span class="c-label">4+2 anni</span><span class="c-badge">+3% su min e max</span></div>
+          <div class="o-card" data-val="5+2"><span class="c-label">5+2 anni</span><span class="c-badge">+5% su min e max</span></div>
+          <div class="o-card" data-val="6+2"><span class="c-label">6+2 anni</span><span class="c-badge">+8% su min e max</span></div>
+          <div class="o-card" data-val="7+2"><span class="c-label">7+2 anni o superiore</span><span class="c-badge">+10% su min e max</span></div>
+        </div>
+      </div>
+      <div id="dur-transitorio" style="display:none">
+        <div class="step-note">Minimo 1 mese, massimo 18 mesi.</div>
+        <div class="field"><label class="field-label">Durata in mesi <span class="req">*</span></label><input type="number" id="in-durata-trans" min="1" max="18" placeholder="Es. 12"></div>
+      </div>
+      <div id="dur-studenti" style="display:none">
+        <div class="step-note">Riservato a studenti universitari fuori sede. Durata da 6 a 36 mesi.</div>
+        <div class="field"><label class="field-label">Durata in mesi <span class="req">*</span></label><input type="number" id="in-durata-stud" min="6" max="36" placeholder="Es. 12"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STEPS 4-10 — Elementi (built by JS) -->
+<div class="step" id="step-4"><div class="step-title">Cucina, citofono, sicurezza</div><div class="step-note">Rispondi alle seguenti domande sull'immobile.</div><div class="step-body" id="qs-4"></div></div>
+<div class="step" id="step-5"><div class="step-title">Spazi esterni e impianti</div><div class="step-note">Rispondi alle seguenti domande sull'immobile.</div><div class="step-body" id="qs-5"></div></div>
+<div class="step" id="step-6"><div class="step-title">Cantina, riscaldamento, clima</div><div class="step-note">Rispondi alle seguenti domande sull'immobile.</div><div class="step-body" id="qs-6"></div></div>
+<div class="step" id="step-7"><div class="step-title">Ristrutturazione e servizi igienici</div><div class="step-note">Rispondi alle seguenti domande sull'immobile.</div><div class="step-body" id="qs-7"></div></div>
+<div class="step" id="step-8"><div class="step-title">Manutenzione, trasporti, antenna</div><div class="step-note">Rispondi alle seguenti domande sull'immobile.</div><div class="step-body" id="qs-8"></div></div>
+<div class="step" id="step-9"><div class="step-title">Parcheggio, domotica, sicurezza</div><div class="step-note">Rispondi alle seguenti domande sull'immobile.</div><div class="step-body" id="qs-9"></div></div>
+<div class="step" id="step-10"><div class="step-title">Stabile, vetri, portineria</div><div class="step-note">Rispondi alle seguenti domande sull'immobile.</div><div class="step-body" id="qs-10"></div></div>
+
+<!-- STEP 11 — Superfici -->
+<div class="step" id="step-11">
+  <div class="step-title">Superficie dell'immobile</div>
+  <div class="step-note">Inserisci le superfici in metri quadri.</div>
+  <div class="step-body">
+    <table class="surf-table">
+      <thead><tr><th>Tipologia</th><th>MQ</th><th style="text-align:center">Coeff.</th><th style="text-align:right">MQ Conv.</th></tr></thead>
+      <tbody>
+        <tr><td>Superficie abitazione <span class="req">*</span><br><span class="coeff">Mq da visura catastale, escluse aree scoperte</span></td><td><input type="number" id="mq-app" min="1" max="999" placeholder="mq"></td><td style="text-align:center" class="coeff">&times;1,00</td><td id="pv-app">&mdash;</td></tr>
+        <tr id="row-comuni" style="display:none"><td>Spazi comuni</td><td><input type="number" id="mq-comuni" min="0" max="999" placeholder="mq"></td><td style="text-align:center" class="coeff">&times;1,00</td><td id="pv-comuni">&mdash;</td></tr>
+        <tr><td>Box / garage <span class="coeff">(&times;0,50)</span></td><td><input type="number" id="mq-box" min="0" max="999" placeholder="mq"></td><td style="text-align:center" class="coeff">&times;0,50</td><td id="pv-box">&mdash;</td></tr>
+        <tr><td>Posto auto scoperto <span class="coeff">(&times;0,25)</span></td><td><input type="number" id="mq-pauto" min="0" max="999" placeholder="mq"></td><td style="text-align:center" class="coeff">&times;0,25</td><td id="pv-pauto">&mdash;</td></tr>
+        <tr><td>Balconi / terrazzi <span class="coeff">(&times;0,30)</span></td><td><input type="number" id="mq-balc" min="0" max="999" placeholder="mq"></td><td style="text-align:center" class="coeff">&times;0,30</td><td id="pv-balc">&mdash;</td></tr>
+        <tr><td>Cantina o affine <span class="coeff">(&times;0,25)</span></td><td><input type="number" id="mq-cant" min="0" max="999" placeholder="mq"></td><td style="text-align:center" class="coeff">&times;0,25</td><td id="pv-cant">&mdash;</td></tr>
+        <tr><td>Scoperta esclusiva <span class="coeff">(&times;0,10)</span></td><td><input type="number" id="mq-scop" min="0" max="999" placeholder="mq"></td><td style="text-align:center" class="coeff">&times;0,10</td><td id="pv-scop">&mdash;</td></tr>
+      </tbody>
+    </table>
+    <div id="row-porzione-s11" style="display:none">
+      <div class="field" style="margin-top:12px"><label class="field-label">Porzione locata (mq) <span class="req">*</span></label><input type="number" id="mq-porzione" min="1" max="999" placeholder="mq"></div>
+    </div>
+    <div class="surf-total"><span>Superficie convenzionale</span><span class="t-val" id="surface-total">&mdash; mq</span></div>
+  </div>
+</div>
+
+<!-- STEP 12 — Correttivi -->
+<div class="step" id="step-12">
+  <div class="step-title">Correttivi</div>
+  <div class="step-note">Maggiorazioni e riduzioni applicabili al canone.</div>
+  <div class="step-body">
+    <div class="q-block">
+      <label class="q-label">L'alloggio &egrave; completamente ammobiliato?</label>
+      <div class="q-buttons" id="ammob-btns">
+        <button class="q-btn" data-val="si" type="button">S&igrave; <span class="pts-badge">+15%</span></button>
+        <button class="q-btn" data-val="no" type="button">No</button>
+      </div>
+    </div>
+    <div class="field" style="margin-top:4px">
+      <label class="field-label">Classe energetica <span class="req">*</span></label>
+      <select id="sel-classe">
+        <option value="">&mdash; Seleziona &mdash;</option>
+        <option value="A">A (+10% sul canone massimo)</option>
+        <option value="B-F">B - C - D - E - F (nessuna variazione)</option>
+        <option value="G">G (-2% sul canone massimo)</option>
+        <option value="ND">Non disponibile</option>
+      </select>
+    </div>
+    <div style="margin-top:12px">
+      <div style="font-size:13px;font-weight:600;color:var(--primary);margin-bottom:8px">Correttivi rilevati automaticamente</div>
+      <div class="corr-card auto"><div class="corr-title">Cantina / Soffitta</div><div class="corr-value" id="corr-cantina-val"></div></div>
+      <div class="corr-card auto"><div class="corr-title">Piano seminterrato</div><div class="corr-value" id="corr-semi-val"></div></div>
+      <div class="corr-card auto" id="corr-durata" style="display:none"><div class="corr-title">Maggiorazione durata</div><div class="corr-value" id="corr-durata-val"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 13 — Contatto + Calcolo -->
+<div class="step" id="step-13">
+  <div class="step-title">Dati di contatto</div>
+  <div class="step-note">Inserisci i tuoi dati per ricevere il risultato del calcolo.</div>
+  <div class="step-body">
+    <div class="contact-grid">
+      <div class="field"><label class="field-label">Nome e Cognome <span class="req">*</span></label><input type="text" id="in-nome" placeholder="Mario Rossi"></div>
+      <div class="field"><label class="field-label">Email <span class="req">*</span></label><input type="email" id="in-email" placeholder="email@esempio.it"></div>
+      <div class="field"><label class="field-label">Telefono</label><input type="tel" id="in-tel" placeholder="+39 ..."></div>
+      <div class="field"><label class="field-label">Ruolo <span class="req">*</span></label>
+        <div class="role-options" id="role-options">
+          <button class="role-opt" data-val="proprietario" type="button">Proprietario</button>
+          <button class="role-opt" data-val="inquilino" type="button">Inquilino</button>
+          <button class="role-opt" data-val="agente" type="button">Agente</button>
+        </div>
+      </div>
+    </div>
+    <div class="privacy-note">I dati sono trattati nel rispetto della privacy.</div>
+    <button class="btn-calc" id="btn-calc" disabled type="button">Calcola il canone</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="step" id="step-result">
+  <div class="step-title">Canone concordato stimato</div>
+  <div class="step-body" style="overflow-y:auto">
+    <div class="result-box" id="result-box"></div>
+    <div id="result-portion"></div>
+    <div id="result-cap-info"></div>
+    <div class="result-corr" id="result-corr"></div>
+    <div class="result-disclaimer" id="result-disclaimer">Importo mensile, spese escluse. Le parti possono concordare una riduzione fino al minimo di subfascia 1. Non &egrave; possibile superare il valore massimo calcolato. Stima indicativa basata sull'Allegato 6 dell'Accordo Territoriale vigente per il comune selezionato.</div>
+    <div class="collapse-box">
+      <button class="collapse-toggle" type="button"><span>Metodologia di calcolo</span><span class="c-arrow">&#9660;</span></button>
+      <div class="collapse-content" id="method-content"></div>
+    </div>
+    <div class="collapse-box">
+      <button class="collapse-toggle" type="button"><span>Dettaglio punteggio immobile</span><span class="c-arrow">&#9660;</span></button>
+      <div class="collapse-content" id="score-detail-content"></div>
+    </div>
+    <div class="collapse-box">
+      <button class="collapse-toggle" type="button"><span>Vantaggi fiscali del canone concordato</span><span class="c-arrow">&#9660;</span></button>
+      <div class="collapse-content" id="fiscal-content">
+        <ul>
+          <li><strong>Cedolare secca:</strong> 10% (vs 21% canone libero)</li>
+          <li><strong>IMU:</strong> riduzione del 25%</li>
+          <li><strong>IRPEF/IRES:</strong> riduzione del 30% della base imponibile</li>
+          <li><strong>Imposta di registro:</strong> riduzione del 30%</li>
+        </ul>
+      </div>
+    </div>
+    <div class="webhook-err" id="webhook-err" style="display:none">Invio dati non riuscito. Contattare info@extracasa.it</div>
+    <div class="result-actions">
+      <a class="btn-cta primary" id="btn-vai-pratica" href="https://my.extracasa.it/canone-concordato" target="_blank" rel="noopener">Vai alla pratica</a>
+      <button class="btn-cta secondary" id="btn-nuovo" type="button">Nuovo calcolo</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /steps-area -->
+
+<div class="footer-area">
+  <div class="score-bar" id="score-bar">
+    <div class="score-row">
+      <span class="score-label" id="score-label">Punteggio: 0 / 43</span>
+      <div class="sf-indicators">
+        <div class="sf-ind active" id="sf-1">1</div>
+        <div class="sf-ind" id="sf-2">2</div>
+        <div class="sf-ind" id="sf-3">3</div>
+      </div>
+    </div>
+    <div class="score-track"><div class="score-fill" id="score-fill" style="width:0%"></div></div>
+  </div>
+  <div class="nav-bar" id="nav-bar">
+    <button class="btn btn-back" id="btn-back" type="button" style="visibility:hidden">&larr; Indietro</button>
+    <button class="btn btn-next" id="btn-next" type="button" disabled>Avanti &rarr;</button>
+  </div>
+</div>
+
+</div><!-- /form-col -->
+<div class="map-col"><div id="map"></div></div>
+</div><!-- /app -->
+
+<script>
+(function(){
+'use strict';
+
+var COMUNI_URLS={
+milano:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_milano.json',
+sesto:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_sesto.json'
+};
+
+var CANONI=null;
+var DURATA_PERC={'3+2':0,'4+2':0.03,'5+2':0.05,'6+2':0.08,'7+2':0.10};
+var MAX_SCORE=43;
+var CAP_AMMOBILIATO=37.00;
+var TOTAL_STEPS=13;
+
+var ZONE_COLORS={1:'#F48FB1',2:'#7CB342',3:'#FFEA00',4:'#F9A825'};
+
+/* ELEMENTI - 25 elementi Allegato 6 */
+var ELEMENTI=[
+  {id:1,pts:2,label:"Cucina abitabile con almeno 1 finestra"},
+  {id:2,pts:3,label:"Ascensore (dal 2\u00B0 piano in su)"},
+  {id:3,pts:1,label:"Citofono / videocitofono"},
+  {id:4,pts:2,label:"Antifurto, allarme o videocamere"},
+  {id:5,pts:2,label:"Giardino privato o condominiale, aree verdi"},
+  {id:6,pts:1,label:"Balconi, terrazzi o affini"},
+  {id:7,pts:3,label:"Impianto solare/termico, fotovoltaico o cappotto termico"},
+  {id:8,pts:2,label:"Cantina o soffitta"},
+  {id:9,pts:3,label:"Riscaldamento autonomo"},
+  {id:10,pts:1,label:"Riscaldamento centralizzato"},
+  {id:11,pts:3,label:"Climatizzazione e/o raffreddamento"},
+  {id:12,pts:2,label:"Ultimato o ristrutturato negli ultimi 10 anni"},
+  {id:13,pts:1,label:"Bagno con finestra e almeno 3 elementi sanitari"},
+  {id:14,pts:2,label:"Doppi servizi igienici"},
+  {id:15,pts:2,label:"Manutenzione unit\u00E0 immobiliare buona"},
+  {id:16,pts:2,label:"Prossimit\u00E0 trasporti pubblici e servizi"},
+  {id:17,pts:1,label:"Antenna TV centralizzata o individuale"},
+  {id:18,pts:2,label:"Box ad uso esclusivo"},
+  {id:19,pts:1,label:"Posto auto scoperto"},
+  {id:20,pts:2,label:"Domotica"},
+  {id:21,pts:1,label:"Porta blindata o barre anti-intrusione"},
+  {id:22,pts:1,label:"Manutenzione stabile condominiale normale"},
+  {id:23,pts:2,label:"Doppi/tripli vetri su almeno il 50% delle finestre"},
+  {id:24,pts:3,label:"Posto auto/box con ricarica elettrica (alt. a 18)"},
+  {id:25,pts:2,label:"Amazon Locker/Key o portineria"}
+];
+
+/* STEP QUESTIONS CONFIG - elementi per step */
+var STEP_QUESTIONS={
+  4:[
+    {id:1,text:"L'immobile dispone di una cucina abitabile con almeno una finestra?",pts:2,type:'bool'},
+    {id:3,text:"\u00C8 presente un impianto di citofono o videocitofono?",pts:1,type:'bool'},
+    {id:4,text:"L'immobile \u00E8 dotato di antifurto, allarme o videocamere?",pts:2,type:'bool'}
+  ],
+  5:[
+    {id:5,text:"\u00C8 presente un giardino privato/condominiale o aree verdi?",pts:2,type:'bool'},
+    {id:6,text:"L'immobile ha balconi, terrazzi o affini?",pts:1,type:'bool'},
+    {id:7,text:"L'alloggio \u00E8 dotato di impianto solare/termico, fotovoltaico o cappotto termico?",pts:3,type:'bool'}
+  ],
+  6:[
+    {id:8,text:"L'immobile include una cantina o soffitta?",pts:2,type:'bool'},
+    {id:'heat',text:"Che tipo di riscaldamento ha l'immobile?",type:'radio',options:[
+      {value:'autonomo',label:'Autonomo',pts:3,sets:{9:true,10:false}},
+      {value:'centralizzato',label:'Centralizzato',pts:1,sets:{9:false,10:true}},
+      {value:'nessuno',label:'Nessuno',pts:0,sets:{9:false,10:false}}
+    ]},
+    {id:11,text:"\u00C8 presente un impianto di climatizzazione e/o raffreddamento?",pts:3,type:'bool'}
+  ],
+  7:[
+    {id:12,text:"L'alloggio o lo stabile \u00E8 stato ultimato o ristrutturato negli ultimi 10 anni?",pts:2,type:'bool'},
+    {id:13,text:"Il bagno ha almeno una finestra e almeno tre elementi sanitari?",pts:1,type:'bool'},
+    {id:14,text:"L'immobile dispone di doppi servizi igienici?",pts:2,type:'bool'}
+  ],
+  8:[
+    {id:15,text:"Lo stato di manutenzione dell'unit\u00E0 immobiliare \u00E8 buono in tutti i suoi elementi?",pts:2,type:'bool'},
+    {id:16,text:"L'alloggio \u00E8 prossimo a trasporti pubblici e servizi (entro 500m)?",pts:2,type:'bool'},
+    {id:17,text:"\u00C8 presente un'antenna TV centralizzata o individuale?",pts:1,type:'bool'}
+  ],
+  9:[
+    {id:'parking',text:"L'immobile dispone di parcheggio?",type:'radio',options:[
+      {value:'box',label:'Box esclusivo',pts:2,sets:{18:true,19:false,24:false}},
+      {value:'ricarica',label:'Box con ricarica EV',pts:3,sets:{18:false,19:false,24:true}},
+      {value:'posto_auto',label:'Posto auto scoperto',pts:1,sets:{18:false,19:true,24:false}},
+      {value:'nessuno',label:'Nessuno',pts:0,sets:{18:false,19:false,24:false}}
+    ]},
+    {id:20,text:"L'immobile \u00E8 dotato di domotica?",pts:2,type:'bool'},
+    {id:21,text:"\u00C8 presente una porta blindata o barre anti-intrusione?",pts:1,type:'bool'}
+  ],
+  10:[
+    {id:22,text:"Lo stato di manutenzione dello stabile condominiale \u00E8 normale?",pts:1,type:'bool'},
+    {id:23,text:"Almeno il 50% delle finestre ha doppi o tripli vetri?",pts:2,type:'bool'},
+    {id:25,text:"\u00C8 installato Amazon Locker/Key o c'\u00E8 servizio di portineria?",pts:2,type:'bool'}
+  ]
+};
+
+var OMI_ZONES=null;
+var currentComune=null;
+var autocompleteInstance=null;
+var _loadRequestId=0;
+
+/* ══ STATE ══ */
+var S={
+  step:1,tipo_contratto:null,durata_agevolato:null,
+  durata_transitorio_mesi:null,durata_studenti_mesi:null,
+  indirizzo:'',latitudine:0,longitudine:0,zona:null,omi_code:null,
+  tipo_locazione:null,mq_appartamento:0,mq_porzione:0,
+  mq_spazi_comuni:0,mq_box_garage:0,mq_posto_auto:0,
+  mq_balconi:0,mq_cantina:0,mq_scoperta:0,superficie_calc:0,
+  piano:null,piano_seminterrato:false,piano_numerico:0,
+  elementi:{},answered:{},
+  ammobiliato:false,ammobiliato_set:false,classe_energetica:null,
+  nome:'',email:'',telefono:'',ruolo:null
+};
+var mapInstance=null,marker=null,zonePolygons=[],infoWin=null;
+var mapsReady=false;
+
+/* ══ HELPERS ══ */
+function $(id){return document.getElementById(id);}
+function fmt(n){return n.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function escHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+/* ══ POINT-IN-POLYGON ══ */
+function pointInRing(lat,lng,ring){
+  var inside=false;
+  for(var i=0,j=ring.length-1;i<ring.length;j=i++){
+    var yi=ring[i][0],xi=ring[i][1],yj=ring[j][0],xj=ring[j][1];
+    if(((xi>lat)!==(xj>lat))&&(lng<(yj-yi)*(lat-xi)/(xj-xi)+yi)) inside=!inside;
+  }
+  return inside;
+}
+function pointInPolygons(lat,lng,polys){
+  for(var p=0;p<polys.length;p++){
+    var rings=polys[p];
+    if(pointInRing(lat,lng,rings[0])){
+      var inHole=false;
+      for(var h=1;h<rings.length;h++){if(pointInRing(lat,lng,rings[h])){inHole=true;break;}}
+      if(!inHole) return true;
+    }
+  }
+  return false;
+}
+function detectZone(lat,lng){
+  if(!OMI_ZONES) return null;
+  for(var i=0;i<OMI_ZONES.length;i++){
+    var z=OMI_ZONES[i];
+    if(pointInPolygons(lat,lng,z.p)) return{omi:z.o,zona:z.z};
+  }
+  return null;
+}
+
+/* ══ BUILD ELEMENT QUESTIONS ══ */
+function buildQuestions(){
+  var steps=Object.keys(STEP_QUESTIONS);
+  for(var s=0;s<steps.length;s++){
+    var sn=parseInt(steps[s]);
+    var container=$('qs-'+sn);
+    if(!container) continue;
+    var qs=STEP_QUESTIONS[sn];
+    for(var i=0;i<qs.length;i++){
+      var q=qs[i];
+      var block=document.createElement('div');
+      block.className='q-block';
+      block.id='qb-'+q.id;
+      var label=document.createElement('label');
+      label.className='q-label';
+      label.textContent=q.text;
+      block.appendChild(label);
+      var btnsDiv=document.createElement('div');
+      btnsDiv.className='q-buttons';
+      if(q.type==='bool'){
+        var bYes=document.createElement('button');
+        bYes.className='q-btn';bYes.type='button';
+        bYes.innerHTML='S\u00EC <span class="pts-badge">+'+q.pts+' pt</span>';
+        bYes.onclick=(function(qid,snum){return function(){onBoolClick(qid,true,snum);};})(q.id,sn);
+        var bNo=document.createElement('button');
+        bNo.className='q-btn';bNo.type='button';bNo.textContent='No';
+        bNo.onclick=(function(qid,snum){return function(){onBoolClick(qid,false,snum);};})(q.id,sn);
+        btnsDiv.appendChild(bYes);btnsDiv.appendChild(bNo);
+      } else if(q.type==='radio'){
+        for(var r=0;r<q.options.length;r++){
+          var opt=q.options[r];
+          var rb=document.createElement('button');
+          rb.className='q-btn';rb.type='button';
+          rb.innerHTML=opt.label+(opt.pts>0?' <span class="pts-badge">+'+opt.pts+' pt</span>':'');
+          rb.dataset.val=opt.value;
+          rb.onclick=(function(qid,option,snum,btnGroup){return function(){
+            onRadioClick(qid,option,snum,btnGroup);
+          };})(q.id,opt,sn,btnsDiv);
+          btnsDiv.appendChild(rb);
+        }
+      }
+      block.appendChild(btnsDiv);
+      container.appendChild(block);
+    }
+  }
+}
+
+/* ══ ELEMENT HANDLERS ══ */
+function onBoolClick(id,val,stepNum){
+  S.elementi[id]=val;
+  S.answered[id]=true;
+  var block=$('qb-'+id);
+  if(block){
+    var btns=block.querySelectorAll('.q-btn');
+    if(btns.length>=2){
+      btns[0].className='q-btn'+(val?' selected-yes':'');
+      btns[1].className='q-btn'+(!val?' selected-no':'');
+    }
+  }
+  updateScoreBar();
+  updateNextBtn();
+}
+
+function onRadioClick(groupId,option,stepNum,btnGroup){
+  var keys=Object.keys(option.sets);
+  for(var i=0;i<keys.length;i++){
+    S.elementi[parseInt(keys[i])]=option.sets[parseInt(keys[i])];
+  }
+  S.answered[groupId]=true;
+  var selClass=option.pts>0?'selected-yes':'selected-no';
+  var allBtns=btnGroup.querySelectorAll('.q-btn');
+  for(var b=0;b<allBtns.length;b++){
+    allBtns[b].className='q-btn'+(allBtns[b].dataset.val===option.value?' '+selClass:'');
+  }
+  updateScoreBar();
+  updateNextBtn();
+}
+
+/* ══ SCORE ══ */
+function calcScore(){
+  var score=0;
+  ELEMENTI.forEach(function(el){
+    if(S.elementi[el.id]===true){
+      if(el.id===2&&S.piano_numerico<2) return;
+      score+=el.pts;
+    }
+  });
+  return score;
+}
+
+/* ══ NAVIGATION ══ */
+function goToStep(n){
+  var old=$('step-'+(S.step==='result'?'result':S.step));
+  if(old) old.classList.remove('active');
+  S.step=n;
+  var nw=$('step-'+(n==='result'?'result':n));
+  if(nw) nw.classList.add('active');
+  updateProgress();
+  updateScoreBar();
+  updateNav();
+  updateNextBtn();
+  if(n===11) prepareStep11();
+  if(n===12) prepareStep12();
+  if(n===13) prefillContactFromSoftr();
+  $('steps-area').scrollTop=0;
+}
+
+function goNext(){
+  if(S.step==='result') return;
+  if(!canAdvance(S.step)) return;
+  saveStepData(S.step);
+  goToStep(S.step+1);
+}
+
+function goBack(){
+  if(S.step<=1) return;
+  if(S.step==='result') goToStep(TOTAL_STEPS);
+  else goToStep(S.step-1);
+}
+
+function updateProgress(){
+  var sn=(S.step==='result')?TOTAL_STEPS:S.step;
+  $('progress-text').textContent=(S.step==='result')?'Risultato':'Step '+sn+' di '+TOTAL_STEPS;
+  $('progress-fill').style.width=(sn/TOTAL_STEPS*100)+'%';
+}
+
+function updateScoreBar(){
+  var show=(typeof S.step==='number'&&S.step>=4)||(S.step==='result');
+  $('score-bar').classList.toggle('vis',show);
+  if(!show) return;
+  var sc=calcScore();
+  var sf=sc<=13?1:sc<=21?2:3;
+  $('score-label').textContent='Punteggio: '+sc+' / '+MAX_SCORE+' \u2014 Sub-fascia: '+sf;
+  $('score-fill').style.width=(sc/MAX_SCORE*100)+'%';
+  for(var i=1;i<=3;i++) $('sf-'+i).classList.toggle('active',i===sf);
+}
+
+function updateNav(){
+  if(S.step==='result'){
+    $('nav-bar').style.display='none';
+  } else {
+    $('nav-bar').style.display='flex';
+    $('btn-next').style.display=(S.step===13)?'none':'inline-block';
+    $('btn-back').style.visibility=(S.step===1)?'hidden':'visible';
+  }
+}
+
+function updateNextBtn(){
+  var btn=$('btn-next');
+  if(S.step==='result'||S.step===13){btn.disabled=true;return;}
+  btn.disabled=!canAdvance(S.step);
+}
+
+/* ══ VALIDATION ══ */
+function canAdvance(step){
+  if(step===1) return !!(S.zona&&CANONI);
+  if(step===2){
+    if(!S.piano) return false;
+    if(S.piano==='secondo_su'&&S.elementi[2]===undefined) return false;
+    if(!S.tipo_locazione) return false;
+    if(S.tipo_locazione==='parziale'){
+      var mqp=parseFloat($('mq-porzione-s2').value);
+      if(!mqp||mqp<1) return false;
+    }
+    return true;
+  }
+  if(step===3){
+    if(!S.tipo_contratto) return false;
+    if(S.tipo_contratto==='agevolato'&&!S.durata_agevolato) return false;
+    if(S.tipo_contratto==='transitorio'){var v=parseInt($('in-durata-trans').value);if(!v||v<1||v>18) return false;}
+    if(S.tipo_contratto==='studenti'){var v2=parseInt($('in-durata-stud').value);if(!v2||v2<6||v2>36) return false;}
+    return true;
+  }
+  if(step>=4&&step<=10){
+    var qs=STEP_QUESTIONS[step];
+    if(!qs) return true;
+    for(var i=0;i<qs.length;i++){
+      if(!S.answered[qs[i].id]) return false;
+    }
+    return true;
+  }
+  if(step===11){
+    var mq=parseFloat($('mq-app').value);
+    if(!mq||mq<1) return false;
+    if(S.tipo_locazione==='parziale'){
+      var mqp2=parseFloat($('mq-porzione').value);
+      if(!mqp2||mqp2<1) return false;
+      var mqc=parseFloat($('mq-comuni').value);
+      if(isNaN(mqc)||mqc<1) return false;
+    }
+    return true;
+  }
+  if(step===12) return S.ammobiliato_set&&!!S.classe_energetica;
+  if(step===13) return true;
+  return true;
+}
+
+function saveStepData(n){
+  if(n===2){
+    if(S.tipo_locazione==='parziale'){
+      S.mq_porzione=parseFloat($('mq-porzione-s2').value)||0;
+    }
+  }
+  if(n===3){
+    if(S.tipo_contratto==='transitorio') S.durata_transitorio_mesi=parseInt($('in-durata-trans').value)||0;
+    if(S.tipo_contratto==='studenti') S.durata_studenti_mesi=parseInt($('in-durata-stud').value)||0;
+  }
+  if(n===11){
+    S.mq_appartamento=parseFloat($('mq-app').value)||0;
+    S.mq_spazi_comuni=parseFloat($('mq-comuni').value)||0;
+    S.mq_box_garage=parseFloat($('mq-box').value)||0;
+    S.mq_posto_auto=parseFloat($('mq-pauto').value)||0;
+    S.mq_balconi=parseFloat($('mq-balc').value)||0;
+    S.mq_cantina=parseFloat($('mq-cant').value)||0;
+    S.mq_scoperta=parseFloat($('mq-scop').value)||0;
+    if(S.tipo_locazione==='parziale') S.mq_porzione=parseFloat($('mq-porzione').value)||0;
+    calcSurface();
+  }
+  if(n===12){
+    S.classe_energetica=$('sel-classe').value;
+  }
+}
+
+/* ══ STEP 2 — Piano + Locazione ══ */
+function initStep2(){
+  var pianoBtns=document.querySelectorAll('#piano-btns .q-btn');
+  pianoBtns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      pianoBtns.forEach(function(b){b.className='q-btn';});
+      btn.classList.add('selected-radio');
+      var val=btn.dataset.val;
+      S.piano=val;
+      if(val==='seminterrato'){
+        S.piano_seminterrato=true;S.piano_numerico=-1;
+        S.elementi[2]=false;
+        $('semi-warn').classList.add('vis');
+        $('q-ascensore').style.display='none';
+      } else {
+        S.piano_seminterrato=false;
+        $('semi-warn').classList.remove('vis');
+        var pianoMap={terra:0,primo:1,secondo_su:2};
+        S.piano_numerico=pianoMap[val]||0;
+        if(val==='secondo_su'){
+          $('q-ascensore').style.display='block';
+          S.elementi[2]=undefined;
+        } else {
+          $('q-ascensore').style.display='none';
+          S.elementi[2]=false;
+        }
+      }
+      updateNextBtn();
+    });
+  });
+  var ascBtns=document.querySelectorAll('#asc-btns .q-btn');
+  ascBtns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      ascBtns.forEach(function(b){b.className='q-btn';});
+      var isYes=(btn.dataset.val==='si');
+      btn.classList.add(isYes?'selected-yes':'selected-no');
+      S.elementi[2]=isYes;
+      updateScoreBar();
+      updateNextBtn();
+    });
+  });
+  var locBtns=document.querySelectorAll('#loc-btns .q-btn');
+  locBtns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      locBtns.forEach(function(b){b.className='q-btn';});
+      btn.classList.add('selected-radio');
+      S.tipo_locazione=btn.dataset.val;
+      $('field-porzione-s2').style.display=(S.tipo_locazione==='parziale')?'block':'none';
+      updateNextBtn();
+    });
+  });
+  $('mq-porzione-s2').addEventListener('input',updateNextBtn);
+}
+
+/* ══ STEP 3 — Contratto ══ */
+function initStep3(){
+  document.querySelectorAll('#cards-tipo .o-card').forEach(function(card){
+    card.addEventListener('click',function(){
+      document.querySelectorAll('#cards-tipo .o-card').forEach(function(c){c.classList.remove('sel');});
+      card.classList.add('sel');
+      S.tipo_contratto=card.dataset.val;
+      $('durata-section').style.display='block';
+      $('dur-agevolato').style.display=(S.tipo_contratto==='agevolato')?'block':'none';
+      $('dur-transitorio').style.display=(S.tipo_contratto==='transitorio')?'block':'none';
+      $('dur-studenti').style.display=(S.tipo_contratto==='studenti')?'block':'none';
+      updateNextBtn();
+    });
+  });
+  document.querySelectorAll('#cards-durata .o-card').forEach(function(card){
+    card.addEventListener('click',function(){
+      document.querySelectorAll('#cards-durata .o-card').forEach(function(c){c.classList.remove('sel');});
+      card.classList.add('sel');
+      S.durata_agevolato=card.dataset.val;
+      updateNextBtn();
+    });
+  });
+  $('in-durata-trans').addEventListener('input',updateNextBtn);
+  $('in-durata-stud').addEventListener('input',updateNextBtn);
+}
+
+/* ══ STEP 11 — Surface prep ══ */
+function prepareStep11(){
+  $('row-comuni').style.display=(S.tipo_locazione==='parziale')?'':'none';
+  $('row-porzione-s11').style.display=(S.tipo_locazione==='parziale')?'block':'none';
+  if(S.mq_porzione>0&&!$('mq-porzione').value){$('mq-porzione').value=S.mq_porzione;}
+}
+
+function calcSurface(){
+  var mq=parseFloat($('mq-app').value)||0;
+  var base=mq;
+  var box=parseFloat($('mq-box').value)||0;
+  var pauto=parseFloat($('mq-pauto').value)||0;
+  var balc=parseFloat($('mq-balc').value)||0;
+  var cant=parseFloat($('mq-cant').value)||0;
+  var scop=parseFloat($('mq-scop').value)||0;
+  var sup_totale=base+box*0.50+pauto*0.25+balc*0.30+cant*0.25+scop*0.10;
+  S.mq_appartamento=mq;
+  $('pv-app').textContent=base?base.toFixed(2):'\u2014';
+  $('pv-box').textContent=box?(box*0.5).toFixed(2):'\u2014';
+  $('pv-pauto').textContent=pauto?(pauto*0.25).toFixed(2):'\u2014';
+  $('pv-balc').textContent=balc?(balc*0.3).toFixed(2):'\u2014';
+  $('pv-cant').textContent=cant?(cant*0.25).toFixed(2):'\u2014';
+  $('pv-scop').textContent=scop?(scop*0.1).toFixed(2):'\u2014';
+  if(S.tipo_locazione==='parziale'){
+    var comuni=parseFloat($('mq-comuni').value)||0;
+    var porzione=parseFloat($('mq-porzione').value)||S.mq_porzione||0;
+    var stanze_private=mq-comuni;
+    var quota=(stanze_private>0)?(porzione/stanze_private):(mq>0?(porzione/mq):0);
+    var comuni_pq=comuni*quota;
+    var sup_nuda=porzione+comuni_pq;
+    var frac=(mq>0)?(sup_nuda/mq):0;
+    var tot=sup_totale*frac;
+    S.superficie_calc=tot;
+    $('pv-comuni').textContent=comuni_pq?comuni_pq.toFixed(2)+' (pro-quota)':'\u2014';
+    $('surface-total').textContent=tot?tot.toFixed(2)+' mq (Quota Porzione)':'\u2014 mq';
+  } else {
+    S.superficie_calc=sup_totale;
+    $('pv-comuni').textContent='\u2014';
+    $('surface-total').textContent=sup_totale?sup_totale.toFixed(2)+' mq':'\u2014 mq';
+  }
+  updateNextBtn();
+}
+
+/* ══ STEP 12 — Correttivi prep ══ */
+function prepareStep12(){
+  var hasCant=S.elementi[8]===true;
+  $('corr-cantina-val').innerHTML=hasCant?
+    '<span class="corr-badge neutral">Presente (nessuna riduzione)</span>':
+    '<span class="corr-badge minus">Assente: -2% sul canone massimo</span>';
+  $('corr-semi-val').innerHTML=S.piano_seminterrato?
+    '<span class="corr-badge minus">S\u00EC: -10% sul canone massimo</span>':
+    '<span class="corr-badge neutral">No (nessuna riduzione)</span>';
+  if(S.tipo_contratto==='agevolato'&&S.durata_agevolato&&S.durata_agevolato!=='3+2'){
+    var dp=DURATA_PERC[S.durata_agevolato]||0;
+    $('corr-durata').style.display='block';
+    $('corr-durata-val').innerHTML='<span class="corr-badge plus">Durata '+escHtml(S.durata_agevolato)+': +'+(dp*100)+'% su min e max</span>';
+  } else {
+    $('corr-durata').style.display='none';
+  }
+}
+
+function initStep12(){
+  var ammobBtns=document.querySelectorAll('#ammob-btns .q-btn');
+  ammobBtns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      ammobBtns.forEach(function(b){b.className='q-btn';});
+      var isYes=(btn.dataset.val==='si');
+      btn.classList.add(isYes?'selected-yes':'selected-no');
+      S.ammobiliato=isYes;
+      S.ammobiliato_set=true;
+      updateNextBtn();
+    });
+  });
+  $('sel-classe').addEventListener('change',function(){
+    S.classe_energetica=this.value;
+    updateNextBtn();
+  });
+}
+
+/* ══ STEP 13 — Contact ══ */
+function prefillContactFromSoftr(){
+  var softrEmail=$('softr-user-email').value;
+  var softrName=$('softr-user-name').value;
+  if(softrEmail&&$('in-email')&&!$('in-email').value){
+    $('in-email').value=softrEmail;
+    S.email=softrEmail;
+  }
+  if(softrName&&$('in-nome')&&!$('in-nome').value){
+    $('in-nome').value=softrName;
+    S.nome=softrName;
+  }
+  checkCalcBtn();
+}
+
+function initStep13(){
+  document.querySelectorAll('#role-options .role-opt').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('#role-options .role-opt').forEach(function(b){b.classList.remove('sel');});
+      btn.classList.add('sel');
+      S.ruolo=btn.dataset.val;
+      checkCalcBtn();
+    });
+  });
+  $('in-nome').addEventListener('input',checkCalcBtn);
+  $('in-email').addEventListener('input',checkCalcBtn);
+  $('btn-calc').addEventListener('click',doCalcolo);
+}
+
+function checkCalcBtn(){
+  var nome=$('in-nome').value.trim(),email=$('in-email').value.trim();
+  $('btn-calc').disabled=!(nome.length>1&&email.includes('@')&&email.includes('.')&&!!S.ruolo);
+}
+
+/* ══ CORRECTIONS LIST ══ */
+function getCorrections(){
+  var list=[];
+  if(S.tipo_contratto==='agevolato'){
+    var dur=S.durata_agevolato||'3+2';
+    var perc=DURATA_PERC[dur]||0;
+    if(perc>0) list.push({dir:'+',text:'Durata '+dur+': +'+(perc*100)+'% su minimo e massimo'});
+  }
+  if(S.ammobiliato) list.push({dir:'+',text:'Completamente ammobiliato: +15% sul canone massimo'});
+  if(S.classe_energetica==='A') list.push({dir:'+',text:'Classe energetica A: +10% sul canone massimo'});
+  if(S.classe_energetica==='G') list.push({dir:'-',text:'Classe energetica G: -2% sul canone massimo'});
+  if(S.elementi[8]!==true) list.push({dir:'-',text:'Mancanza cantina/soffitta: -2% sul canone massimo'});
+  if(S.piano_seminterrato) list.push({dir:'-',text:'Piano seminterrato: -10% sul canone massimo'});
+  return list;
+}
+
+/* ══════════════════════════════════════════════════════
+   MOTORE DI CALCOLO — Allegato 6, Multi-Comune
+   ══════════════════════════════════════════════════════ */
+function calculate(){
+  if(!CANONI||!S.zona) return null;
+  var punteggio=calcScore();
+  var subfascia=punteggio<=13?'sf1':punteggio<=21?'sf2':'sf3';
+  var zona=S.zona;
+  var range=CANONI[zona]&&CANONI[zona][subfascia];
+  if(!range) return null;
+  var base_min=range.min;
+  var base_max=range.max;
+
+  /* 1. Superficie ponderata (intero appartamento) */
+  var mq_raw=S.mq_appartamento;
+  var mq_base=mq_raw;
+  var sup_totale=mq_base
+    +S.mq_box_garage*0.50
+    +S.mq_posto_auto*0.25
+    +S.mq_balconi*0.30
+    +S.mq_cantina*0.25
+    +S.mq_scoperta*0.10;
+
+  /* 1b. Locazione parziale: riduzione superficie pro-quota (Confabitare) */
+  var fraction=1,quota_stanza=0,comuni_proquota=0,sup_nuda_porzione=0;
+  if(S.tipo_locazione==='parziale'&&S.mq_porzione>0&&S.mq_appartamento>0){
+    var mq_comuni=S.mq_spazi_comuni||0;
+    var stanze_private=S.mq_appartamento-mq_comuni;
+    quota_stanza=(stanze_private>0)?(S.mq_porzione/stanze_private):(S.mq_porzione/S.mq_appartamento);
+    comuni_proquota=mq_comuni*quota_stanza;
+    sup_nuda_porzione=S.mq_porzione+comuni_proquota;
+    fraction=sup_nuda_porzione/S.mq_appartamento;
+  }
+  var sup=sup_totale*fraction;
+  S.superficie_calc=sup;
+
+  /* 2. Maggiorazioni separate: MIN (solo durata) e MAX (durata + ammobiliato + classe A) */
+  var durPerc=0;
+  if(S.tipo_contratto==='agevolato'){
+    durPerc=DURATA_PERC[S.durata_agevolato]||0;
+  }
+  var magg_min=durPerc;
+  var magg_max=durPerc;
+  if(S.ammobiliato) magg_max+=0.15;
+  if(S.classe_energetica==='A') magg_max+=0.10;
+
+  /* 3. Riduzioni SOLO sul MAX ("valori massimi") */
+  var rid_max=0;
+  if(S.classe_energetica==='G') rid_max-=0.02;
+  if(S.elementi[8]!==true) rid_max-=0.02;
+  if(S.piano_seminterrato) rid_max-=0.10;
+
+  /* 4. Calcolo \u20AC/mq */
+  var min_mq=base_min*(1+magg_min);
+  var max_mq=base_max*(1+magg_max+rid_max);
+
+  /* 5. CAP ammobiliato (zone 2,3,4 non superano Z1-SF3 max) */
+  var cap_applicato=false;
+  var max_mq_pre_cap=max_mq;
+  if(S.ammobiliato&&zona>=2){
+    if(max_mq>CAP_AMMOBILIATO){
+      max_mq=CAP_AMMOBILIATO;
+      cap_applicato=true;
+    }
+  }
+
+  /* 6. Canone finale */
+  var canone_min=min_mq*sup;
+  var canone_max=max_mq*sup;
+  var sf1=CANONI[zona]&&CANONI[zona]['sf1'];
+  var canone_minimo_zona=sf1?sf1.min*sup:0;
+
+  return {
+    punteggio:punteggio,subfascia:subfascia,zona:zona,
+    superficie_calc:sup,superficie_totale:sup_totale,
+    canone_min:canone_min,canone_max:canone_max,
+    canone_minimo_zona:canone_minimo_zona,
+    base_min:base_min,base_max:base_max,
+    magg_min:magg_min,magg_max:magg_max,rid_max:rid_max,durPerc:durPerc,
+    min_mq:min_mq,max_mq:max_mq,max_mq_pre_cap:max_mq_pre_cap,
+    cap_applicato:cap_applicato,cap_value:CAP_AMMOBILIATO,
+    fraction:fraction,quota_stanza:quota_stanza,
+    comuni_proquota:comuni_proquota,sup_nuda_porzione:sup_nuda_porzione,
+    canone_min_porzione:0,canone_max_porzione:0
+  };
+}
+
+/* ══ DO CALCOLO ══ */
+function doCalcolo(){
+  S.nome=$('in-nome').value.trim();
+  S.email=$('in-email').value.trim();
+  S.telefono=$('in-tel').value.trim();
+  var result=calculate();
+  if(!result){alert('Errore nel calcolo. Verifica di aver selezionato un comune e un indirizzo valido.');return;}
+  goToStep('result');
+  renderResult(result);
+  sendWebhook(result);
+}
+
+/* ══ RENDER RESULT ══ */
+function renderResult(r){
+  var box=$('result-box');box.innerHTML='';
+  var sfNum=r.subfascia==='sf1'?1:r.subfascia==='sf2'?2:3;
+  var omiLabel=S.omi_code?' (OMI '+escHtml(S.omi_code)+')':'';
+
+  function summaryContratto(){
+    if(S.tipo_contratto==='agevolato') return'Ordinario '+(S.durata_agevolato||'3+2');
+    if(S.tipo_contratto==='transitorio') return'Transitorio '+(S.durata_transitorio_mesi||0)+' mesi';
+    if(S.tipo_contratto==='studenti') return'Studenti '+(S.durata_studenti_mesi||0)+' mesi';
+    return'\u2014';
+  }
+
+  var metas=['Tipo: '+summaryContratto(),'Zona '+r.zona+omiLabel+' \u2014 Sub-fascia '+sfNum,'Superficie: '+r.superficie_calc.toFixed(2)+' mq','Punteggio: '+r.punteggio+'/'+MAX_SCORE];
+  metas.forEach(function(t){var d=document.createElement('div');d.className='r-meta';d.textContent=t;box.appendChild(d);});
+
+  var sep=document.createElement('div');sep.className='r-sep';box.appendChild(sep);
+  var lbl=document.createElement('div');lbl.className='r-label';lbl.textContent=S.tipo_locazione==='parziale'?'Canone mensile concordato (Porzione stanza)':'Canone mensile concordato';box.appendChild(lbl);
+  var rng=document.createElement('div');rng.className='r-range';rng.textContent='EUR '+fmt(r.canone_min)+' \u2014 '+fmt(r.canone_max);box.appendChild(rng);
+  var ann=document.createElement('div');ann.className='r-annual';ann.textContent='EUR '+fmt(r.canone_min*12)+' \u2014 '+fmt(r.canone_max*12)+' annuo';box.appendChild(ann);
+
+  var floorWrap=document.createElement('div');floorWrap.className='r-floor-wrap';
+  var floorLbl=document.createElement('div');floorLbl.className='r-floor-label';floorLbl.textContent='Minimo relativo alla zona';
+  var floorVal=document.createElement('div');floorVal.className='r-floor-val';floorVal.textContent='EUR '+fmt(r.canone_minimo_zona)+' / mese';
+  var floorNote=document.createElement('div');floorNote.className='r-floor-note';floorNote.textContent='Canone minimo ammesso per questa zona.';
+  floorWrap.appendChild(floorLbl);floorWrap.appendChild(floorVal);floorWrap.appendChild(floorNote);box.appendChild(floorWrap);
+
+  $('result-portion').innerHTML='';
+
+  /* CAP info */
+  var capEl=$('result-cap-info');capEl.innerHTML='';
+  if(S.ammobiliato&&r.zona>=2){
+    var capDiv=document.createElement('div');
+    if(r.cap_applicato){
+      capDiv.className='cap-info applied';
+      capDiv.innerHTML='\u26A0\uFE0F <strong>CAP AMMOBILIATO APPLICATO</strong><br>Il valore \u20AC/mq massimo (\u20AC'+fmt(r.max_mq_pre_cap)+') supera il limite di \u20AC'+fmt(r.cap_value)+'/mq (Z1-SF3).<br>Valore massimo limitato a \u20AC'+fmt(r.cap_value)+'/mq come previsto dall\'Accordo per le zone 2, 3 e 4.';
+    } else {
+      capDiv.className='cap-info not-applied';
+      capDiv.innerHTML='\u2705 <strong>CAP AMMOBILIATO NON RAGGIUNTO</strong><br>Il valore \u20AC/mq massimo (\u20AC'+fmt(r.max_mq_pre_cap)+') \u00E8 inferiore al limite di \u20AC'+fmt(r.cap_value)+'/mq (Z1-SF3).<br>Nessuna limitazione applicata.';
+    }
+    capEl.appendChild(capDiv);
+  }
+
+  /* Correzioni */
+  var corrEl=$('result-corr');corrEl.innerHTML='';
+  var corrs=getCorrections();
+  var maggiorazioni=corrs.filter(function(c){return c.dir==='+';});
+  var riduzioni=corrs.filter(function(c){return c.dir==='-';});
+  if(maggiorazioni.length){
+    var h=document.createElement('h4');h.textContent='Maggiorazioni applicate';corrEl.appendChild(h);
+    maggiorazioni.forEach(function(c){var d=document.createElement('div');d.className='corr-item plus';d.textContent=c.text;corrEl.appendChild(d);});
+  }
+  if(riduzioni.length){
+    var h2=document.createElement('h4');h2.style.marginTop='8px';h2.textContent='Riduzioni applicate';corrEl.appendChild(h2);
+    riduzioni.forEach(function(c){var d=document.createElement('div');d.className='corr-item minus';d.textContent=c.text;corrEl.appendChild(d);});
+  }
+
+  renderMethodology(r);
+  renderScoreDetail(r);
+  showZoneOnMap(r.zona,r);
+}
+
+/* ══ METHODOLOGY ══ */
+function renderMethodology(r){
+  var mc=$('method-content');if(!mc) return;mc.innerHTML='';
+  var zona=r.zona,sfNum=r.subfascia==='sf1'?1:r.subfascia==='sf2'?2:3;
+  var h='<div style="font-size:12px;line-height:1.7;color:var(--text)">';
+  var stepN=1;
+
+  h+='<div style="font-weight:700;color:var(--primary);margin-bottom:4px">'+stepN+'. Valori base subfascia</div>';
+  h+='<div style="margin-bottom:12px">Zona '+zona+' \u2014 Sub-fascia '+sfNum+' \u2014 Min: <strong>\u20AC'+r.base_min.toFixed(2)+'</strong>/mq \u2014 Max: <strong>\u20AC'+r.base_max.toFixed(2)+'</strong>/mq</div>';
+  stepN++;
+
+  h+='<div style="font-weight:700;color:var(--primary);margin-bottom:4px">'+stepN+'. Maggiorazione su MINIMO (solo Maggiore Durata)</div>';
+  if(r.durPerc>0){
+    h+='<div style="margin-left:12px">\u2022 Durata '+(S.durata_agevolato||'')+': +'+(r.durPerc*100)+'%</div>';
+    h+='<div style="margin-left:12px;font-weight:600">Totale maggiorazione minimo: +'+(r.magg_min*100).toFixed(0)+'%</div>';
+  } else {
+    h+='<div style="margin-left:12px;color:var(--muted)">Nessuna maggiorazione sul minimo</div>';
+  }
+  h+='<div style="margin-bottom:12px"></div>';
+  stepN++;
+
+  h+='<div style="font-weight:700;color:var(--primary);margin-bottom:4px">'+stepN+'. Maggiorazioni su MASSIMO</div>';
+  var maggiMaxItems=[];
+  if(r.durPerc>0) maggiMaxItems.push('Durata '+(S.durata_agevolato||'')+': +'+(r.durPerc*100)+'%');
+  if(S.ammobiliato) maggiMaxItems.push('Ammobiliato: +15%');
+  if(S.classe_energetica==='A') maggiMaxItems.push('Classe energetica A: +10%');
+  if(maggiMaxItems.length){
+    maggiMaxItems.forEach(function(t){h+='<div style="margin-left:12px">\u2022 '+t+'</div>';});
+    h+='<div style="margin-left:12px;font-weight:600">Totale maggiorazioni massimo: +'+(r.magg_max*100).toFixed(0)+'%</div>';
+  } else {
+    h+='<div style="margin-left:12px;color:var(--muted)">Nessuna maggiorazione sul massimo</div>';
+  }
+  h+='<div style="margin-bottom:12px"></div>';
+  stepN++;
+
+  h+='<div style="font-weight:700;color:var(--primary);margin-bottom:4px">'+stepN+'. Riduzioni SOLO sul MASSIMO</div>';
+  var ridItems=[];
+  if(S.classe_energetica==='G') ridItems.push('Classe energetica G: -2%');
+  if(S.elementi[8]!==true) ridItems.push('Mancanza cantina: -2%');
+  if(S.piano_seminterrato) ridItems.push('Piano seminterrato: -10%');
+  if(ridItems.length){
+    ridItems.forEach(function(t){h+='<div style="margin-left:12px">\u2022 '+t+'</div>';});
+    h+='<div style="margin-left:12px;font-weight:600">Totale riduzioni: '+(r.rid_max*100).toFixed(0)+'%</div>';
+  } else {
+    h+='<div style="margin-left:12px;color:var(--muted)">Nessuna riduzione</div>';
+  }
+  h+='<div style="margin-bottom:12px"></div>';
+  stepN++;
+
+  h+='<div style="font-weight:700;color:var(--primary);margin-bottom:4px">'+stepN+'. Valori \u20AC/mq dopo correttivi</div>';
+  h+='<div style="background:var(--bg);padding:10px;border-radius:6px;font-family:monospace;font-size:11px;margin-bottom:12px">';
+  h+='MIN: '+r.base_min.toFixed(2)+' \u00D7 (1 + '+(r.magg_min*100).toFixed(0)+'%) = <strong>\u20AC'+r.min_mq.toFixed(2)+'</strong>/mq<br>';
+  h+='MAX: '+r.base_max.toFixed(2)+' \u00D7 (1 + '+(r.magg_max*100).toFixed(0)+'% '+(r.rid_max*100).toFixed(0)+'%) = <strong>\u20AC'+r.max_mq_pre_cap.toFixed(2)+'</strong>/mq';
+  h+='</div>';
+  stepN++;
+
+  if(S.ammobiliato&&zona>=2){
+    h+='<div style="font-weight:700;color:var(--primary);margin-bottom:4px">'+stepN+'. CAP ammobiliato (zone 2/3/4)</div>';
+    if(r.cap_applicato){
+      h+='<div style="margin-left:12px;color:#991B1B;font-weight:600">\u26A0\uFE0F APPLICATO: \u20AC'+r.max_mq_pre_cap.toFixed(2)+'/mq superava \u20AC'+r.cap_value.toFixed(2)+' \u2192 limitato a \u20AC'+r.cap_value.toFixed(2)+'/mq</div>';
+    } else {
+      h+='<div style="margin-left:12px;color:#065F46;font-weight:600">\u2705 NON RAGGIUNTO: \u20AC'+r.max_mq_pre_cap.toFixed(2)+'/mq < \u20AC'+r.cap_value.toFixed(2)+'/mq</div>';
+    }
+    h+='<div style="margin-bottom:12px"></div>';
+    stepN++;
+  }
+
+  if(S.tipo_locazione==='parziale'&&r.fraction<1){
+    h+='<div style="font-weight:700;color:var(--primary);margin-bottom:4px">'+stepN+'. Calcolo quota porzione (Confabitare)</div>';
+    h+='<div style="background:var(--blue-bg);padding:10px;border-radius:6px;font-family:monospace;font-size:11px;margin-bottom:12px;border:1px solid #90CAF9">';
+    h+='Quota = Mq Stanza / (Mq App \u2212 Mq Comuni) = '+S.mq_porzione+' / ('+S.mq_appartamento+' \u2212 '+(S.mq_spazi_comuni||0)+') = <strong>'+(r.quota_stanza*100).toFixed(1)+'%</strong><br>';
+    h+='Mq Comuni Pro-Quota = '+(S.mq_spazi_comuni||0)+' \u00D7 '+(r.quota_stanza*100).toFixed(1)+'% = <strong>'+r.comuni_proquota.toFixed(2)+' mq</strong><br>';
+    h+='Superficie Nuda Stanza = '+S.mq_porzione+' + '+r.comuni_proquota.toFixed(2)+' = <strong>'+r.sup_nuda_porzione.toFixed(2)+' mq</strong><br>';
+    h+='Frazione = '+r.sup_nuda_porzione.toFixed(2)+' / '+S.mq_appartamento+' = <strong>'+(r.fraction*100).toFixed(1)+'%</strong><br>';
+    h+='Sup. Conv. Porzione = '+r.superficie_totale.toFixed(2)+' \u00D7 '+(r.fraction*100).toFixed(1)+'% = <strong>'+r.superficie_calc.toFixed(2)+' mq</strong>';
+    h+='</div>';
+    stepN++;
+  }
+
+  h+='<div style="font-weight:700;color:var(--primary);margin-bottom:4px">'+stepN+'. Superficie convenzionale: '+r.superficie_calc.toFixed(2)+' mq</div>';
+  h+='<div style="margin-bottom:12px"></div>';
+  stepN++;
+
+  h+='<div style="font-weight:700;color:var(--primary);margin-bottom:4px">'+stepN+'. Canone mensile</div>';
+  h+='<div style="background:var(--bg);padding:10px;border-radius:6px;font-family:monospace;font-size:11px">';
+  h+='MIN: \u20AC'+r.min_mq.toFixed(2)+'/mq \u00D7 '+r.superficie_calc.toFixed(2)+' mq = <strong>\u20AC'+fmt(r.canone_min)+'</strong><br>';
+  h+='MAX: \u20AC'+r.max_mq.toFixed(2)+'/mq \u00D7 '+r.superficie_calc.toFixed(2)+' mq = <strong>\u20AC'+fmt(r.canone_max)+'</strong>';
+  h+='</div>';
+
+  h+='<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)">Accordo Territoriale vigente ai sensi dell\'art. 2, comma 3, L. 431/1998 e D.M. 16/01/2017. Stima indicativa.</div>';
+  h+='</div>';
+  mc.innerHTML=h;
+}
+
+/* ══ SCORE DETAIL ══ */
+function renderScoreDetail(r){
+  var list=$('score-detail-content');if(!list) return;list.innerHTML='';
+  var html='<table style="width:100%;border-collapse:collapse;font-size:12px">';
+  html+='<thead><tr style="border-bottom:2px solid var(--border)"><th style="text-align:left;padding:4px 6px;color:var(--muted);font-weight:600">#</th><th style="text-align:left;padding:4px 6px;color:var(--muted);font-weight:600">Elemento</th><th style="text-align:center;padding:4px 6px;color:var(--muted);font-weight:600">Max</th><th style="text-align:center;padding:4px 6px;color:var(--muted);font-weight:600">Punti</th></tr></thead><tbody>';
+  var total=0;
+  ELEMENTI.forEach(function(el){
+    var pts=0;
+    if(S.elementi[el.id]===true){
+      if(el.id===2&&S.piano_numerico<2) pts=0;
+      else pts=el.pts;
+    }
+    total+=pts;
+    var color=pts>0?'color:var(--accent);font-weight:700':'color:var(--muted)';
+    var check=S.elementi[el.id]===true?'<span style="color:#10B981;font-weight:700">\u2713</span>':'<span style="color:#C62828">\u2717</span>';
+    html+='<tr style="border-bottom:1px solid #f5f5f5"><td style="padding:5px 6px;color:var(--muted);text-align:center;font-size:11px">'+el.id+'</td>';
+    html+='<td style="padding:5px 6px;color:var(--text);line-height:1.3">'+check+' '+escHtml(el.label)+'</td>';
+    html+='<td style="text-align:center;padding:5px 6px;color:var(--muted)">'+el.pts+'</td>';
+    html+='<td style="text-align:center;padding:5px 6px;'+color+'">'+pts+'</td></tr>';
+  });
+  html+='<tr style="border-top:2px solid var(--border);background:var(--bg)"><td></td><td style="padding:6px;font-weight:700;color:var(--primary)">TOTALE</td>';
+  html+='<td style="text-align:center;padding:6px;font-weight:700;color:var(--muted)">'+MAX_SCORE+'</td>';
+  html+='<td style="text-align:center;padding:6px;font-weight:700;color:var(--accent)">'+total+'</td></tr>';
+  html+='</tbody></table>';
+
+  var sfNum=total<=13?1:total<=21?2:3;
+  html+='<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">';
+  [{sf:'Sub-fascia 1',range:'0 \u2013 13 punti',active:sfNum===1},{sf:'Sub-fascia 2',range:'14 \u2013 21 punti',active:sfNum===2},{sf:'Sub-fascia 3',range:'22 \u2013 '+MAX_SCORE+' punti',active:sfNum===3}].forEach(function(item){
+    var bg=item.active?'background:var(--accent-light);border:1.5px solid var(--accent)':'background:var(--white);border:1px solid var(--border)';
+    var tc=item.active?'color:var(--accent)':'color:var(--muted)';
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 12px;border-radius:6px;margin-bottom:6px;'+bg+'">';
+    html+='<span style="font-size:13px;font-weight:600;'+tc+'">'+item.sf+'</span>';
+    html+='<span style="font-size:12px;'+tc+'">'+item.range+'</span>';
+    if(item.active) html+='<span style="font-size:11px;font-weight:700;color:var(--accent);margin-left:8px">\u25C0 il tuo immobile</span>';
+    html+='</div>';
+  });
+  html+='</div>';
+  list.innerHTML=html;
+}
+
+/* ══ COLLAPSIBLE ══ */
+function toggleCollapse(btn){
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('vis');
+}
+
+/* ══ WEBHOOK ══ */
+function sendWebhook(r){
+  var elSel=[];
+  ELEMENTI.forEach(function(e){if(S.elementi[e.id]===true) elSel.push(e.id);});
+  var corrs=getCorrections();
+  var payload={
+    nome:S.nome,email:S.email,telefono:S.telefono,ruolo:S.ruolo||'',
+    tipo_contratto:S.tipo_contratto,durata_agevolato:S.durata_agevolato||'',
+    durata_transitorio_mesi:S.durata_transitorio_mesi||0,durata_studenti_mesi:S.durata_studenti_mesi||0,
+    tipo_locazione:S.tipo_locazione,mq_porzione:S.mq_porzione||0,
+    comune:currentComune||'',
+    indirizzo:S.indirizzo,latitudine:S.latitudine,longitudine:S.longitudine,
+    zona:S.zona,omi_code:S.omi_code||'',
+    mq_appartamento:S.mq_appartamento,mq_spazi_comuni:S.mq_spazi_comuni,
+    mq_box_garage:S.mq_box_garage,mq_posto_auto:S.mq_posto_auto,
+    mq_balconi:S.mq_balconi,mq_cantina:S.mq_cantina,mq_scoperta:S.mq_scoperta,
+    superficie_calc:r.superficie_calc,piano:S.piano,piano_seminterrato:S.piano_seminterrato,
+    classe_energetica:S.classe_energetica,ammobiliato:S.ammobiliato,
+    elementi_selezionati:elSel,
+    punteggio:r.punteggio,subfascia:r.subfascia,
+    canone_min:Math.round(r.canone_min*100)/100,canone_max:Math.round(r.canone_max*100)/100,
+    canone_minimo_zona:Math.round(r.canone_minimo_zona*100)/100,
+    canone_min_porzione:Math.round((r.canone_min_porzione||0)*100)/100,
+    canone_max_porzione:Math.round((r.canone_max_porzione||0)*100)/100,
+    cap_applicato:r.cap_applicato,
+    fraction:r.fraction||1,quota_stanza:r.quota_stanza||0,
+    comuni_proquota:r.comuni_proquota||0,sup_nuda_porzione:r.sup_nuda_porzione||0,
+    maggiorazioni:corrs.filter(function(c){return c.dir==='+';}).map(function(c){return c.text;}),
+    riduzioni:corrs.filter(function(c){return c.dir==='-';}).map(function(c){return c.text;}),
+    userRecordId:$('softr-user-record-id').value||'',
+    userName:$('softr-user-name').value||S.nome||'',
+    userEmail:$('softr-user-email').value||S.email||'',
+    timestamp:new Date().toISOString()
+  };
+  fetch('https://extracasa.app.n8n.cloud/webhook/canone-concordato',{
+    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)
+  }).catch(function(){$('webhook-err').style.display='block';});
+}
+
+/* ══ NUOVO CALCOLO ══ */
+function nuovoCalcolo(){
+  S.step=1;S.tipo_contratto=null;S.durata_agevolato=null;
+  S.durata_transitorio_mesi=null;S.durata_studenti_mesi=null;
+  S.indirizzo='';S.latitudine=0;S.longitudine=0;S.zona=null;S.omi_code=null;
+  S.tipo_locazione=null;S.mq_appartamento=0;S.mq_porzione=0;
+  S.mq_spazi_comuni=0;S.mq_box_garage=0;S.mq_posto_auto=0;
+  S.mq_balconi=0;S.mq_cantina=0;S.mq_scoperta=0;S.superficie_calc=0;
+  S.piano=null;S.piano_seminterrato=false;S.piano_numerico=0;
+  S.elementi={};S.answered={};
+  S.ammobiliato=false;S.ammobiliato_set=false;S.classe_energetica=null;
+  S.nome='';S.email='';S.telefono='';S.ruolo=null;
+
+  document.querySelectorAll('.o-card.sel,.q-btn.selected-yes,.q-btn.selected-no,.q-btn.selected-radio,.role-opt.sel').forEach(function(e){
+    e.classList.remove('sel','selected-yes','selected-no','selected-radio');
+  });
+  document.querySelectorAll('input[type="number"],input[type="text"],input[type="email"],input[type="tel"]').forEach(function(i){i.value='';});
+  $('sel-classe').selectedIndex=0;
+  $('zone-badge-wrap').style.display='none';$('zone-err').classList.remove('vis');
+  $('semi-warn').classList.remove('vis');
+  $('q-ascensore').style.display='none';
+  $('field-porzione-s2').style.display='none';
+  $('durata-section').style.display='none';
+  $('webhook-err').style.display='none';
+  $('btn-calc').disabled=true;
+
+  if(marker){marker.setMap(null);marker=null;}
+  clearAllZonePolygons();
+  if(infoWin){infoWin.close();infoWin=null;}
+
+  CANONI=null;OMI_ZONES=null;currentComune=null;
+  $('select_comune').selectedIndex=0;
+  $('address-input').disabled=true;
+  $('address-input').placeholder='Seleziona prima il comune...';
+  if(mapInstance){mapInstance.setCenter({lat:45.4642,lng:9.1900});mapInstance.setZoom(12);}
+
+  document.querySelectorAll('.step.active').forEach(function(s){s.classList.remove('active');});
+  goToStep(1);
+}
+
+/* ══ CARICAMENTO DATI COMUNE (async fetch da GitHub) ══ */
+function loadComuneData(comuneId){
+  var requestId=++_loadRequestId;
+  var url=COMUNI_URLS[comuneId];
+  var addressInput=$('address-input');
+
+  addressInput.value='';
+  addressInput.disabled=true;
+  addressInput.placeholder='Caricamento dati in corso...';
+  CANONI=null;OMI_ZONES=null;currentComune=null;
+  S.zona=null;S.omi_code=null;
+  S.indirizzo='';S.latitudine=0;S.longitudine=0;
+  $('zone-badge-wrap').style.display='none';
+  $('zone-err').classList.remove('vis');
+  if(marker){marker.setMap(null);marker=null;}
+  clearAllZonePolygons();
+  if(infoWin){infoWin.close();infoWin=null;}
+  updateNextBtn();
+
+  if(!url){
+    addressInput.placeholder='Seleziona prima il comune...';
+    alert('Dati non disponibili per il comune selezionato.');
+    return;
+  }
+
+  fetch(url).then(function(res){
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    return res.json();
+  }).then(function(data){
+    if(requestId!==_loadRequestId) return;
+    CANONI=data.canoni;
+    OMI_ZONES=data.omi_zones;
+    currentComune=comuneId;
+    CAP_AMMOBILIATO=(CANONI['1']&&CANONI['1'].sf3)?CANONI['1'].sf3.max:37.00;
+
+    addressInput.disabled=false;
+    addressInput.placeholder='Inserisci l\'indirizzo esatto...';
+
+    if(mapInstance){
+      mapInstance.setCenter({lat:data.center.lat,lng:data.center.lng});
+      mapInstance.setZoom(data.zoom);
+      drawAllZones();
+    }
+
+    if(autocompleteInstance&&data.bounds){
+      var sw=data.bounds.sw,ne=data.bounds.ne;
+      autocompleteInstance.setBounds(
+        new google.maps.LatLngBounds({lat:sw[0],lng:sw[1]},{lat:ne[0],lng:ne[1]})
+      );
+    }
+
+    updateNextBtn();
+  }).catch(function(err){
+    if(requestId!==_loadRequestId) return;
+    CANONI=null;OMI_ZONES=null;currentComune=null;
+    addressInput.disabled=true;
+    addressInput.placeholder='Seleziona prima il comune...';
+    alert('Errore nel caricamento dei dati del comune. Riprova tra poco.');
+    console.error('loadComuneData error:',err);
+    updateNextBtn();
+  });
+}
+
+/* ══ MAP ══ */
+function clearAllZonePolygons(){
+  for(var i=0;i<zonePolygons.length;i++) zonePolygons[i].setMap(null);
+  zonePolygons=[];
+}
+
+function drawAllZones(){
+  if(!mapsReady||!mapInstance||!OMI_ZONES) return;
+  clearAllZonePolygons();
+  for(var i=0;i<OMI_ZONES.length;i++){
+    var z=OMI_ZONES[i];
+    for(var p=0;p<z.p.length;p++){
+      var rings=z.p[p];
+      var paths=[];
+      for(var r=0;r<rings.length;r++){
+        paths.push(rings[r].map(function(c){return{lat:c[1],lng:c[0]};}));
+      }
+      var poly=new google.maps.Polygon({
+        paths:paths,strokeColor:ZONE_COLORS[z.z],strokeWeight:1.5,strokeOpacity:0.7,
+        fillColor:ZONE_COLORS[z.z],fillOpacity:0.30,map:mapInstance,zIndex:z.z
+      });
+      zonePolygons.push(poly);
+    }
+  }
+}
+
+function showZoneBadge(omi,zona){
+  S.zona=zona;S.omi_code=omi;
+  var badge=$('zone-badge');
+  badge.textContent='Zona '+zona+' \u2014 OMI '+omi;
+  badge.style.backgroundColor=ZONE_COLORS[zona];
+  $('zone-badge-wrap').style.display='block';
+  $('zone-err').classList.remove('vis');
+  updateNextBtn();
+}
+
+function showZoneError(){
+  S.zona=null;S.omi_code=null;
+  $('zone-badge-wrap').style.display='none';
+  $('zone-err').classList.add('vis');
+  updateNextBtn();
+}
+
+function showZoneOnMap(zona,result){
+  if(!mapsReady||!mapInstance||!OMI_ZONES) return;
+  clearAllZonePolygons();
+  var currentOmi=S.omi_code;
+  for(var i=0;i<OMI_ZONES.length;i++){
+    var z=OMI_ZONES[i];
+    var isCurrent=(z.o===currentOmi);
+    for(var p=0;p<z.p.length;p++){
+      var rings=z.p[p];
+      var paths=[];
+      for(var r=0;r<rings.length;r++){
+        paths.push(rings[r].map(function(c){return{lat:c[1],lng:c[0]};}));
+      }
+      var poly=new google.maps.Polygon({
+        paths:paths,
+        strokeColor:isCurrent?'#1F2937':ZONE_COLORS[z.z],
+        strokeWeight:isCurrent?3:1,strokeOpacity:isCurrent?1:0.4,
+        fillColor:ZONE_COLORS[z.z],fillOpacity:isCurrent?0.50:0.15,
+        map:mapInstance,zIndex:isCurrent?100:z.z
+      });
+      zonePolygons.push(poly);
+    }
+  }
+  if(marker&&result){
+    if(infoWin) infoWin.close();
+    infoWin=new google.maps.InfoWindow({
+      content:'<div style="font-family:Montserrat,sans-serif;padding:4px"><strong>Zona '+zona+'</strong> <span style="font-size:11px;color:#666">(OMI '+escHtml(currentOmi||'')+')</span><br><span style="font-size:12px;color:#666">EUR '+fmt(result.canone_min)+' \u2014 '+fmt(result.canone_max)+'</span></div>'
+    });
+    infoWin.open(mapInstance,marker);
+  }
+}
+
+function initMap(){
+  if(!window.google||!google.maps) return;
+  mapsReady=true;
+  mapInstance=new google.maps.Map($('map'),{
+    center:{lat:45.4642,lng:9.1900},zoom:12,
+    mapTypeControl:false,streetViewControl:false,fullscreenControl:false,
+    styles:[{featureType:'poi',stylers:[{visibility:'off'}]}]
+  });
+  initAutocomplete();
+}
+
+function initAutocomplete(){
+  if(!mapsReady||!google.maps.places) return;
+  var input=$('address-input');
+  autocompleteInstance=new google.maps.places.Autocomplete(input,{
+    types:['address'],componentRestrictions:{country:'it'},
+    bounds:new google.maps.LatLngBounds({lat:45.38,lng:9.04},{lat:45.54,lng:9.28}),strictBounds:false
+  });
+  autocompleteInstance.addListener('place_changed',function(){
+    var place=autocompleteInstance.getPlace();
+    if(!place.geometry){showZoneError();return;}
+    var lat=place.geometry.location.lat(),lng=place.geometry.location.lng();
+    S.latitudine=lat;S.longitudine=lng;S.indirizzo=place.formatted_address||input.value;
+    var result=detectZone(lat,lng);
+    if(result){
+      showZoneBadge(result.omi,result.zona);
+      if(marker) marker.setMap(null);
+      marker=new google.maps.Marker({position:{lat:lat,lng:lng},map:mapInstance});
+      mapInstance.panTo({lat:lat,lng:lng});mapInstance.setZoom(14);
+    } else {
+      showZoneError();
+      if(marker){marker.setMap(null);marker=null;}
+    }
+  });
+}
+
+/* ══ LAYOUT ══ */
+function adjustAppHeight(){
+  var app=document.querySelector('.app');if(!app) return;
+  if(window.innerWidth<768){app.style.height='';return;}
+  var top=app.getBoundingClientRect().top;
+  var h=window.innerHeight-Math.max(0,top);
+  if(h>200) app.style.height=h+'px';
+}
+
+/* ══ SOFTR LOGGED-IN USER DETECTION ══ */
+function detectSoftrUser(){
+  var urlParams=new URLSearchParams(window.location.search);
+  var emailParam=urlParams.get('MAIL')||urlParams.get('mail')||urlParams.get('email')||urlParams.get('EMAIL');
+  var nameParam=urlParams.get('NAME')||urlParams.get('name');
+  if(emailParam){
+    $('softr-user-email').value=decodeURIComponent(emailParam);
+    if(nameParam) $('softr-user-name').value=decodeURIComponent(nameParam);
+    return;
+  }
+  var attempts=0,maxAttempts=20;
+  function check(){
+    if(window.logged_in_user&&window.logged_in_user.softr_user_email){
+      $('softr-user-email').value=window.logged_in_user.softr_user_email;
+      $('softr-user-name').value=window.logged_in_user.softr_user_full_name||'';
+      $('softr-user-record-id').value=window.logged_in_user.airtable_record_id||'';
+      console.log('Softr user detected:',window.logged_in_user.softr_user_email);
+      return;
+    }
+    if(++attempts<maxAttempts) setTimeout(check,500);
+    else console.warn('Softr user not detected after 10s');
+  }
+  check();
+}
+
+/* ══ INIT ══ */
+function init(){
+  adjustAppHeight();
+  window.addEventListener('resize',adjustAppHeight);
+  window.addEventListener('load',adjustAppHeight);
+  setTimeout(adjustAppHeight,100);
+  setTimeout(adjustAppHeight,500);
+
+  detectSoftrUser();
+  buildQuestions();
+  initStep2();
+  initStep3();
+  initStep12();
+  initStep13();
+
+  $('btn-next').addEventListener('click',goNext);
+  $('btn-back').addEventListener('click',goBack);
+  $('btn-nuovo').addEventListener('click',nuovoCalcolo);
+
+  $('select_comune').addEventListener('change',function(){
+    var val=this.value;
+    if(val) loadComuneData(val);
+  });
+
+  ['mq-app','mq-comuni','mq-box','mq-pauto','mq-balc','mq-cant','mq-scop'].forEach(function(id){
+    $(id).addEventListener('input',calcSurface);
+  });
+  $('mq-porzione').addEventListener('input',calcSurface);
+
+  document.querySelectorAll('.collapse-toggle').forEach(function(btn){
+    btn.addEventListener('click',function(){toggleCollapse(btn);});
+  });
+
+  updateProgress();
+  updateNav();
+  updateNextBtn();
+
+  if(typeof google!=='undefined'&&google.maps){initMap();}
+  else{
+    var script=document.createElement('script');
+    script.src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCVFlooX350p6YoOKIcGqzjk2-dUU5vaWI&libraries=places';
+    script.onload=initMap;
+    script.onerror=function(){
+      $('map').innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:var(--bg);color:var(--muted);text-align:center;padding:40px"><div style="font-size:16px;font-weight:600;color:#C62828;margin-bottom:8px">Mappa non disponibile</div><div style="font-size:13px;line-height:1.5">Impossibile caricare Google Maps.<br>Ricarica la pagina o contatta info@extracasa.it</div></div>';
+    };
+    document.head.appendChild(script);
+  }
+}
+
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+else init();
+})();
+</script>
+</body>
+</html>
