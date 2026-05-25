@@ -529,6 +529,7 @@ var currentComuneBounds=null;
 var autocompleteInstance=null;
 var _loadRequestId=0;
 var _geocodePending=false;
+var _mapsLoadStarted=false;
 
 /* ══ STATE ══ */
 var S={
@@ -875,6 +876,7 @@ function geocodeAddressInput(){
       applyAddressFromCoords(loc.lat(),loc.lng(),results[0].formatted_address||addr);
     }else{
       showZoneError();
+      if(marker){marker.setMap(null);marker=null;}
     }
   });
 }
@@ -1062,7 +1064,35 @@ function init(){
 
   updateProgress();updateNav();updateNextBtn();
 
-  /* Google Maps: il parent (dashboard CalculatorWrapper / WeWeb container) inietta lo script.
+  function showMapsFallback(){
+    $('map').innerHTML='<div class="map-fallback"><div class="mf-icon">\uD83D\uDDFA\uFE0F</div><div class="mf-title">Mappa non disponibile</div><div class="mf-text">Google Maps non caricato.<br>Il calcolatore funziona comunque:<br>inserisci l\'indirizzo e premi Invio<br>oppure selezionalo dal menu a tendina.</div></div>';
+  }
+
+  function loadGoogleMapsFromKey(key){
+    if(_mapsLoadStarted||!key) return;
+    if(typeof google!=='undefined'&&google.maps){_mapsLoadStarted=true;initMap();return;}
+    _mapsLoadStarted=true;
+    var script=document.createElement('script');
+    script.setAttribute('data-extracasa-gmaps','1');
+    script.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(key)+'&libraries=places&language=it&region=IT&callback=__initCalcolatoreMap';
+    script.async=true;
+    script.defer=true;
+    script.onerror=function(){
+      _mapsLoadStarted=false;
+      showMapsFallback();
+    };
+    document.head.appendChild(script);
+  }
+
+  window.addEventListener('message',function(event){
+    if(event.origin!==window.location.origin) return;
+    if(!event.data||typeof event.data!=='object') return;
+    if(event.data.type==='extracasa-maps-key'&&event.data.key){
+      loadGoogleMapsFromKey(event.data.key);
+    }
+  });
+
+  /* Google Maps: parent dashboard inietta lo script; WeWeb/standalone via postMessage key.
      Allineato a extracasa-dashboard public/calcolatore — webhook N8N diretto per embed standalone. */
   window.__initCalcolatoreMap=function(){
     initMap();
@@ -1070,6 +1100,8 @@ function init(){
 
   if(window.parent!==window){
     try{window.parent.postMessage({type:'extracasa-calcolatore-ready'},window.location.origin);}catch(e){}
+  }else{
+    showMapsFallback();
   }
 }
 
