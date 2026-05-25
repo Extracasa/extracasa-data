@@ -529,7 +529,9 @@ var currentComuneBounds=null;
 var autocompleteInstance=null;
 var _loadRequestId=0;
 var _geocodePending=false;
+var _pendingGeocode=false;
 var _mapsLoadStarted=false;
+var mapsInitDone=false;
 
 /* ══ STATE ══ */
 var S={
@@ -777,7 +779,7 @@ function toggleCollapse(btn){btn.classList.toggle('open');btn.nextElementSibling
 function sendWebhook(r){
   var elSel=[];ELEMENTI.forEach(function(e){if(S.elementi[e.id]===true) elSel.push(e.id);});var corrs=getCorrections();
   var payload={nome:S.nome,email:S.email,telefono:S.telefono,ruolo:S.ruolo||'',tipo_contratto:S.tipo_contratto,durata_agevolato:S.durata_agevolato||'',durata_transitorio_mesi:S.durata_transitorio_mesi||0,durata_studenti_mesi:S.durata_studenti_mesi||0,tipo_locazione:S.tipo_locazione,mq_porzione:S.mq_porzione||0,comune:currentComune||'',indirizzo:S.indirizzo,latitudine:S.latitudine,longitudine:S.longitudine,zona:S.zona,omi_code:S.omi_code||'',mq_appartamento:S.mq_appartamento,mq_spazi_comuni:S.mq_spazi_comuni,mq_box_garage:S.mq_box_garage,mq_posto_auto:S.mq_posto_auto,mq_balconi:S.mq_balconi,mq_cantina:S.mq_cantina,mq_scoperta:S.mq_scoperta,superficie_calc:r.superficie_calc,piano:S.piano,piano_seminterrato:S.piano_seminterrato,classe_energetica:S.classe_energetica,ammobiliato:S.ammobiliato,elementi_selezionati:elSel,punteggio:r.punteggio,subfascia:r.subfascia,canone_min:Math.round(r.canone_min*100)/100,canone_max:Math.round(r.canone_max*100)/100,canone_minimo_zona:Math.round(r.canone_minimo_zona*100)/100,canone_min_porzione:0,canone_max_porzione:0,cap_applicato:r.cap_applicato,fraction:r.fraction||1,quota_stanza:r.quota_stanza||0,comuni_proquota:r.comuni_proquota||0,sup_nuda_porzione:r.sup_nuda_porzione||0,maggiorazioni:corrs.filter(function(c){return c.dir==='+';}).map(function(c){return c.text;}),riduzioni:corrs.filter(function(c){return c.dir==='-';}).map(function(c){return c.text;}),userRecordId:$('ext-user-id').value||'',userName:$('ext-user-name').value||S.nome||'',userEmail:$('ext-user-email').value||S.email||'',timestamp:new Date().toISOString()};
-  fetch('https://extracasa.app.n8n.cloud/webhook/canone-concordato',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){$('webhook-err').style.display='block';});
+  fetch('/api/calcolatore-sync',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){$('webhook-err').style.display='block';});
 }
 
 /* ══ NUOVO CALCOLO ══ */
@@ -858,11 +860,16 @@ function applyAddressFromCoords(lat,lng,indirizzo){
 }
 
 function geocodeAddressInput(){
-  if(_geocodePending||!mapsReady||!currentComune||!google.maps.Geocoder) return;
+  if(_geocodePending||!currentComune) return;
   var input=$('address-input');
   var addr=input.value.trim();
   if(!addr) return;
   if(S.zona&&S.indirizzo===addr) return;
+  if(!mapsReady||!window.google||!google.maps||!google.maps.Geocoder){
+    _pendingGeocode=true;
+    return;
+  }
+  _pendingGeocode=false;
   _geocodePending=true;
   var geocoder=new google.maps.Geocoder();
   var comuneLabel=currentComune==='milano'?'Milano':(currentComune==='sesto'?'Sesto San Giovanni':currentComune);
@@ -893,11 +900,58 @@ function ensureAutocomplete(){
 }
 
 function initMap(){
-  if(!window.google||!google.maps) return;
+  if(mapsInitDone||!window.google||!google.maps) return;
+  mapsInitDone=true;
   mapsReady=true;
   mapInstance=new google.maps.Map($('map'),{center:{lat:45.4642,lng:9.1900},zoom:12,mapTypeControl:false,streetViewControl:false,fullscreenControl:false,styles:[{featureType:'poi',stylers:[{visibility:'off'}]}]});
   if(OMI_ZONES) drawAllZones();
   ensureAutocomplete();
+  if(_pendingGeocode) geocodeAddressInput();
+}
+
+function showMapsFallback(){
+  $('map').innerHTML='<div class="map-fallback"><div class="mf-icon">\uD83D\uDDFA\uFE0F</div><div class="mf-title">Mappa non disponibile</div><div class="mf-text">Google Maps non caricato.<br>Il calcolatore funziona comunque:<br>inserisci l\'indirizzo e premi Invio<br>oppure selezionalo dal menu a tendina.</div></div>';
+}
+
+function loadGoogleMapsFromKey(key){
+  if(_mapsLoadStarted||!key) return;
+  if(document.querySelector('script[data-extracasa-gmaps]')){
+    if(typeof google!=='undefined'&&google.maps) initMap();
+    return;
+  }
+  if(typeof google!=='undefined'&&google.maps){_mapsLoadStarted=true;initMap();return;}
+  _mapsLoadStarted=true;
+  var script=document.createElement('script');
+  script.setAttribute('data-extracasa-gmaps','1');
+  script.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(key)+'&libraries=places&language=it&region=IT&callback=__initCalcolatoreMap';
+  script.async=true;
+  script.defer=true;
+  script.onerror=function(){
+    _mapsLoadStarted=false;
+    showMapsFallback();
+  };
+  document.head.appendChild(script);
+}
+
+window.addEventListener('message',function(event){
+  if(!event.data||typeof event.data!=='object') return;
+  if(event.data.type==='extracasa-maps-key'&&event.data.key){
+    /* Chiave NEXT_PUBLIC: accettata dal parent embed (WeWeb/Softr) anche cross-origin. */
+    if(window.parent===window) return;
+    loadGoogleMapsFromKey(event.data.key);
+  }
+});
+
+window.__initCalcolatoreMap=function(){
+  initMap();
+};
+
+function notifyParentCalcolatoreReady(){
+  if(window.parent!==window){
+    try{window.parent.postMessage({type:'extracasa-calcolatore-ready'},window.location.origin);}catch(e){}
+  }else{
+    showMapsFallback();
+  }
 }
 
 function initAutocomplete(){
@@ -1020,6 +1074,7 @@ function boot(){
 function init(){
   if(__appInitialized) return;
   __appInitialized=true;
+  notifyParentCalcolatoreReady();
   adjustAppHeight();
   window.addEventListener('resize',adjustAppHeight);
   window.addEventListener('load',adjustAppHeight);
@@ -1063,46 +1118,6 @@ function init(){
   document.querySelectorAll('.collapse-toggle').forEach(function(btn){btn.addEventListener('click',function(){toggleCollapse(btn);});});
 
   updateProgress();updateNav();updateNextBtn();
-
-  function showMapsFallback(){
-    $('map').innerHTML='<div class="map-fallback"><div class="mf-icon">\uD83D\uDDFA\uFE0F</div><div class="mf-title">Mappa non disponibile</div><div class="mf-text">Google Maps non caricato.<br>Il calcolatore funziona comunque:<br>inserisci l\'indirizzo e premi Invio<br>oppure selezionalo dal menu a tendina.</div></div>';
-  }
-
-  function loadGoogleMapsFromKey(key){
-    if(_mapsLoadStarted||!key) return;
-    if(typeof google!=='undefined'&&google.maps){_mapsLoadStarted=true;initMap();return;}
-    _mapsLoadStarted=true;
-    var script=document.createElement('script');
-    script.setAttribute('data-extracasa-gmaps','1');
-    script.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(key)+'&libraries=places&language=it&region=IT&callback=__initCalcolatoreMap';
-    script.async=true;
-    script.defer=true;
-    script.onerror=function(){
-      _mapsLoadStarted=false;
-      showMapsFallback();
-    };
-    document.head.appendChild(script);
-  }
-
-  window.addEventListener('message',function(event){
-    if(event.origin!==window.location.origin) return;
-    if(!event.data||typeof event.data!=='object') return;
-    if(event.data.type==='extracasa-maps-key'&&event.data.key){
-      loadGoogleMapsFromKey(event.data.key);
-    }
-  });
-
-  /* Google Maps: parent dashboard inietta lo script; WeWeb/standalone via postMessage key.
-     Allineato a extracasa-dashboard public/calcolatore — webhook N8N diretto per embed standalone. */
-  window.__initCalcolatoreMap=function(){
-    initMap();
-  };
-
-  if(window.parent!==window){
-    try{window.parent.postMessage({type:'extracasa-calcolatore-ready'},window.location.origin);}catch(e){}
-  }else{
-    showMapsFallback();
-  }
 }
 
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot);
