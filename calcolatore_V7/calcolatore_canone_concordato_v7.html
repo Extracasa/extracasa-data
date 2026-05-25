@@ -182,6 +182,12 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 .map-fallback .mf-title{font-size:14px;font-weight:600;color:var(--primary);margin-bottom:4px}
 .map-fallback .mf-text{font-size:12px;line-height:1.5}
 
+/* Google Places autocomplete — sopra mappa e form (z-index map ~0) */
+.pac-container{z-index:10000!important;margin-top:6px!important;border-radius:8px!important;border:1px solid var(--border)!important;box-shadow:0 4px 16px rgba(0,0,0,.12)!important;font-family:inherit!important}
+.pac-item{padding:10px 12px!important;font-size:13px!important;cursor:pointer!important}
+.pac-item:hover,.pac-item-selected{background:var(--accent-light)!important}
+.address-hint{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4}
+
 @media(max-width:767px){
   .app{flex-direction:column;height:auto;min-height:100vh}
   .form-col{width:100%;height:auto;overflow:visible;flex:none}
@@ -227,7 +233,8 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
     </div>
     <div class="field">
       <label class="field-label">Indirizzo (incluso il numero civico) <span class="req">*</span></label>
-      <input type="text" id="address-input" placeholder="Seleziona prima il comune..." disabled>
+      <input type="text" id="address-input" placeholder="Seleziona prima il comune..." disabled autocomplete="off" spellcheck="false">
+      <div class="address-hint" id="address-hint" style="display:none">Seleziona l'indirizzo dal menu a tendina oppure premi Invio dopo averlo digitato.</div>
       <div id="zone-badge-wrap" style="display:none"><span class="zone-badge" id="zone-badge"></span></div>
       <div class="zone-err" id="zone-err">Indirizzo non coperto dall'Accordo Territoriale del comune selezionato.</div>
     </div>
@@ -423,7 +430,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
     </div>
     <div class="webhook-err" id="webhook-err" style="display:none">Invio dati non riuscito. Contattare info@extracasa.it</div>
     <div class="result-actions">
-      <a class="btn-cta primary" id="btn-vai-pratica" href="#" onclick="window.top.location.href='/pratiche-canone'; return false;">Vai alla pratica</a>
+      <a class="btn-cta primary" id="btn-vai-pratica" href="#" onclick="try{window.parent.postMessage({type:'extracasa-navigazione',dest:'/pratiche-canone'},'*');}catch(e){window.top.location.href='/pratiche-canone';}return false;">Vai alla pratica</a>
       <button class="btn-cta secondary" id="btn-nuovo" type="button">Nuovo calcolo</button>
     </div>
   </div>
@@ -518,8 +525,10 @@ var STEP_QUESTIONS={
 
 var OMI_ZONES=null;
 var currentComune=null;
+var currentComuneBounds=null;
 var autocompleteInstance=null;
 var _loadRequestId=0;
+var _geocodePending=false;
 
 /* ══ STATE ══ */
 var S={
@@ -538,6 +547,7 @@ var mapInstance=null,marker=null,zonePolygons=[],infoWin=null;
 var mapsReady=false;
 var __appInitialized=false;
 var __bootAttempts=0;
+var _saveComplete=false;
 
 /* ══ HELPERS ══ */
 function $(id){return document.getElementById(id);}
@@ -709,7 +719,9 @@ function calculate(){
 }
 
 /* ══ DO CALCOLO ══ */
-function doCalcolo(){var nomeField=$('in-nome').value.trim();var emailField=$('in-email').value.trim();var telField=$('in-tel').value.trim();S.nome=(nomeField||S.nome||$('ext-user-name').value||'').trim();S.email=(emailField||S.email||$('ext-user-email').value||'').trim();S.telefono=(telField||S.telefono||'').trim();if(!S.ruolo&&hideContact) S.ruolo='proprietario';var result=calculate();if(!result){alert('Errore nel calcolo. Verifica di aver selezionato un comune e un indirizzo valido.');return;}var supabasePayload=Object.assign({},S);supabasePayload.canone_min=result.canone_min;supabasePayload.canone_max=result.canone_max;supabasePayload.subfascia=result.subfascia;supabasePayload.punteggio=result.punteggio;supabasePayload.canone_minimo_zona=result.canone_minimo_zona;try{fetch('https://hoyhxyjbbnqldwzilbty.supabase.co/functions/v1/salva-simulazione',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(supabasePayload)});}catch(e){console.error('Errore salvataggio Supabase:',e);}goToStep('result');renderResult(result);sendWebhook(result);}
+function doCalcolo(){var nomeField=$('in-nome').value.trim();var emailField=$('in-email').value.trim();var telField=$('in-tel').value.trim();S.nome=(nomeField||S.nome||$('ext-user-name').value||'').trim();S.email=(emailField||S.email||$('ext-user-email').value||'').trim();S.telefono=(telField||S.telefono||'').trim();if(!S.ruolo&&hideContact) S.ruolo='proprietario';var result=calculate();if(!result){alert('Errore nel calcolo. Verifica di aver selezionato un comune e un indirizzo valido.');return;}var supabasePayload=Object.assign({},S);supabasePayload.canone_min=result.canone_min;supabasePayload.canone_max=result.canone_max;supabasePayload.subfascia=result.subfascia;supabasePayload.punteggio=result.punteggio;supabasePayload.canone_minimo_zona=result.canone_minimo_zona;goToStep('result');renderResult(result);
+var btnVai=$('btn-vai-pratica');if(btnVai){btnVai.style.opacity='0.5';btnVai.style.pointerEvents='none';btnVai.textContent='Salvataggio in corso...';}
+fetch('https://hoyhxyjbbnqldwzilbty.supabase.co/functions/v1/salva-simulazione',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(supabasePayload)}).then(function(res){return res.json();}).then(function(){_saveComplete=true;if(btnVai){btnVai.style.opacity='1';btnVai.style.pointerEvents='auto';btnVai.textContent='Vai alla pratica';}sendWebhook(result);}).catch(function(e){console.error('Errore salvataggio Supabase:',e);_saveComplete=true;if(btnVai){btnVai.style.opacity='1';btnVai.style.pointerEvents='auto';btnVai.textContent='Vai alla pratica';}sendWebhook(result);});}
 
 /* ══ RENDER RESULT ══ */
 function renderResult(r){
@@ -774,7 +786,8 @@ function nuovoCalcolo(){
   document.querySelectorAll('input[type="number"],input[type="text"],input[type="email"],input[type="tel"]').forEach(function(i){i.value='';});
   $('sel-classe').selectedIndex=0;$('zone-badge-wrap').style.display='none';$('zone-err').classList.remove('vis');$('semi-warn').classList.remove('vis');$('q-ascensore').style.display='none';$('field-porzione-s2').style.display='none';$('durata-section').style.display='none';$('webhook-err').style.display='none';$('btn-calc').disabled=true;
   if(marker){marker.setMap(null);marker=null;}clearAllZonePolygons();if(infoWin){infoWin.close();infoWin=null;}
-  CANONI=null;OMI_ZONES=null;currentComune=null;$('select_comune').selectedIndex=0;$('address-input').disabled=true;$('address-input').placeholder='Seleziona prima il comune...';
+  CANONI=null;OMI_ZONES=null;currentComune=null;currentComuneBounds=null;$('select_comune').selectedIndex=0;$('address-input').disabled=true;$('address-input').placeholder='Seleziona prima il comune...';
+  var hintNew=$('address-hint');if(hintNew) hintNew.style.display='none';
   if(mapInstance){mapInstance.setCenter({lat:45.4642,lng:9.1900});mapInstance.setZoom(12);}
   document.querySelectorAll('.step.active').forEach(function(s){s.classList.remove('active');});
   goToStep(1);
@@ -784,22 +797,24 @@ function nuovoCalcolo(){
 function loadComuneData(comuneId){
   var requestId=++_loadRequestId;var url=COMUNI_URLS[comuneId];var addressInput=$('address-input');
   addressInput.value='';addressInput.disabled=true;addressInput.placeholder='Caricamento dati in corso...';
-  CANONI=null;OMI_ZONES=null;currentComune=null;S.zona=null;S.omi_code=null;S.indirizzo='';S.latitudine=0;S.longitudine=0;
+  CANONI=null;OMI_ZONES=null;currentComune=null;currentComuneBounds=null;S.zona=null;S.omi_code=null;S.indirizzo='';S.latitudine=0;S.longitudine=0;
   $('zone-badge-wrap').style.display='none';$('zone-err').classList.remove('vis');
+  var hintReset=$('address-hint');if(hintReset) hintReset.style.display='none';
   if(marker){marker.setMap(null);marker=null;}clearAllZonePolygons();if(infoWin){infoWin.close();infoWin=null;}updateNextBtn();
   if(!url){addressInput.placeholder='Seleziona prima il comune...';alert('Dati non disponibili per il comune selezionato.');return;}
 
   fetch(url).then(function(res){if(!res.ok) throw new Error('HTTP '+res.status);return res.json();}).then(function(data){
     if(requestId!==_loadRequestId) return;
-    CANONI=data.canoni;OMI_ZONES=data.omi_zones;currentComune=comuneId;
+    CANONI=data.canoni;OMI_ZONES=data.omi_zones;currentComune=comuneId;currentComuneBounds=data.bounds||null;
     CAP_AMMOBILIATO=(CANONI['1']&&CANONI['1'].sf3)?CANONI['1'].sf3.max:37.00;
     addressInput.disabled=false;addressInput.placeholder='Inserisci l\'indirizzo esatto...';
+    var hint=$('address-hint');if(hint) hint.style.display='block';
     if(mapInstance){mapInstance.setCenter({lat:data.center.lat,lng:data.center.lng});mapInstance.setZoom(data.zoom);drawAllZones();}
-    if(autocompleteInstance&&data.bounds){var sw=data.bounds.sw,ne=data.bounds.ne;autocompleteInstance.setBounds(new google.maps.LatLngBounds({lat:sw[0],lng:sw[1]},{lat:ne[0],lng:ne[1]}));}
+    ensureAutocomplete();
     updateNextBtn();
   }).catch(function(err){
     if(requestId!==_loadRequestId) return;
-    CANONI=null;OMI_ZONES=null;currentComune=null;addressInput.disabled=true;addressInput.placeholder='Errore caricamento. Riprova.';
+    CANONI=null;OMI_ZONES=null;currentComune=null;currentComuneBounds=null;addressInput.disabled=true;addressInput.placeholder='Errore caricamento. Riprova.';
     console.error('[Calcolatore] loadComuneData error:',err);updateNextBtn();
   });
 }
@@ -821,25 +836,84 @@ function showZoneOnMap(zona,result){
   if(marker&&result){if(infoWin) infoWin.close();infoWin=new google.maps.InfoWindow({content:'<div style="font-family:Montserrat,sans-serif;padding:4px"><strong>Zona '+zona+'</strong> <span style="font-size:11px;color:#666">(OMI '+escHtml(currentOmi||'')+')</span><br><span style="font-size:12px;color:#666">EUR '+fmt(result.canone_min)+' \u2014 '+fmt(result.canone_max)+'</span></div>'});infoWin.open(mapInstance,marker);}
 }
 
+function getComuneLatLngBounds(){
+  if(!currentComuneBounds||!window.google||!google.maps) return null;
+  var sw=currentComuneBounds.sw,ne=currentComuneBounds.ne;
+  return new google.maps.LatLngBounds({lat:sw[0],lng:sw[1]},{lat:ne[0],lng:ne[1]});
+}
+
+function applyAddressFromCoords(lat,lng,indirizzo){
+  S.latitudine=lat;S.longitudine=lng;S.indirizzo=indirizzo;
+  var result=detectZone(lat,lng);
+  if(result){
+    showZoneBadge(result.omi,result.zona);
+    if(marker) marker.setMap(null);
+    marker=new google.maps.Marker({position:{lat:lat,lng:lng},map:mapInstance});
+    if(mapInstance){mapInstance.panTo({lat:lat,lng:lng});mapInstance.setZoom(14);}
+  }else{
+    showZoneError();
+    if(marker){marker.setMap(null);marker=null;}
+  }
+}
+
+function geocodeAddressInput(){
+  if(_geocodePending||!mapsReady||!currentComune||!google.maps.Geocoder) return;
+  var input=$('address-input');
+  var addr=input.value.trim();
+  if(!addr) return;
+  if(S.zona&&S.indirizzo===addr) return;
+  _geocodePending=true;
+  var geocoder=new google.maps.Geocoder();
+  var comuneLabel=currentComune==='milano'?'Milano':(currentComune==='sesto'?'Sesto San Giovanni':currentComune);
+  var req={address:addr+', '+comuneLabel,componentRestrictions:{country:'it'},language:'it'};
+  var bounds=getComuneLatLngBounds();
+  if(bounds) req.bounds=bounds;
+  geocoder.geocode(req,function(results,status){
+    _geocodePending=false;
+    if(status==='OK'&&results[0]&&results[0].geometry&&results[0].geometry.location){
+      var loc=results[0].geometry.location;
+      applyAddressFromCoords(loc.lat(),loc.lng(),results[0].formatted_address||addr);
+    }else{
+      showZoneError();
+    }
+  });
+}
+
+function ensureAutocomplete(){
+  if(!mapsReady||!google.maps.places) return;
+  var input=$('address-input');
+  if(!input||input.disabled) return;
+  if(!autocompleteInstance) initAutocomplete();
+  else{
+    var bounds=getComuneLatLngBounds();
+    if(bounds) autocompleteInstance.setBounds(bounds);
+  }
+}
+
 function initMap(){
   if(!window.google||!google.maps) return;
   mapsReady=true;
   mapInstance=new google.maps.Map($('map'),{center:{lat:45.4642,lng:9.1900},zoom:12,mapTypeControl:false,streetViewControl:false,fullscreenControl:false,styles:[{featureType:'poi',stylers:[{visibility:'off'}]}]});
-  initAutocomplete();
+  if(OMI_ZONES) drawAllZones();
+  ensureAutocomplete();
 }
 
 function initAutocomplete(){
-  if(!mapsReady||!google.maps.places) return;
+  if(!mapsReady||!google.maps.places||autocompleteInstance) return;
   var input=$('address-input');
-  autocompleteInstance=new google.maps.places.Autocomplete(input,{types:['address'],componentRestrictions:{country:'it'},bounds:new google.maps.LatLngBounds({lat:45.38,lng:9.04},{lat:45.54,lng:9.28}),strictBounds:false});
+  if(!input||input.disabled) return;
+  var acOpts={types:['address'],componentRestrictions:{country:'it'},strictBounds:false};
+  var bounds=getComuneLatLngBounds();
+  if(bounds) acOpts.bounds=bounds;
+  autocompleteInstance=new google.maps.places.Autocomplete(input,acOpts);
   autocompleteInstance.addListener('place_changed',function(){
     var place=autocompleteInstance.getPlace();
-    if(!place.geometry){showZoneError();return;}
+    if(!place.geometry){
+      geocodeAddressInput();
+      return;
+    }
     var lat=place.geometry.location.lat(),lng=place.geometry.location.lng();
-    S.latitudine=lat;S.longitudine=lng;S.indirizzo=place.formatted_address||input.value;
-    var result=detectZone(lat,lng);
-    if(result){showZoneBadge(result.omi,result.zona);if(marker) marker.setMap(null);marker=new google.maps.Marker({position:{lat:lat,lng:lng},map:mapInstance});mapInstance.panTo({lat:lat,lng:lng});mapInstance.setZoom(14);}
-    else{showZoneError();if(marker){marker.setMap(null);marker=null;}}
+    applyAddressFromCoords(lat,lng,place.formatted_address||input.value);
   });
 }
 
@@ -979,32 +1053,24 @@ function init(){
   $('btn-nuovo').addEventListener('click',nuovoCalcolo);
 
   $('select_comune').addEventListener('change',function(){var val=this.value;if(val) loadComuneData(val);});
+  var addressInputEl=$('address-input');
+  addressInputEl.addEventListener('keydown',function(ev){if(ev.key==='Enter'){ev.preventDefault();geocodeAddressInput();}});
+  addressInputEl.addEventListener('blur',function(){if(addressInputEl.value.trim()) geocodeAddressInput();});
   ['mq-app','mq-comuni','mq-box','mq-pauto','mq-balc','mq-cant','mq-scop'].forEach(function(id){$(id).addEventListener('input',calcSurface);});
   $('mq-porzione').addEventListener('input',calcSurface);
   document.querySelectorAll('.collapse-toggle').forEach(function(btn){btn.addEventListener('click',function(){toggleCollapse(btn);});});
 
   updateProgress();updateNav();updateNextBtn();
 
-  /* FIX WeWeb: load Google Maps with error handling and retry */
-  function loadGoogleMaps(){
-    if(typeof google!=='undefined'&&google.maps){initMap();return;}
-    var script=document.createElement('script');
-    script.src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCVFlooX350p6YoOKIcGqzjk2-dUU5vaWI&libraries=places&callback=__initCalcolatoreMap';
-    script.async=true;
-    script.defer=true;
-    script.onerror=function(){
-      console.error('[Calcolatore] Google Maps failed to load');
-      $('map').innerHTML='<div class="map-fallback"><div class="mf-icon">\uD83D\uDDFA\uFE0F</div><div class="mf-title">Mappa non disponibile</div><div class="mf-text">Google Maps non caricato.<br>Il calcolatore funziona comunque:<br>inserisci l\'indirizzo e selezionalo<br>dal menu a tendina.</div></div>';
-    };
-    document.head.appendChild(script);
-  }
-
-  /* Global callback for Google Maps async load */
+  /* Google Maps: il parent (dashboard CalculatorWrapper / WeWeb container) inietta lo script.
+     Allineato a extracasa-dashboard public/calcolatore — webhook N8N diretto per embed standalone. */
   window.__initCalcolatoreMap=function(){
     initMap();
   };
 
-  loadGoogleMaps();
+  if(window.parent!==window){
+    try{window.parent.postMessage({type:'extracasa-calcolatore-ready'},window.location.origin);}catch(e){}
+  }
 }
 
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot);
