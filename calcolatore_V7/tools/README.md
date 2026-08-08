@@ -38,3 +38,9 @@ python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/com
 I KML di sette Comuni espongono direttamente le zone contrattuali; Baranzate espone i codici OMI. La pagina 4 dell'accordo assegna gli edifici attraversati da un confine alla zona di maggior valore: il dataset conserva l'ordine contrattuale crescente e dichiara `agreement_zone_order`.
 
 I canoni delle pagine 17-18 sono stati confermati riga per riga nel file `VERIFICA_obiettivo2_groane_COMPILATA.md` (SHA-256 `91184b1b854ebf725a4f398a7122fc039445117f47af27033b2e517780a14461`). Gli otto Comuni hanno `canoni_confirmed: true` e sono registrati nel selettore.
+
+## Obiettivo 3 - Area Rhodense
+
+Il manifesto `comuni_obiettivo3.json` genera nove Comuni. I canoni delle pagine 33, 35 e 37 sono stati confermati riga per riga nel file `VERIFICA_obiettivo3_rhodense_COMPILATA.md` (SHA-256 `167fe15a8e82f48ac1b9e5c73e458ffe70c68fd4e7b34e1357301fb5a9e72ea2`).
+
+Arese mantiene un'avvertenza fail-closed: l'accordo associa R1 alla zona 2, ma il KML non espone il relativo perimetro e copre il 6,5% in meno della superficie ufficiale. Il simulatore non inventa la geometria mancante; gli indirizzi fuori dai poligoni ufficiali restano non coperti.
