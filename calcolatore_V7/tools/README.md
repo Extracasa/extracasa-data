@@ -52,3 +52,11 @@ Il manifesto `comuni_obiettivo4.json` genera Buccinasco, Opera, Rozzano, San Don
 Trezzano è deliberatamente modellata dal numero di zona del KML e dall'art. 4.1.a: zona 1 = D1 e zona 2 = B1. Nessun codice OMI viene convertito in zona per convenzione. Le zone R1/R2 dei sei Comuni hanno canoni propri e non entrano in `zone_senza_canoni`.
 
 I sei accordi non contengono una clausola locale sui confini. Le eventuali sovrapposizioni seguono la regola generale del §5 del brief, dichiarata esplicitamente come fonte nei manifesti.
+
+## Obiettivo 5 - Area Est
+
+Il manifesto `comuni_obiettivo5.json` genera Peschiera Borromeo, Pioltello, Segrate e Vimodrone. I canoni e le corrispondenze zona-OMI sono stati confermati nel file `VERIFICA_obiettivo5_est_COMPILATA.md` (SHA-256 `80ae0a26e022b3e48419bcb4c9b33c7e9fe4e9859946f8dc1ca431dfb450781a`).
+
+Pioltello associa D4 alla zona 2 e Segrate associa R1 alla zona 2. Per questi due codici omessi dal testo, la cartografia ufficiale fornisce la corrispondenza tramite il gruppo colore; `style_groups` fa fallire la generazione se i colori contraddicono i raggruppamenti dell'accordo o cambiano struttura.
+
+Peschiera e Segrate confermano che B1 non implica zona 1: il numero di zona viene sempre dal KML o dall'art. 4.1.a, mai dalla famiglia OMI.
