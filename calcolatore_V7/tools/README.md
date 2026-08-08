@@ -37,7 +37,7 @@ python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/com
 
 I KML di sette Comuni espongono direttamente le zone contrattuali; Baranzate espone i codici OMI. La pagina 4 dell'accordo assegna gli edifici attraversati da un confine alla zona di maggior valore: il dataset conserva l'ordine contrattuale crescente e dichiara `agreement_zone_order`.
 
-I canoni delle pagine 17-18 sono stati confermati riga per riga nel file `VERIFICA_obiettivo2_groane_COMPILATA.md` (SHA-256 `91184b1b854ebf725a4f398a7122fc039445117f47af27033b2e517780a14461`). Gli otto Comuni hanno `canoni_confirmed: true` e sono registrati nel selettore.
+I canoni delle pagine 17-18 sono stati confermati riga per riga nel file `VERIFICA_obiettivo2_groane_COMPILATA.md` (SHA-256 dei byte versionati `91184b1b854ebf725a4f398a7122fc039445117f47af27033b2e517780a14461`). Gli otto Comuni hanno `canoni_confirmed: true` e sono registrati nel selettore.
 
 ## Obiettivo 3 - Area Rhodense
 
@@ -49,7 +49,7 @@ Arese mantiene un'avvertenza fail-closed: l'accordo associa R1 alla zona 2, ma i
 
 Il manifesto `comuni_obiettivo4.json` genera Buccinasco, Opera, Rozzano, San Donato Milanese, San Giuliano Milanese e Trezzano sul Naviglio. I canoni e le corrispondenze OMI sono stati confermati nel file `VERIFICA_obiettivo4_sud_COMPILATA.md` (SHA-256 `8adaec3d6f5799396293d34a06a156b663c956460295b1dae0801ff41387ab41`).
 
-Trezzano è deliberatamente modellata dal numero di zona del KML e dall'art. 4.1.a: zona 1 = D1 e zona 2 = B1. Nessun codice OMI viene convertito in zona per convenzione. Le zone R1/R2 dei sei Comuni hanno canoni propri e non entrano in `zone_senza_canoni`.
+Trezzano è deliberatamente modellata dal numero di zona del KML e dall'art. 4.1.a: zona 1 = D1, zona 2 = B1 e zona 3 = R1. `omi_code_map` conserva questi codici OMI reali separatamente dalle etichette KML Z1/Z2/Z3. Nessun codice OMI viene convertito in zona per convenzione. Per i dataset che espongono solo etichette contrattuali e dichiarano `mostra_omi: false`, il runtime non mostra né persiste uno pseudo codice OMI. Le zone R1/R2 dei sei Comuni hanno canoni propri e non entrano in `zone_senza_canoni`.
 
 I sei accordi non contengono una clausola locale sui confini. Le eventuali sovrapposizioni seguono la regola generale del §5 del brief, dichiarata esplicitamente come fonte nei manifesti.
 
@@ -57,7 +57,7 @@ I sei accordi non contengono una clausola locale sui confini. Le eventuali sovra
 
 Il manifesto `comuni_obiettivo5.json` genera Peschiera Borromeo, Pioltello, Segrate e Vimodrone. I canoni e le corrispondenze zona-OMI sono stati confermati nel file `VERIFICA_obiettivo5_est_COMPILATA.md` (SHA-256 `80ae0a26e022b3e48419bcb4c9b33c7e9fe4e9859946f8dc1ca431dfb450781a`).
 
-Pioltello associa D4 alla zona 2 e Segrate associa R1 alla zona 2. Per questi due codici omessi dal testo, la cartografia ufficiale fornisce la corrispondenza tramite il gruppo colore; `style_groups` fa fallire la generazione se i colori contraddicono i raggruppamenti dell'accordo o cambiano struttura.
+Pioltello associa D4 alla zona 2 e Segrate associa R1 alla zona 2. Per questi due codici omessi dal testo, la cartografia ufficiale fornisce la corrispondenza tramite il gruppo colore; `style_groups` blocca sia i membri sia il colore KML effettivo atteso per ogni gruppo (rosso `a05252ff`, blu `a0d18802`, giallo `a000eaff`) e fa fallire la generazione anche se due colori vengono scambiati lasciando invariata la geometria.
 
 Peschiera e Segrate confermano che B1 non implica zona 1: il numero di zona viene sempre dal KML o dall'art. 4.1.a, mai dalla famiglia OMI.
 
@@ -65,6 +65,6 @@ Peschiera e Segrate confermano che B1 non implica zona 1: il numero di zona vien
 
 Il manifesto `comuni_obiettivo6.json` genera Cassano d'Adda, Cernusco sul Naviglio, Gorgonzola, Legnano, Melzo, Nerviano, Parabiago e Rescaldina. Noviglio è escluso per decisione esplicita e il relativo dataset preparatorio è stato rimosso.
 
-I canoni sono stati confermati nel file `VERIFICA_obiettivo6_completamento_COMPILATA.md` (SHA-256 `6ca36919396e1088f6bebcf5e770d03d725ddb6f7d9fd143551c9cea9050401d`). Le soglie non standard delle zone 3 sono conservate esattamente: `4,00→4,01→5,51` per Nerviano/Parabiago e `5,00→5,01→6,51` per Rescaldina.
+I canoni sono stati confermati nel file `VERIFICA_obiettivo6_completamento_COMPILATA.md` (SHA-256 dei byte versionati `6d9931cc9791d615a6b66623b959d304c96bb9757e33e84ee4b0951d6afba868`; SHA-256 dell'originale fornito `6ca36919396e1088f6bebcf5e770d03d725ddb6f7d9fd143551c9cea9050401d`, che contiene una riga vuota finale rimossa nella copia versionata). Le soglie non standard delle zone 3 sono conservate esattamente: `4,00→4,01→5,51` per Nerviano/Parabiago e `5,00→5,01→6,51` per Rescaldina.
 
 Con questo obiettivo il selettore contiene 40 nuovi Comuni, oltre a Milano e Sesto San Giovanni: 42 Comuni complessivi. Nessun accordo di questo gruppo contiene una clausola locale sui confini; le sovrapposizioni citano esclusivamente la regola generale del §5 del brief.
