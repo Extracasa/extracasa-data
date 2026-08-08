@@ -25,7 +25,7 @@
     "cologno-monzese": {
       "label": "Cologno Monzese", "mid": "1jx48n2f46q1MD2V-7skKe7lEM65BPG8", "kml_canonical_sha256": "fbab58fafd2bf75e3a1253a315e6439548909fe4d669ec6a97bc14e6c9122f81", "pdf_file_id": "10DT7qL0kP2wKqCmOa1atih4rYlATK983", "pdf_sha256": "0bda491b67163a615dc324e29d81fff923a212ad4fd97cc27e65da073880ca3f", "official_area_km2": 8.40, "zoom": 13,
       "overlap_policy": {"type": "rural_first", "source": "brief §5 e §5.3"},
-      "zone_oracle": {"source": "Doki Casa report 08/08/2026", "address": "Via G. Pascoli 23", "surface_mq": 55, "monthly_min": 220, "expected_omi": "D1", "expected_zone": 2, "competing_omi": "B2", "competing_monthly_min": 330},
+      "rent_oracle": {"scope": "rent_only", "source": "Doki Casa report 08/08/2026", "address": "Via G. Pascoli 23", "surface_mq": 55, "monthly_min": 220, "expected_omi": "D1", "expected_zone": 2, "competing_omi": "B2", "competing_monthly_min": 330},
       "zone_map": {"B2": 1, "D1": 2}, "zone_senza_canoni": ["R1"],
       "canoni": {"1": {"sf1": {"min": "6.00", "max": "9.99"}, "sf2": {"min": "10.00", "max": "11.99"}, "sf3": {"min": "12.00", "max": "15.50"}}, "2": {"sf1": {"min": "4.00", "max": "6.99"}, "sf2": {"min": "7.00", "max": "9.99"}, "sf3": {"min": "10.00", "max": "12.50"}}}
     }
