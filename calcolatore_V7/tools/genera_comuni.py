@@ -36,16 +36,21 @@ def ensure_kml(slug, cfg, source_dir, download):
 
 def ensure_pdf(slug, cfg, source_dir, download):
     path = source_dir / f"pdf-{cfg['pdf_file_id']}.pdf"
-    if download and not path.exists():
+    if download:
         url = f"https://drive.google.com/uc?export=download&id={cfg['pdf_file_id']}"
         with urllib.request.urlopen(url) as response:
-            path.write_bytes(response.read())
+            payload = response.read()
+        if not payload.startswith(b"%PDF"):
+            raise ValueError(f"Risposta PDF non valida per {slug}")
+        if hashlib.sha256(payload).hexdigest() != cfg["pdf_sha256"]:
+            raise ValueError(f"SHA-256 PDF inatteso per {slug}")
+        path.write_bytes(payload)
     if not path.exists():
         raise ValueError(f"PDF mancante: {path}")
-    if sha256(path) != cfg["pdf_sha256"]:
-        raise ValueError(f"SHA-256 PDF inatteso per {slug}")
     if not path.read_bytes().startswith(b"%PDF"):
         raise ValueError(f"Risposta PDF non valida per {slug}")
+    if sha256(path) != cfg["pdf_sha256"]:
+        raise ValueError(f"SHA-256 PDF inatteso per {slug}")
     return path
 
 
@@ -199,12 +204,17 @@ def point_in_polygons(lat, lng, polygons):
     return any(point_in_ring(lat, lng, rings[0]) and not any(point_in_ring(lat, lng, ring) for ring in rings[1:]) for rings in polygons)
 
 
-def point_on_segment(point, start, end, epsilon=1e-10):
-    cross = (point[1] - start[1]) * (end[0] - start[0]) - (point[0] - start[0]) * (end[1] - start[1])
-    if abs(cross) > epsilon:
+def point_on_segment(point, start, end):
+    dx, dy = end[0] - start[0], end[1] - start[1]
+    length = math.hypot(dx, dy)
+    if not length:
+        return point == start
+    cross = (point[1] - start[1]) * dx - (point[0] - start[0]) * dy
+    coordinate_tolerance = max(length * 1e-9, 1e-12)
+    if abs(cross) / length > coordinate_tolerance:
         return False
-    return (min(start[0], end[0]) - epsilon <= point[0] <= max(start[0], end[0]) + epsilon
-            and min(start[1], end[1]) - epsilon <= point[1] <= max(start[1], end[1]) + epsilon)
+    return (min(start[0], end[0]) - coordinate_tolerance <= point[0] <= max(start[0], end[0]) + coordinate_tolerance
+            and min(start[1], end[1]) - coordinate_tolerance <= point[1] <= max(start[1], end[1]) + coordinate_tolerance)
 
 
 def point_location_ring(point, ring):
@@ -226,17 +236,21 @@ def point_location_polygon(point, rings):
     return 1
 
 
-def proper_segment_intersection(a, b, c, d, epsilon=1e-14):
-    def orientation(p, q, r):
-        return (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
+def orientation_sign(p, q, r):
+    first_x, first_y = q[0] - p[0], q[1] - p[1]
+    second_x, second_y = r[0] - p[0], r[1] - p[1]
+    value = first_x * second_y - first_y * second_x
+    scale = abs(first_x * second_y) + abs(first_y * second_x)
+    tolerance = max(scale * 1e-12, 1e-30)
+    return 1 if value > tolerance else (-1 if value < -tolerance else 0)
 
-    o1, o2 = orientation(a, b, c), orientation(a, b, d)
-    o3, o4 = orientation(c, d, a), orientation(c, d, b)
-    if o1 * o2 >= -epsilon or o3 * o4 >= -epsilon:
+
+def proper_segment_intersection(a, b, c, d):
+    if orientation_sign(a, b, c) * orientation_sign(a, b, d) != -1:
+        return None
+    if orientation_sign(c, d, a) * orientation_sign(c, d, b) != -1:
         return None
     denominator = (a[0] - b[0]) * (c[1] - d[1]) - (a[1] - b[1]) * (c[0] - d[0])
-    if abs(denominator) <= epsilon:
-        return None
     determinant_ab = a[0] * b[1] - a[1] * b[0]
     determinant_cd = c[0] * d[1] - c[1] * d[0]
     return [
@@ -250,14 +264,14 @@ def polygon_bbox(rings):
     return min(p[0] for p in points), min(p[1] for p in points), max(p[0] for p in points), max(p[1] for p in points)
 
 
-def bboxes_overlap(a, b, epsilon=1e-10):
-    return a[0] < b[2] - epsilon and b[0] < a[2] - epsilon and a[1] < b[3] - epsilon and b[1] < a[3] - epsilon
+def bboxes_overlap(first, second):
+    return first[0] < second[2] and second[0] < first[2] and first[1] < second[3] and second[1] < first[3]
 
 
 def interior_edge_samples(rings):
     outer = rings[0]
     span = max(polygon_bbox(rings)[2] - polygon_bbox(rings)[0], polygon_bbox(rings)[3] - polygon_bbox(rings)[1])
-    offset = max(span * 1e-6, 1e-8)
+    offset = max(span * 1e-6, 1e-9)
     for start, end in zip(outer, outer[1:]):
         dx, dy = end[0] - start[0], end[1] - start[1]
         length = math.hypot(dx, dy)
@@ -404,10 +418,14 @@ def build(slug, cfg, kml_path):
     if omi_code_map is not None:
         if set(omi_code_map) != set(cfg["zone_map"]):
             raise ValueError(f"Mappa codici OMI incompleta per {slug}")
-        if any(not re.fullmatch(r"[A-Z][0-9]+", code) for code in omi_code_map.values()):
+        omi_codes = list(omi_code_map.values())
+        if any(not isinstance(code, str) or not re.fullmatch(r"[A-Z][0-9]+", code)
+               for code in omi_codes):
             raise ValueError(f"Codice OMI non valido per {slug}: {omi_code_map}")
-        if len(set(omi_code_map.values())) != len(omi_code_map):
+        if len(set(omi_codes)) != len(omi_codes):
             raise ValueError(f"Codici OMI non univoci per {slug}: {omi_code_map}")
+        if cfg.get("mostra_omi") is False:
+            raise ValueError(f"Codici OMI espliciti nascosti per {slug}")
     canoni_confirmed = cfg.get("canoni_confirmed", True)
     if canoni_confirmed:
         validate_canoni(cfg["canoni"])
@@ -423,19 +441,20 @@ def build(slug, cfg, kml_path):
     overlap_policy = cfg.get("overlap_policy")
     if overlap_policy and overlap_policy.get("type") not in ("higher_value_first", "rural_first", "agreement_zone_order"):
         raise ValueError(f"Regola di sovrapposizione non supportata per {slug}")
-    oracle = cfg.get("zone_oracle")
+    oracle = cfg.get("rent_oracle")
     if oracle:
+        if oracle.get("scope") != "rent_only":
+            raise ValueError(f"Portata dell'oracolo canone non valida per {slug}")
         if cfg["zone_map"].get(oracle["expected_omi"]) != oracle["expected_zone"]:
-            raise ValueError(f"Oracolo non allineato alla mappa zone per {slug}")
+            raise ValueError(f"Oracolo canone non allineato alla mappa zone per {slug}")
         matching_zones = [
             int(zone) for zone, bands in cfg["canoni"].items()
             if Decimal(str(oracle["surface_mq"])) * Decimal(bands["sf1"]["min"])
             == Decimal(str(oracle["monthly_min"]))
         ]
         if matching_zones != [oracle["expected_zone"]]:
-            raise ValueError(f"L'oracolo esterno non discrimina la zona per {slug}")
-        competing_omi = oracle["competing_omi"]
-        competing_zone = cfg["zone_map"].get(competing_omi)
+            raise ValueError(f"L'oracolo esterno non discrimina il canone per {slug}")
+        competing_zone = cfg["zone_map"].get(oracle["competing_omi"])
         competing_min = (Decimal(str(oracle["surface_mq"]))
                          * Decimal(cfg["canoni"][str(competing_zone)]["sf1"]["min"]))
         if (competing_min != Decimal(str(oracle["competing_monthly_min"]))
@@ -463,7 +482,10 @@ def build(slug, cfg, kml_path):
     center = {"lat": round((bounds["sw"][0] + bounds["ne"][0]) / 2, 6), "lng": round((bounds["sw"][1] + bounds["ne"][1]) / 2, 6)}
     area = sum(polygons_area(item["p"], center["lat"]) for item in all_items) / 1_000_000
     delta = (area / cfg["official_area_km2"] - 1) * 100
-    if abs(delta) > 10:
+    area_tolerance_pct = cfg.get("area_tolerance_pct", 2.0)
+    if not 0 < area_tolerance_pct <= 10:
+        raise ValueError(f"Tolleranza superficie non valida per {slug}: {area_tolerance_pct}")
+    if abs(delta) > area_tolerance_pct:
         raise ValueError(f"Superficie fuori tolleranza per {slug}: {area:.3f} km2 ({delta:+.1f}%)")
     exact_overlaps = []
     for index, first in enumerate(all_items):
@@ -483,10 +505,7 @@ def build(slug, cfg, kml_path):
         for col in range(1, 60):
             lng = bounds["sw"][1] + (bounds["ne"][1] - bounds["sw"][1]) * col / 60
             hits = [item for item in all_items if point_in_polygons(lat, lng, item["p"])]
-            semantic_zones = {
-                ("canoni", item["z"]) if "z" in item else ("senza_canoni", item["o"])
-                for item in hits
-            }
+            semantic_zones = {semantic_zone(item) for item in hits}
             if len(semantic_zones) > 1:
                 codes = validate_overlap(slug, cfg, overlap_policy, hits, lat, lng)
                 overlaps.append({
@@ -511,9 +530,12 @@ def main():
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     args.source_dir.mkdir(parents=True, exist_ok=True)
     args.output_dir.mkdir(parents=True, exist_ok=True)
+    if manifest.get("agreement"):
+        ensure_pdf("accordo", manifest["agreement"], args.source_dir, args.download)
     for slug, cfg in manifest["comuni"].items():
         kml = ensure_kml(slug, cfg, args.source_dir, args.download)
-        ensure_pdf(slug, {**manifest.get("agreement", {}), **cfg}, args.source_dir, args.download)
+        if cfg.get("pdf_file_id"):
+            ensure_pdf(slug, cfg, args.source_dir, args.download)
         rendered, stats = build(slug, cfg, kml)
         output = args.output_dir / f"data_{slug.replace('-', '_')}.json"
         if args.check:
