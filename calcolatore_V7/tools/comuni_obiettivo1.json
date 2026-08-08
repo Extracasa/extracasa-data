@@ -3,28 +3,29 @@
   "area_source": "https://www.cittametropolitana.mi.it/export/sites/default/portale/amministrazione-trasparente/altri_contenuti/doc/dati-ulteriori/2026/Annuario-2026-Statistico.pdf",
   "comuni": {
     "bresso": {
-      "label": "Bresso", "mid": "16buBTDinBeCzRTtVQxbjReHXJlhS-IU", "kml_sha256": "b022bafc1ee3946e86df5df29feaa5b9ec43958870d3a882b3c1f0cabceecf8e", "pdf_file_id": "1D8H2vrfL4r7WyBAeJppBr7EYLrxdJX-C", "pdf_sha256": "cb3ce1037e3e52c29ccb6bf22a1ddb922585ec6d4336ca769db09b00ad0f4458", "official_area_km2": 3.38, "zoom": 14,
+      "label": "Bresso", "mid": "16buBTDinBeCzRTtVQxbjReHXJlhS-IU", "kml_canonical_sha256": "e86adec4632a5365541f1a6c885aed0c129a61eca2ca3d518b519729a5baccc3", "pdf_file_id": "1D8H2vrfL4r7WyBAeJppBr7EYLrxdJX-C", "pdf_sha256": "cb3ce1037e3e52c29ccb6bf22a1ddb922585ec6d4336ca769db09b00ad0f4458", "official_area_km2": 3.38, "zoom": 14, "overlap_policy": {"type": "higher_value_first", "source": "brief §5"},
       "zone_map": {"B1": 1, "D1": 2}, "zone_senza_canoni": [],
       "canoni": {"1": {"sf1": {"min": "6.00", "max": "7.99"}, "sf2": {"min": "8.00", "max": "9.99"}, "sf3": {"min": "10.00", "max": "12.50"}}, "2": {"sf1": {"min": "4.00", "max": "6.49"}, "sf2": {"min": "6.50", "max": "7.99"}, "sf3": {"min": "8.00", "max": "10.00"}}}
     },
     "cormano": {
-      "label": "Cormano", "mid": "1Sf0EyXaVtsMYn3_gr-KLbqktxMeojpU", "kml_sha256": "b9d3752b73433f65e6cbdb30e09c95fed6997cfdb3fc7ca37aca0f63152621ee", "pdf_file_id": "1rKxa6Xw1hNn9bdzFLwBNvPeqa4kSEfw8", "pdf_sha256": "166836747d78ec263269cf11bef58186e4d5d242e98197cd4ee425c78daf1bdc", "official_area_km2": 4.47, "zoom": 14,
+      "label": "Cormano", "mid": "1Sf0EyXaVtsMYn3_gr-KLbqktxMeojpU", "kml_canonical_sha256": "521d598abad145ef328e8a1a4d3be68dedeef1e2dfbe663fa598c867895cc499", "pdf_file_id": "1rKxa6Xw1hNn9bdzFLwBNvPeqa4kSEfw8", "pdf_sha256": "166836747d78ec263269cf11bef58186e4d5d242e98197cd4ee425c78daf1bdc", "official_area_km2": 4.47, "zoom": 14,
       "zone_map": {"B1": 1, "D1": 1}, "zone_senza_canoni": [],
       "canoni": {"1": {"sf1": {"min": "3.50", "max": "6.99"}, "sf2": {"min": "7.00", "max": "9.00"}, "sf3": {"min": "9.01", "max": "11.50"}}}
     },
     "cusano-milanino": {
-      "label": "Cusano Milanino", "mid": "1B9aIf6gyXEv6_rfCmaaAoNSDMrgANvg", "kml_sha256": "5bb0dbaedfc986a7320cc27389248a9fac8bf5349a789a2896f1713d064dce29", "pdf_file_id": "1Zdo4nYD-Yu_IXfzAJB2awrQSS5UEeNKh", "pdf_sha256": "bc4248e6311dbd98186642f43f46f673d507ebe24eddd4e2bd8a4c026b3001ae", "official_area_km2": 3.08, "zoom": 14, "overlap_policy": {"type": "higher_value_first", "source_page": 13},
+      "label": "Cusano Milanino", "mid": "1B9aIf6gyXEv6_rfCmaaAoNSDMrgANvg", "kml_canonical_sha256": "30768dc2e87f84f745714547854822fa5f804d750fcd1f770d3604f91a32dc6d", "pdf_file_id": "1Zdo4nYD-Yu_IXfzAJB2awrQSS5UEeNKh", "pdf_sha256": "bc4248e6311dbd98186642f43f46f673d507ebe24eddd4e2bd8a4c026b3001ae", "official_area_km2": 3.08, "zoom": 14, "overlap_policy": {"type": "higher_value_first", "source_page": 13},
       "zone_map": {"B1": 1, "D1": 2}, "zone_senza_canoni": [],
       "canoni": {"1": {"sf1": {"min": "5.50", "max": "8.69"}, "sf2": {"min": "8.70", "max": "10.79"}, "sf3": {"min": "10.80", "max": "13.50"}}, "2": {"sf1": {"min": "4.70", "max": "6.79"}, "sf2": {"min": "6.80", "max": "8.49"}, "sf3": {"min": "8.50", "max": "11.50"}}}
     },
     "cinisello-balsamo": {
-      "label": "Cinisello Balsamo", "mid": "1jWHbMX8XQBttRYUSaIHqJ1-hfws8IdY", "kml_sha256": "230ec89f14821b55113170b0abb5e8f8ac5972f862214482d58384ff0361c221", "pdf_file_id": "1BkIA-oJYt-pQvCQ_ruWWp8aK1OXIkYmp", "pdf_sha256": "b25e2e81a1567f52509e8b87dfa5dfac6d568660064052bd2b734adf672eceeb", "official_area_km2": 12.72, "zoom": 13,
+      "label": "Cinisello Balsamo", "mid": "1jWHbMX8XQBttRYUSaIHqJ1-hfws8IdY", "kml_canonical_sha256": "76d80150f71f410ab8cf5fc18cf4d527183ebae12bc9bad49a0dca4617a5a3b6", "pdf_file_id": "1BkIA-oJYt-pQvCQ_ruWWp8aK1OXIkYmp", "pdf_sha256": "b25e2e81a1567f52509e8b87dfa5dfac6d568660064052bd2b734adf672eceeb", "official_area_km2": 12.72, "zoom": 13, "overlap_policy": {"type": "rural_first", "source": "brief §5 e §5.3"},
       "zone_map": {"B1": 1, "D1": 2}, "zone_senza_canoni": ["R1"],
       "canoni": {"1": {"sf1": {"min": "5.50", "max": "8.69"}, "sf2": {"min": "8.70", "max": "10.79"}, "sf3": {"min": "10.80", "max": "13.50"}}, "2": {"sf1": {"min": "4.70", "max": "6.79"}, "sf2": {"min": "6.80", "max": "8.49"}, "sf3": {"min": "8.50", "max": "11.50"}}}
     },
     "cologno-monzese": {
-      "label": "Cologno Monzese", "mid": "1jx48n2f46q1MD2V-7skKe7lEM65BPG8", "kml_sha256": "e68b84d6684eacdaa3f1c6fe84d05a32ad7a87745292936466c82927e8b1ac2e", "pdf_file_id": "10DT7qL0kP2wKqCmOa1atih4rYlATK983", "pdf_sha256": "0bda491b67163a615dc324e29d81fff923a212ad4fd97cc27e65da073880ca3f", "official_area_km2": 8.40, "zoom": 13,
-      "overlap_policy": {"type": "kml_last_wins", "source_page": 13, "expected_kml_order": ["R1", "B2", "D1"], "oracle": {"source": "Doki Casa report 08/08/2026", "address": "Via G. Pascoli 23", "surface_mq": 55, "monthly_min": 220, "expected_omi": "D1", "expected_zone": 2}},
+      "label": "Cologno Monzese", "mid": "1jx48n2f46q1MD2V-7skKe7lEM65BPG8", "kml_canonical_sha256": "fbab58fafd2bf75e3a1253a315e6439548909fe4d669ec6a97bc14e6c9122f81", "pdf_file_id": "10DT7qL0kP2wKqCmOa1atih4rYlATK983", "pdf_sha256": "0bda491b67163a615dc324e29d81fff923a212ad4fd97cc27e65da073880ca3f", "official_area_km2": 8.40, "zoom": 13,
+      "overlap_policy": {"type": "rural_first", "source": "brief §5 e §5.3"},
+      "rent_oracle": {"scope": "rent_only", "source": "Doki Casa report 08/08/2026", "address": "Via G. Pascoli 23", "surface_mq": 55, "monthly_min": 220, "expected_omi": "D1", "expected_zone": 2, "competing_omi": "B2", "competing_monthly_min": 330},
       "zone_map": {"B2": 1, "D1": 2}, "zone_senza_canoni": ["R1"],
       "canoni": {"1": {"sf1": {"min": "6.00", "max": "9.99"}, "sf2": {"min": "10.00", "max": "11.99"}, "sf3": {"min": "12.00", "max": "15.50"}}, "2": {"sf1": {"min": "4.00", "max": "6.99"}, "sf2": {"min": "7.00", "max": "9.99"}, "sf3": {"min": "10.00", "max": "12.50"}}}
     }
