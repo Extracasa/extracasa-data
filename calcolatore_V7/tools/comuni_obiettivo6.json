@@ -26,16 +26,12 @@
       "label": "Nerviano", "mid": "1AB0hr232D7xqrvPiWOR6L7no2SdjAP4", "kml_canonical_sha256": "d48c844dd9647756da48043ce7c17f640643a294159687924e6188948e62b55c", "pdf_file_id": "1Ad2WzqLQ-G1QUr--xIb3IkrOiLaLtjag", "pdf_sha256": "bc17bffa29125d71de0bf308b78c0a935ab03d77299bbeed7056f549b131cd87", "official_area_km2": 13.26, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
       "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
-    "noviglio": {
-      "label": "Noviglio", "mid": "1AmyL9jK0ULSe0uzm1tupXSCqKEZ5jqA", "kml_canonical_sha256": "00ff7575492bfa02bfe05530a8e270d28fc39b9c63959ac806f3ce2877ddeef0", "pdf_file_id": "1W3aM5VIJ29EMWtLYSJSHZXYmoPi6Ltbo", "pdf_sha256": "b89cdcde45e7f1d79b6b483aae27e13aef274789bf7870e9bd97459a14bc863d", "official_area_km2": 15.86, "zoom": 12,
-      "zone_map": {"B1": 1, "E1": 1, "E2": 1, "R1": 1}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
-    },
     "parabiago": {
       "label": "Parabiago", "mid": "1AfSH_EwnK63xFG-DQRO6Ujmkvo1JXq4", "kml_canonical_sha256": "0e217f8e13c2eb8af1fd09d7edc76566093bd6b8b395c6fc587f50f4f737ca2e", "pdf_file_id": "1it1rMSDt9FlaTOVmD60VFjFQLqLsLq6f", "pdf_sha256": "344899d4412f62e3ef6d9c65551ca865262cfd216475ce05a8bc0611690c8036", "official_area_km2": 14.29, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
       "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "rescaldina": {
-      "label": "Rescaldina", "mid": "1AAoubUlmOJuS0HhmSelJDEWsYiYl6cg", "kml_canonical_sha256": "bb2eeb55b8712855964f3afe319dc13f28cfbc21d4629980e9807ff96644cd4d", "pdf_file_id": "1p5XnYUo5hOvUy1JMaGKqevrSXo0WqS3a", "pdf_sha256": "99bd4654b6fc96dbacfaef2cfde9b89593e17f6260e5b384aa59e6113b324245", "official_area_km2": 8.03, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
+      "label": "Rescaldina", "mid": "1AAoubUlmOJuS0HhmSelJDEWsYiYl6cg", "kml_canonical_sha256": "bb2eeb55b8712855964f3afe319dc13f28cfbc21d4629980e9807ff96644cd4d", "pdf_file_id": "1p5XnYUo5hOvUy1JMaGKqevrSXo0WqS3a", "pdf_sha256": "99bd4654b6fc96dbacfaef2cfde9b89593e17f6260e5b384aa59e6113b324245", "official_area_km2": 8.03, "area_tolerance_pct": 2.5, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
       "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     }
   }

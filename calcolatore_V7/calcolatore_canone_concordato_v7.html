@@ -595,6 +595,7 @@ var S={
   nome:'',email:'',telefono:'',ruolo:null
 };
 var mapInstance=null,marker=null,zonePolygons=[],infoWin=null;
+var currentZoneIndex=null;
 var mapsReady=false;
 var __appInitialized=false;
 var __bootAttempts=0;
@@ -608,7 +609,7 @@ function escHtml(s){var d=document.createElement('div');d.textContent=s;return d
 /* ══ POINT-IN-POLYGON ══ */
 function pointInRing(lat,lng,ring){var inside=false;for(var i=0,j=ring.length-1;i<ring.length;j=i++){var yi=ring[i][0],xi=ring[i][1],yj=ring[j][0],xj=ring[j][1];if(((xi>lat)!==(xj>lat))&&(lng<(yj-yi)*(lat-xi)/(xj-xi)+yi)) inside=!inside;}return inside;}
 function pointInPolygons(lat,lng,polys){for(var p=0;p<polys.length;p++){var rings=polys[p];if(pointInRing(lat,lng,rings[0])){var inHole=false;for(var h=1;h<rings.length;h++){if(pointInRing(lat,lng,rings[h])){inHole=true;break;}}if(!inHole) return true;}}return false;}
-function detectZone(lat,lng){if(!OMI_ZONES) return null;for(var i=0;i<OMI_ZONES.length;i++){var z=OMI_ZONES[i];if(pointInPolygons(lat,lng,z.p)) return{omi:z.o,zona:z.z};}return null;}
+function detectZone(lat,lng){if(!OMI_ZONES) return null;for(var i=0;i<OMI_ZONES.length;i++){var z=OMI_ZONES[i];if(pointInPolygons(lat,lng,z.p)) return{omi:z.o,zona:z.z,index:i};}return null;}
 function detectZonaSenzaCanoni(lat,lng){if(!ZONE_SENZA_CANONI) return false;for(var i=0;i<ZONE_SENZA_CANONI.length;i++){if(pointInPolygons(lat,lng,ZONE_SENZA_CANONI[i].p)) return true;}return false;}
 
 /* ══ BUILD ELEMENT QUESTIONS ══ */
@@ -777,7 +778,7 @@ fetch('https://hoyhxyjbbnqldwzilbty.supabase.co/functions/v1/salva-simulazione',
 
 /* ══ RENDER RESULT ══ */
 function renderResult(r){
-  var box=$('result-box');box.innerHTML='';var sfNum=r.subfascia==='sf1'?1:r.subfascia==='sf2'?2:3;var omiLabel=S.omi_code?' (OMI '+escHtml(S.omi_code)+')':'';
+  var box=$('result-box');box.innerHTML='';var sfNum=r.subfascia==='sf1'?1:r.subfascia==='sf2'?2:3;var omiLabel=mostraOmi&&S.omi_code?' (OMI '+escHtml(S.omi_code)+')':'';
   function summaryContratto(){if(S.tipo_contratto==='agevolato') return'Ordinario '+(S.durata_agevolato||'3+2');if(S.tipo_contratto==='transitorio') return'Transitorio '+(S.durata_transitorio_mesi||0)+' mesi';if(S.tipo_contratto==='studenti') return'Studenti '+(S.durata_studenti_mesi||0)+' mesi';return'\u2014';}
   var metas=['Tipo: '+summaryContratto(),'Zona '+r.zona+omiLabel+' \u2014 Sub-fascia '+sfNum,'Superficie: '+r.superficie_calc.toFixed(2)+' mq','Punteggio: '+r.punteggio+'/'+MAX_SCORE];
   metas.forEach(function(t){var d=document.createElement('div');d.className='r-meta';d.textContent=t;box.appendChild(d);});
@@ -827,13 +828,13 @@ function toggleCollapse(btn){btn.classList.toggle('open');btn.nextElementSibling
 /* ══ WEBHOOK ══ */
 function sendWebhook(r){
   var elSel=[];ELEMENTI.forEach(function(e){if(S.elementi[e.id]===true) elSel.push(e.id);});var corrs=getCorrections();
-  var payload={nome:S.nome,email:S.email,telefono:S.telefono,ruolo:S.ruolo||'',tipo_contratto:S.tipo_contratto,durata_agevolato:S.durata_agevolato||'',durata_transitorio_mesi:S.durata_transitorio_mesi||0,durata_studenti_mesi:S.durata_studenti_mesi||0,tipo_locazione:S.tipo_locazione,mq_porzione:S.mq_porzione||0,comune:currentComune||'',indirizzo:S.indirizzo,latitudine:S.latitudine,longitudine:S.longitudine,zona:S.zona,omi_code:S.omi_code||'',mq_appartamento:S.mq_appartamento,mq_spazi_comuni:S.mq_spazi_comuni,mq_box_garage:S.mq_box_garage,mq_posto_auto:S.mq_posto_auto,mq_balconi:S.mq_balconi,mq_cantina:S.mq_cantina,mq_scoperta:S.mq_scoperta,superficie_calc:r.superficie_calc,piano:S.piano,piano_seminterrato:S.piano_seminterrato,classe_energetica:S.classe_energetica,ammobiliato:S.ammobiliato,elementi_selezionati:elSel,punteggio:r.punteggio,subfascia:r.subfascia,canone_min:Math.round(r.canone_min*100)/100,canone_max:Math.round(r.canone_max*100)/100,canone_minimo_zona:Math.round(r.canone_minimo_zona*100)/100,canone_min_porzione:0,canone_max_porzione:0,cap_applicato:r.cap_applicato,fraction:r.fraction||1,quota_stanza:r.quota_stanza||0,comuni_proquota:r.comuni_proquota||0,sup_nuda_porzione:r.sup_nuda_porzione||0,maggiorazioni:corrs.filter(function(c){return c.dir==='+';}).map(function(c){return c.text;}),riduzioni:corrs.filter(function(c){return c.dir==='-';}).map(function(c){return c.text;}),userRecordId:$('ext-user-id').value||'',userName:$('ext-user-name').value||S.nome||'',userEmail:$('ext-user-email').value||S.email||'',timestamp:new Date().toISOString()};
+  var payload={nome:S.nome,email:S.email,telefono:S.telefono,ruolo:S.ruolo||'',tipo_contratto:S.tipo_contratto,durata_agevolato:S.durata_agevolato||'',durata_transitorio_mesi:S.durata_transitorio_mesi||0,durata_studenti_mesi:S.durata_studenti_mesi||0,tipo_locazione:S.tipo_locazione,mq_porzione:S.mq_porzione||0,comune:currentComune||'',indirizzo:S.indirizzo,latitudine:S.latitudine,longitudine:S.longitudine,zona:S.zona,omi_code:S.omi_code,mq_appartamento:S.mq_appartamento,mq_spazi_comuni:S.mq_spazi_comuni,mq_box_garage:S.mq_box_garage,mq_posto_auto:S.mq_posto_auto,mq_balconi:S.mq_balconi,mq_cantina:S.mq_cantina,mq_scoperta:S.mq_scoperta,superficie_calc:r.superficie_calc,piano:S.piano,piano_seminterrato:S.piano_seminterrato,classe_energetica:S.classe_energetica,ammobiliato:S.ammobiliato,elementi_selezionati:elSel,punteggio:r.punteggio,subfascia:r.subfascia,canone_min:Math.round(r.canone_min*100)/100,canone_max:Math.round(r.canone_max*100)/100,canone_minimo_zona:Math.round(r.canone_minimo_zona*100)/100,canone_min_porzione:0,canone_max_porzione:0,cap_applicato:r.cap_applicato,fraction:r.fraction||1,quota_stanza:r.quota_stanza||0,comuni_proquota:r.comuni_proquota||0,sup_nuda_porzione:r.sup_nuda_porzione||0,maggiorazioni:corrs.filter(function(c){return c.dir==='+';}).map(function(c){return c.text;}),riduzioni:corrs.filter(function(c){return c.dir==='-';}).map(function(c){return c.text;}),userRecordId:$('ext-user-id').value||'',userName:$('ext-user-name').value||S.nome||'',userEmail:$('ext-user-email').value||S.email||'',timestamp:new Date().toISOString()};
   fetch('https://extracasa.app.n8n.cloud/webhook/canone-concordato',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){$('webhook-err').style.display='block';});
 }
 
 /* ══ NUOVO CALCOLO ══ */
 function nuovoCalcolo(){
-  S.step=1;S.tipo_contratto=null;S.durata_agevolato=null;S.durata_transitorio_mesi=null;S.durata_studenti_mesi=null;S.indirizzo='';S.latitudine=0;S.longitudine=0;S.zona=null;S.omi_code=null;S.tipo_locazione=null;S.mq_appartamento=0;S.mq_porzione=0;S.mq_spazi_comuni=0;S.mq_box_garage=0;S.mq_posto_auto=0;S.mq_balconi=0;S.mq_cantina=0;S.mq_scoperta=0;S.superficie_calc=0;S.piano=null;S.piano_seminterrato=false;S.piano_numerico=0;S.elementi={};S.answered={};S.ammobiliato=false;S.ammobiliato_set=false;S.classe_energetica=null;S.nome='';S.email='';S.telefono='';S.ruolo=null;
+  S.step=1;S.tipo_contratto=null;S.durata_agevolato=null;S.durata_transitorio_mesi=null;S.durata_studenti_mesi=null;S.indirizzo='';S.latitudine=0;S.longitudine=0;S.zona=null;S.omi_code=null;currentZoneIndex=null;S.tipo_locazione=null;S.mq_appartamento=0;S.mq_porzione=0;S.mq_spazi_comuni=0;S.mq_box_garage=0;S.mq_posto_auto=0;S.mq_balconi=0;S.mq_cantina=0;S.mq_scoperta=0;S.superficie_calc=0;S.piano=null;S.piano_seminterrato=false;S.piano_numerico=0;S.elementi={};S.answered={};S.ammobiliato=false;S.ammobiliato_set=false;S.classe_energetica=null;S.nome='';S.email='';S.telefono='';S.ruolo=null;
   document.querySelectorAll('.o-card.sel,.q-btn.selected-yes,.q-btn.selected-no,.q-btn.selected-radio,.role-opt.sel').forEach(function(e){e.classList.remove('sel','selected-yes','selected-no','selected-radio');});
   document.querySelectorAll('input[type="number"],input[type="text"],input[type="email"],input[type="tel"]').forEach(function(i){i.value='';});
   $('sel-classe').selectedIndex=0;$('zone-badge-wrap').style.display='none';$('zone-err').classList.remove('vis');$('semi-warn').classList.remove('vis');$('q-ascensore').style.display='none';$('field-porzione-s2').style.display='none';$('durata-section').style.display='none';$('webhook-err').style.display='none';$('btn-calc').disabled=true;
@@ -849,7 +850,7 @@ function nuovoCalcolo(){
 function loadComuneData(comuneId){
   var requestId=++_loadRequestId;var url=COMUNI_URLS[comuneId];var addressInput=$('address-input');
   addressInput.value='';addressInput.disabled=true;addressInput.placeholder='Caricamento dati in corso...';
-  CANONI=null;OMI_ZONES=null;ZONE_SENZA_CANONI=null;zoneOverlapPolicy=null;currentComune=null;currentComuneBounds=null;capAmmobiliatoEnabled=false;mostraOmi=true;S.zona=null;S.omi_code=null;S.indirizzo='';S.latitudine=0;S.longitudine=0;
+  CANONI=null;OMI_ZONES=null;ZONE_SENZA_CANONI=null;zoneOverlapPolicy=null;currentComune=null;currentComuneBounds=null;capAmmobiliatoEnabled=false;mostraOmi=true;S.zona=null;S.omi_code=null;currentZoneIndex=null;S.indirizzo='';S.latitudine=0;S.longitudine=0;
   $('zone-badge-wrap').style.display='none';$('zone-err').classList.remove('vis');
   var hintReset=$('address-hint');if(hintReset) hintReset.style.display='none';
   if(marker){marker.setMap(null);marker=null;}clearAllZonePolygons();if(infoWin){infoWin.close();infoWin=null;}updateNextBtn();
@@ -879,14 +880,14 @@ function drawAllZones(){
   for(var i=0;i<OMI_ZONES.length;i++){var z=OMI_ZONES[i];for(var p=0;p<z.p.length;p++){var rings=z.p[p];var paths=[];for(var r=0;r<rings.length;r++){paths.push(rings[r].map(function(c){return{lat:c[1],lng:c[0]};}));}var poly=new google.maps.Polygon({paths:paths,strokeColor:ZONE_COLORS[z.z],strokeWeight:1.5,strokeOpacity:0.7,fillColor:ZONE_COLORS[z.z],fillOpacity:0.30,map:mapInstance,zIndex:z.z});zonePolygons.push(poly);}}
 }
 
-function showZoneBadge(omi,zona){S.zona=zona;S.omi_code=omi;var badge=$('zone-badge');badge.textContent='Zona '+zona+(mostraOmi?' \u2014 OMI '+omi:'');badge.style.backgroundColor=ZONE_COLORS[zona];$('zone-badge-wrap').style.display='block';$('zone-err').classList.remove('vis');updateNextBtn();}
-function showZoneError(){S.zona=null;S.omi_code=null;$('zone-badge-wrap').style.display='none';var err=$('zone-err');err.textContent='Indirizzo non coperto dall\'Accordo Territoriale del comune selezionato.';err.classList.add('vis');updateNextBtn();}
-function showZonaSenzaCanoniError(){S.zona=null;S.omi_code=null;$('zone-badge-wrap').style.display='none';var err=$('zone-err');err.innerHTML='Immobile in zona rurale: il canone si determina sulla base della zona confinante. <a href="https://my.extracasa.it/canone-concordato" target="_blank" rel="noopener noreferrer">Contattaci per la valutazione.</a>';err.classList.add('vis');updateNextBtn();}
+function showZoneBadge(omi,zona,index){S.zona=zona;S.omi_code=mostraOmi?omi:null;currentZoneIndex=index;var badge=$('zone-badge');badge.textContent='Zona '+zona+(mostraOmi?' \u2014 OMI '+omi:'');badge.style.backgroundColor=ZONE_COLORS[zona];$('zone-badge-wrap').style.display='block';$('zone-err').classList.remove('vis');updateNextBtn();}
+function showZoneError(){S.zona=null;S.omi_code=null;currentZoneIndex=null;$('zone-badge-wrap').style.display='none';var err=$('zone-err');err.textContent='Indirizzo non coperto dall\'Accordo Territoriale del comune selezionato.';err.classList.add('vis');updateNextBtn();}
+function showZonaSenzaCanoniError(){S.zona=null;S.omi_code=null;currentZoneIndex=null;$('zone-badge-wrap').style.display='none';var err=$('zone-err');err.innerHTML='Immobile in zona rurale: il canone si determina sulla base della zona confinante. <a href="https://my.extracasa.it/canone-concordato" target="_blank" rel="noopener noreferrer">Contattaci per la valutazione.</a>';err.classList.add('vis');updateNextBtn();}
 
 function showZoneOnMap(zona,result){
   if(!mapsReady||!mapInstance||!OMI_ZONES) return;clearAllZonePolygons();var currentOmi=S.omi_code;
-  for(var i=0;i<OMI_ZONES.length;i++){var z=OMI_ZONES[i];var isCurrent=(z.o===currentOmi);for(var p=0;p<z.p.length;p++){var rings=z.p[p];var paths=[];for(var r=0;r<rings.length;r++){paths.push(rings[r].map(function(c){return{lat:c[1],lng:c[0]};}));}var poly=new google.maps.Polygon({paths:paths,strokeColor:isCurrent?'#1F2937':ZONE_COLORS[z.z],strokeWeight:isCurrent?3:1,strokeOpacity:isCurrent?1:0.4,fillColor:ZONE_COLORS[z.z],fillOpacity:isCurrent?0.50:0.15,map:mapInstance,zIndex:isCurrent?100:z.z});zonePolygons.push(poly);}}
-  if(marker&&result){if(infoWin) infoWin.close();infoWin=new google.maps.InfoWindow({content:'<div style="font-family:Montserrat,sans-serif;padding:4px"><strong>Zona '+zona+'</strong> <span style="font-size:11px;color:#666">(OMI '+escHtml(currentOmi||'')+')</span><br><span style="font-size:12px;color:#666">EUR '+fmt(result.canone_min)+' \u2014 '+fmt(result.canone_max)+'</span></div>'});infoWin.open(mapInstance,marker);}
+  for(var i=0;i<OMI_ZONES.length;i++){var z=OMI_ZONES[i];var isCurrent=(i===currentZoneIndex);for(var p=0;p<z.p.length;p++){var rings=z.p[p];var paths=[];for(var r=0;r<rings.length;r++){paths.push(rings[r].map(function(c){return{lat:c[1],lng:c[0]};}));}var poly=new google.maps.Polygon({paths:paths,strokeColor:isCurrent?'#1F2937':ZONE_COLORS[z.z],strokeWeight:isCurrent?3:1,strokeOpacity:isCurrent?1:0.4,fillColor:ZONE_COLORS[z.z],fillOpacity:isCurrent?0.50:0.15,map:mapInstance,zIndex:isCurrent?100:z.z});zonePolygons.push(poly);}}
+  if(marker&&result){if(infoWin) infoWin.close();var omiInfo=mostraOmi&&currentOmi?' <span style="font-size:11px;color:#666">(OMI '+escHtml(currentOmi)+')</span>':'';infoWin=new google.maps.InfoWindow({content:'<div style="font-family:Montserrat,sans-serif;padding:4px"><strong>Zona '+zona+'</strong>'+omiInfo+'<br><span style="font-size:12px;color:#666">EUR '+fmt(result.canone_min)+' \u2014 '+fmt(result.canone_max)+'</span></div>'});infoWin.open(mapInstance,marker);}
 }
 
 function getComuneLatLngBounds(){
@@ -904,7 +905,7 @@ function applyAddressFromCoords(lat,lng,indirizzo){
   }
   var result=detectZone(lat,lng);
   if(result){
-    showZoneBadge(result.omi,result.zona);
+    showZoneBadge(result.omi,result.zona,result.index);
     if(marker) marker.setMap(null);
     marker=new google.maps.Marker({position:{lat:lat,lng:lng},map:mapInstance});
     if(mapInstance){mapInstance.panTo({lat:lat,lng:lng});mapInstance.setZoom(14);}
