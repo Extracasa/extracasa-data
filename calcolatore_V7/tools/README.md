@@ -37,11 +37,11 @@ python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/com
 
 I KML di sette Comuni espongono direttamente le zone contrattuali; Baranzate espone i codici OMI. La pagina 4 dell'accordo assegna gli edifici attraversati da un confine alla zona di maggior valore: il dataset conserva l'ordine contrattuale crescente e dichiara `agreement_zone_order`.
 
-I canoni delle pagine 17-18 sono stati confermati riga per riga nel file `VERIFICA_obiettivo2_groane_COMPILATA.md` (SHA-256 `91184b1b854ebf725a4f398a7122fc039445117f47af27033b2e517780a14461`). Gli otto Comuni hanno `canoni_confirmed: true` e sono registrati nel selettore.
+I canoni delle pagine 17-18 sono stati confermati riga per riga nel file `VERIFICA_obiettivo2_groane_COMPILATA.md` (SHA-256 dei byte versionati `78fcb59ca43aefdb866b5a51e18c28009a6814a194fe91222c7c5d0c1d9e614c`; SHA-256 dell'originale fornito `91184b1b854ebf725a4f398a7122fc039445117f47af27033b2e517780a14461`). Gli otto Comuni hanno `canoni_confirmed: true` e sono registrati nel selettore.
 
 ## Obiettivo 3 - Area Rhodense
 
-Il manifesto `comuni_obiettivo3.json` genera nove Comuni. I canoni delle pagine 33, 35 e 37 sono stati confermati riga per riga nel file `VERIFICA_obiettivo3_rhodense_COMPILATA.md` (SHA-256 `167fe15a8e82f48ac1b9e5c73e458ffe70c68fd4e7b34e1357301fb5a9e72ea2`).
+Il manifesto `comuni_obiettivo3.json` genera nove Comuni. I canoni delle pagine 33, 35 e 37 sono stati confermati riga per riga nel file `VERIFICA_obiettivo3_rhodense_COMPILATA.md` (SHA-256 dei byte versionati `cbdac25ab0d4c70c8cef98ec196fce5fc7718c654c53d4e8819e6f234c23758e`; SHA-256 dell'originale fornito `167fe15a8e82f48ac1b9e5c73e458ffe70c68fd4e7b34e1357301fb5a9e72ea2`).
 
 ```powershell
 python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/comuni_obiettivo3.json --source-dir <cartella-kml>
@@ -54,7 +54,7 @@ Arese mantiene un'avvertenza fail-closed: l'accordo associa R1 alla zona 2, ma i
 
 ## Obiettivo 4 - Area Sud
 
-Il manifesto `comuni_obiettivo4.json` genera Buccinasco, Opera, Rozzano, San Donato Milanese, San Giuliano Milanese e Trezzano sul Naviglio. I canoni e le corrispondenze OMI sono stati confermati nel file `VERIFICA_obiettivo4_sud_COMPILATA.md` (SHA-256 `8adaec3d6f5799396293d34a06a156b663c956460295b1dae0801ff41387ab41`).
+Il manifesto `comuni_obiettivo4.json` genera Buccinasco, Opera, Rozzano, San Donato Milanese, San Giuliano Milanese e Trezzano sul Naviglio. I canoni e le corrispondenze OMI sono stati confermati nel file `VERIFICA_obiettivo4_sud_COMPILATA.md` (SHA-256 dei byte versionati `33b89c8fac1aa768526a1db11e94e8ce230a6184a2c6bf7cf06c3500d1e7616e`; SHA-256 dell'originale fornito `8adaec3d6f5799396293d34a06a156b663c956460295b1dae0801ff41387ab41`).
 
 Trezzano è deliberatamente modellata dal numero di zona del KML e dall'art. 4.1.a: zona 1 = D1, zona 2 = B1 e zona 3 = R1. La corrispondenza è dichiarata in `omi_code_map`, validata dal generatore e usata solo per esporre il codice corretto; nessuna zona viene dedotta per convenzione dal codice OMI. Le zone R1/R2 dei sei Comuni hanno canoni propri e non entrano in `zone_senza_canoni`.
 
