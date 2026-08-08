@@ -3,19 +3,19 @@
   "area_source": "https://www.cittametropolitana.mi.it/aree-tematiche/statistica/dati-statistici/.galleries/statistica-doc/Annuario-2026-Statistico.pdf",
   "comuni": {
     "peschiera-borromeo": {
-      "label": "Peschiera Borromeo", "mid": "1nFTD-R6-0gDXnf1tMyI1XTimMAawAl4", "kml_sha256": "7d5c19fb2f10457db340933cb189a8d84850331539ad008fbb95cb8f8a59f3a3", "pdf_file_id": "1KmpCnqSoWoTbzN6bQSxgsyJnInMaBAVV", "pdf_sha256": "8e4edabce4ca80af8ee72f9035db6928efd6fab9453eec24b2e8afc816f1dbfb", "official_area_km2": 23.22, "zoom": 12, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
+      "label": "Peschiera Borromeo", "mid": "1nFTD-R6-0gDXnf1tMyI1XTimMAawAl4", "kml_canonical_sha256": "5c42b9c6267105d9d1ae6bd00cd883a60940d183c9d6bfcb7671ddd2f315b701", "pdf_file_id": "1KmpCnqSoWoTbzN6bQSxgsyJnInMaBAVV", "pdf_sha256": "8e4edabce4ca80af8ee72f9035db6928efd6fab9453eec24b2e8afc816f1dbfb", "official_area_km2": 23.22, "zoom": 12, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
       "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "pioltello": {
-      "label": "Pioltello", "mid": "1VGstGtFYw559xuBC1-xbZqyEOYSObk4", "kml_sha256": "e21a7f9632c15f8d2adc64c15f64b441f447a59acd84b60b7aa0369b5a5a230a", "pdf_file_id": "1VGKgrRz2FvGV-uyUSRvoCLdk-ERUD5sp", "pdf_sha256": "0ca984312b90d786a7f36164c452556bd889932936db680061c2873dcca36183", "official_area_km2": 13.09, "zoom": 13,
+      "label": "Pioltello", "mid": "1VGstGtFYw559xuBC1-xbZqyEOYSObk4", "kml_canonical_sha256": "3b614ca458c51ab95c30c3be1dd5554a7fdbb86c8e9965af7650ce23f42c7ccd", "pdf_file_id": "1VGKgrRz2FvGV-uyUSRvoCLdk-ERUD5sp", "pdf_sha256": "0ca984312b90d786a7f36164c452556bd889932936db680061c2873dcca36183", "official_area_km2": 13.09, "zoom": 13, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
       "style_groups": [["B1", "D1"], ["D4", "R1", "R2"]], "zone_map": {"B1": 1, "D1": 1, "D4": 2, "R1": 2, "R2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "segrate": {
-      "label": "Segrate", "mid": "1nRPPiefHg1prbm0xDi4R28RVdPb5z_w", "kml_sha256": "e5a7e1c7304778ad0d88c364ed7f9f0e0729230df0fa778a2163bc78642bc33e", "pdf_file_id": "1Gdu12uAYlpTPEcvcgi-8vSybar6IIUs1", "pdf_sha256": "34ed1b71b77478ef510af87333d99462a208d1b312d6edbe94104e71ccd1c42c", "official_area_km2": 17.49, "zoom": 13, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
+      "label": "Segrate", "mid": "1nRPPiefHg1prbm0xDi4R28RVdPb5z_w", "kml_canonical_sha256": "7c44598e74911a29108b5d0d9e0196b21adda0f9486d083bf31e274588c10b89", "pdf_file_id": "1Gdu12uAYlpTPEcvcgi-8vSybar6IIUs1", "pdf_sha256": "34ed1b71b77478ef510af87333d99462a208d1b312d6edbe94104e71ccd1c42c", "official_area_km2": 17.49, "zoom": 13, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
       "style_groups": [["E1", "E2"], ["B1", "C1", "R1"], ["D1"]], "zone_map": {"E1": 1, "E2": 1, "B1": 2, "C1": 2, "R1": 2, "D1": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "vimodrone": {
-      "label": "Vimodrone", "mid": "1vyc9STDATRqMIpSFVv1pQz5q-lPKChI", "kml_sha256": "bd4cac7cdff85674c1a75816d7b0c20b5d4c635d38cf99df6eae4c11bbe57d12", "pdf_file_id": "1O4Ui2aiR6YZeWIHWMsRsBBQ8C-5h-nUa", "pdf_sha256": "b223e9ee8740295b3a7bcb69deae3f81ba0a2708ff244d091c5df7055c145edd", "official_area_km2": 4.74, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
+      "label": "Vimodrone", "mid": "1vyc9STDATRqMIpSFVv1pQz5q-lPKChI", "kml_canonical_sha256": "aed3c7330535ab28d3f3410fc4194dd16e16ecae17111ba66fe3472bbff8c3a9", "pdf_file_id": "1O4Ui2aiR6YZeWIHWMsRsBBQ8C-5h-nUa", "pdf_sha256": "b223e9ee8740295b3a7bcb69deae3f81ba0a2708ff244d091c5df7055c145edd", "official_area_km2": 4.74, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
       "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     }
   }

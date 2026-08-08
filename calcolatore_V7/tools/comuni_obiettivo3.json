@@ -4,39 +4,39 @@
   "agreement": {"title": "Accordo locale ambito Rhodense 2024", "pdf_file_id": "1HZLf8y6fjs17ak_Yqm-RUInwLn3nSsqZ", "pdf_sha256": "cc25031db50587e366672ee61332ee22f4be1ae9f64682b3a73d0639ce32d7be", "zone_map_page": 4},
   "comuni": {
     "arese": {
-      "label": "Arese", "mid": "1iw8wTi5hW8N7puEa3_czH_4D_H168wo", "kml_sha256": "2a1964ac412267f7ae826d2a3f1e33b1180e66c05a25918444e62ebf098ee7c1", "official_area_km2": 6.56, "zoom": 14, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "label": "Arese", "mid": "1iw8wTi5hW8N7puEa3_czH_4D_H168wo", "kml_canonical_sha256": "58adfba16920f6408b5d03fbc616b9fae1e81d5e66bdd04120759a599a20e528", "official_area_km2": 6.56, "zoom": 14, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
       "zone_map": {"B1": 1, "D2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "cornaredo": {
-      "label": "Cornaredo", "mid": "13kCHXzNGEaoEZtYMnuGGgCgSDlvVGyk", "kml_sha256": "be7fa8bcd5f02cfdf27571bfd62fdcf7bddc32e6fabd83c96c0afca021e62aab", "official_area_km2": 11.07, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "label": "Cornaredo", "mid": "13kCHXzNGEaoEZtYMnuGGgCgSDlvVGyk", "kml_canonical_sha256": "c5e4460b973f4b8696059ba0ef006113b304373fd77fa6287384a3b3c1609fe9", "official_area_km2": 11.07, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
       "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "lainate": {
-      "label": "Lainate", "mid": "1WI07dClFqdl9wGfTa4obaIV1fY8Al3k", "kml_sha256": "ad143d14e16879b5607bde72cbe08ba00cc2f528afe6b13d1aa4ac5a377d6b78", "official_area_km2": 12.93, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "label": "Lainate", "mid": "1WI07dClFqdl9wGfTa4obaIV1fY8Al3k", "kml_canonical_sha256": "83648296751f770cc4eb48ca6d5562dda6b7904e86941297e4d69184efd0fffe", "official_area_km2": 12.93, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
       "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "pero": {
-      "label": "Pero", "mid": "15s95KaRlEnKfo8FqZME-ws8bpR0yPZQ", "kml_sha256": "c742129ca073197b0635c59bee17add92ca629e4d527ff1e608436ebe9f14aa1", "official_area_km2": 4.98, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "label": "Pero", "mid": "15s95KaRlEnKfo8FqZME-ws8bpR0yPZQ", "kml_canonical_sha256": "2d730e9d2236dbaaf522c2fb243064716fc2ee62923cc00dbcaa5b33dad2a7d4", "official_area_km2": 4.98, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
       "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "pogliano-milanese": {
-      "label": "Pogliano Milanese", "mid": "1lOwlP78d1TFIiMdomhDz9ykuXfgg4M4", "kml_sha256": "ab3125b6cb83f0c52595616972c051da3ece9859631e6419a3267b8a8bf402fd", "official_area_km2": 4.78, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false,
+      "label": "Pogliano Milanese", "mid": "1lOwlP78d1TFIiMdomhDz9ykuXfgg4M4", "kml_canonical_sha256": "506688d61f566c3f5a4c4946bc2e35ee423a36588c35b56838075ed666e3ac7c", "official_area_km2": 4.78, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false,
       "zone_map": {"Z1": 1}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "pregnana-milanese": {
-      "label": "Pregnana Milanese", "mid": "18PioNfywRmDz4jMOhv4X6CRlqYs-hnE", "kml_sha256": "1c21f18c8a60dcfbfb7a7d039180987a607c7a08ab7ee1769f5cdd71913b1527", "official_area_km2": 5.07, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false,
+      "label": "Pregnana Milanese", "mid": "18PioNfywRmDz4jMOhv4X6CRlqYs-hnE", "kml_canonical_sha256": "4ee2729ca435d8f43a64eeedfc7ad9083a55d7309d6823a893873b4022e96258", "official_area_km2": 5.07, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false,
       "zone_map": {"Z1": 1}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "rho": {
-      "label": "Rho", "mid": "1nvF8PJILaorbAuQkzCd9vgvOLzVNg14", "kml_sha256": "56c12348e91d8d3af0be88e2615e89ef22fe0f1dc08e94403e4a7c4c0e14f483", "official_area_km2": 22.24, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "label": "Rho", "mid": "1nvF8PJILaorbAuQkzCd9vgvOLzVNg14", "kml_canonical_sha256": "6314f8402a8c35e9eaa76afb65dddf0ffd7cf42821c43ddd0033c36a64297bf7", "official_area_km2": 22.24, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
       "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "settimo-milanese": {
-      "label": "Settimo Milanese", "mid": "1qmnAVVTCe7djZ7sQdc9MZqjlFX335Dc", "kml_sha256": "c713a5ecfc995adb71194675a39e68050acc3911c9ed33e20718b1f82ea2973e", "official_area_km2": 10.72, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "label": "Settimo Milanese", "mid": "1qmnAVVTCe7djZ7sQdc9MZqjlFX335Dc", "kml_canonical_sha256": "d19bb61ea4b5bf3a3c603cb4147da3451ee1bf35e4bda0cc0ffaaf5e19de48a3", "official_area_km2": 10.72, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
       "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "vanzago": {
-      "label": "Vanzago", "mid": "1DLAr_-6o5z0yzbJr9ARWfUIx-WN49cY", "kml_sha256": "f521af60f94441d1f34dc72f330f20c22d02ea7437a36cfb4266b938d9eaf2d5", "official_area_km2": 6.05, "zoom": 14,
+      "label": "Vanzago", "mid": "1DLAr_-6o5z0yzbJr9ARWfUIx-WN49cY", "kml_canonical_sha256": "d17c705c22b02abd7ea7451e068b13ee51300faa3ee94d7a59d7d84a91b9b3cf", "official_area_km2": 6.05, "zoom": 14,
       "zone_map": {"R1": 1, "B1": 1, "E1": 1}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     }
   }

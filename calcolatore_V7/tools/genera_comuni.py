@@ -29,10 +29,23 @@ def ensure_kml(slug, cfg, source_dir, download):
             path.write_bytes(response.read())
     if not path.exists():
         raise ValueError(f"KML mancante: {path}")
-    if sha256(path) != cfg["kml_sha256"]:
-        raise ValueError(f"SHA-256 KML inatteso per {slug}")
     if not path.read_bytes().startswith(b"<?xml"):
         raise ValueError(f"Risposta KML non XML per {slug}")
+    return path
+
+
+def ensure_pdf(slug, cfg, source_dir, download):
+    path = source_dir / f"pdf-{cfg['pdf_file_id']}.pdf"
+    if download and not path.exists():
+        url = f"https://drive.google.com/uc?export=download&id={cfg['pdf_file_id']}"
+        with urllib.request.urlopen(url) as response:
+            path.write_bytes(response.read())
+    if not path.exists():
+        raise ValueError(f"PDF mancante: {path}")
+    if sha256(path) != cfg["pdf_sha256"]:
+        raise ValueError(f"SHA-256 PDF inatteso per {slug}")
+    if not path.read_bytes().startswith(b"%PDF"):
+        raise ValueError(f"Risposta PDF non valida per {slug}")
     return path
 
 
@@ -51,6 +64,39 @@ def parse_ring(node):
         if not (8.5 <= lng <= 10.0 and 44.8 <= lat <= 46.0):
             raise ValueError(f"Coordinate fuori Lombardia: {[lng, lat]}")
     return points
+
+
+def element_by_id(root, tag, element_id):
+    return next((node for node in root.findall(f".//k:{tag}", NS) if node.get("id") == element_id), None)
+
+
+def effective_polygon_color(root, placemark):
+    inline = placemark.findtext("k:Style/k:PolyStyle/k:color", default="", namespaces=NS).strip().lower()
+    if inline:
+        return inline
+    reference = placemark.findtext("k:styleUrl", default="", namespaces=NS).strip()
+    seen = set()
+    while reference:
+        element_id = reference.rsplit("#", 1)[-1]
+        if element_id in seen:
+            raise ValueError(f"Ciclo negli stili KML: {element_id}")
+        seen.add(element_id)
+        style = element_by_id(root, "Style", element_id)
+        if style is not None:
+            return (style.findtext("k:PolyStyle/k:color", default="", namespaces=NS) or "").strip().lower()
+        style_map = element_by_id(root, "StyleMap", element_id)
+        if style_map is None:
+            return ""
+        pairs = style_map.findall("k:Pair", NS)
+        normal = next((pair for pair in pairs if pair.findtext("k:key", default="", namespaces=NS) == "normal"), None)
+        pair = normal if normal is not None else (pairs[0] if pairs else None)
+        if pair is None:
+            return ""
+        inline = pair.findtext("k:Style/k:PolyStyle/k:color", default="", namespaces=NS).strip().lower()
+        if inline:
+            return inline
+        reference = pair.findtext("k:styleUrl", default="", namespaces=NS).strip()
+    return ""
 
 
 def parse_kml(path, placemark_mode="omi", style_groups=None):
@@ -75,10 +121,10 @@ def parse_kml(path, placemark_mode="omi", style_groups=None):
             raise ValueError(f"Modalità placemark non supportata: {placemark_mode}")
         if not match:
             raise ValueError(f"Placemark poligonale non riconosciuto ({placemark_mode}): {name}")
-        style = placemark.findtext("k:styleUrl", default="", namespaces=NS)
-        if code in styles and styles[code] != style:
-            raise ValueError(f"Stili KML discordanti per {code}")
-        styles[code] = style
+        color = effective_polygon_color(root, placemark)
+        if code in styles and styles[code] != color:
+            raise ValueError(f"Colori KML discordanti per {code}")
+        styles[code] = color
         target = by_code.setdefault(code, [])
         for polygon in polygons:
             outer = polygon.find("k:outerBoundaryIs/k:LinearRing", NS)
@@ -101,6 +147,11 @@ def parse_kml(path, placemark_mode="omi", style_groups=None):
         if len(set(group_styles)) != len(group_styles):
             raise ValueError("Gruppi KML distinti condividono lo stesso stile")
     return by_code
+
+
+def canonical_kml_sha256(by_code):
+    payload = json.dumps(by_code, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
 
 
 def ring_area(ring, lat0):
@@ -134,6 +185,112 @@ def point_in_polygons(lat, lng, polygons):
     return any(point_in_ring(lat, lng, rings[0]) and not any(point_in_ring(lat, lng, ring) for ring in rings[1:]) for rings in polygons)
 
 
+def point_on_segment(point, start, end, epsilon=1e-10):
+    cross = (point[1] - start[1]) * (end[0] - start[0]) - (point[0] - start[0]) * (end[1] - start[1])
+    if abs(cross) > epsilon:
+        return False
+    return (min(start[0], end[0]) - epsilon <= point[0] <= max(start[0], end[0]) + epsilon
+            and min(start[1], end[1]) - epsilon <= point[1] <= max(start[1], end[1]) + epsilon)
+
+
+def point_location_ring(point, ring):
+    if any(point_on_segment(point, ring[i], ring[i + 1]) for i in range(len(ring) - 1)):
+        return 0
+    return 1 if point_in_ring(point[1], point[0], ring) else -1
+
+
+def point_location_polygon(point, rings):
+    outer = point_location_ring(point, rings[0])
+    if outer != 1:
+        return outer
+    for hole in rings[1:]:
+        location = point_location_ring(point, hole)
+        if location == 0:
+            return 0
+        if location == 1:
+            return -1
+    return 1
+
+
+def proper_segment_intersection(a, b, c, d, epsilon=1e-14):
+    def orientation(p, q, r):
+        return (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
+
+    o1, o2 = orientation(a, b, c), orientation(a, b, d)
+    o3, o4 = orientation(c, d, a), orientation(c, d, b)
+    if o1 * o2 >= -epsilon or o3 * o4 >= -epsilon:
+        return None
+    denominator = (a[0] - b[0]) * (c[1] - d[1]) - (a[1] - b[1]) * (c[0] - d[0])
+    if abs(denominator) <= epsilon:
+        return None
+    determinant_ab = a[0] * b[1] - a[1] * b[0]
+    determinant_cd = c[0] * d[1] - c[1] * d[0]
+    return [
+        (determinant_ab * (c[0] - d[0]) - (a[0] - b[0]) * determinant_cd) / denominator,
+        (determinant_ab * (c[1] - d[1]) - (a[1] - b[1]) * determinant_cd) / denominator,
+    ]
+
+
+def polygon_bbox(rings):
+    points = rings[0]
+    return min(p[0] for p in points), min(p[1] for p in points), max(p[0] for p in points), max(p[1] for p in points)
+
+
+def bboxes_overlap(a, b, epsilon=1e-10):
+    return a[0] < b[2] - epsilon and b[0] < a[2] - epsilon and a[1] < b[3] - epsilon and b[1] < a[3] - epsilon
+
+
+def interior_edge_samples(rings):
+    outer = rings[0]
+    span = max(polygon_bbox(rings)[2] - polygon_bbox(rings)[0], polygon_bbox(rings)[3] - polygon_bbox(rings)[1])
+    offset = max(span * 1e-6, 1e-8)
+    for start, end in zip(outer, outer[1:]):
+        dx, dy = end[0] - start[0], end[1] - start[1]
+        length = math.hypot(dx, dy)
+        if not length:
+            continue
+        midpoint = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]
+        for sign in (-1, 1):
+            candidate = [midpoint[0] - sign * dy / length * offset, midpoint[1] + sign * dx / length * offset]
+            if point_location_polygon(candidate, rings) == 1:
+                yield candidate
+                break
+
+
+def polygon_overlap_witness(first, second):
+    if not bboxes_overlap(polygon_bbox(first), polygon_bbox(second)):
+        return None
+    for point in first[0][:-1]:
+        if point_location_polygon(point, second) == 1:
+            return point
+    for point in second[0][:-1]:
+        if point_location_polygon(point, first) == 1:
+            return point
+    for ring_a in first:
+        for ring_b in second:
+            for a, b in zip(ring_a, ring_a[1:]):
+                for c, d in zip(ring_b, ring_b[1:]):
+                    witness = proper_segment_intersection(a, b, c, d)
+                    if witness:
+                        return witness
+    for candidate in interior_edge_samples(first):
+        if point_location_polygon(candidate, second) == 1:
+            return candidate
+    for candidate in interior_edge_samples(second):
+        if point_location_polygon(candidate, first) == 1:
+            return candidate
+    return None
+
+
+def polygons_overlap_witness(first, second):
+    for polygon_a in first:
+        for polygon_b in second:
+            witness = polygon_overlap_witness(polygon_a, polygon_b)
+            if witness:
+                return witness
+    return None
+
+
 def validate_canoni(canoni):
     for zone, bands in canoni.items():
         values = [Decimal(bands[band][edge]) for band, edge in (
@@ -153,6 +310,42 @@ def dominates_canoni(canoni, higher, lower):
     high = canone_vector(canoni, higher)
     low = canone_vector(canoni, lower)
     return all(a >= b for a, b in zip(high, low)) and high != low
+
+
+def semantic_zone(item):
+    return ("canoni", item["z"]) if "z" in item else ("senza_canoni", item["o"])
+
+
+def validate_overlap(slug, cfg, overlap_policy, hits, lat, lng):
+    codes = sorted(f'{item["o"]}->{item.get("z", "senza_canoni")}' for item in hits)
+    if not overlap_policy:
+        raise ValueError(f"Sovrapposizione senza regola ufficiale per {slug} a {lat:.6f},{lng:.6f}: {codes}")
+    policy_type = overlap_policy["type"]
+    if not (overlap_policy.get("source") or overlap_policy.get("source_page")):
+        raise ValueError(f"Fonte della regola di sovrapposizione mancante per {slug}")
+    if policy_type == "higher_value_first":
+        if any("z" not in item for item in hits):
+            raise ValueError(f"La priorità per maggior valore incontra una zona senza canoni per {slug}")
+        if any(not dominates_canoni(cfg["canoni"], hits[0]["z"], item["z"]) for item in hits[1:]):
+            raise ValueError(f"La priorità per maggior valore non risolve {slug} a {lat:.6f},{lng:.6f}")
+    elif policy_type == "rural_first":
+        unpriced = [item for item in hits if "z" not in item]
+        if unpriced:
+            if "z" in hits[0]:
+                raise ValueError(f"La zona rurale non precede le zone calcolabili per {slug}")
+        elif any(not dominates_canoni(cfg["canoni"], hits[0]["z"], item["z"]) for item in hits[1:]):
+            raise ValueError(f"La priorità per maggior valore non risolve {slug} a {lat:.6f},{lng:.6f}")
+    elif policy_type == "agreement_zone_order":
+        ranks = [item.get("z", math.inf) for item in hits]
+        if ranks[0] != min(ranks):
+            raise ValueError(f"L'ordine delle zone contrattuali non risolve {slug} a {lat:.6f},{lng:.6f}")
+        priced = [item for item in hits if "z" in item]
+        if cfg.get("canoni_confirmed", True) and len({item["z"] for item in priced}) > 1:
+            if any(not dominates_canoni(cfg["canoni"], priced[0]["z"], item["z"]) for item in priced[1:]):
+                raise ValueError(f"L'ordine contrattuale non segue i canoni per {slug} a {lat:.6f},{lng:.6f}")
+    elif policy_type != "agreement_zone_order":
+        raise ValueError(f"Regola di sovrapposizione non supportata per {slug}")
+    return codes
 
 
 def render_canoni(canoni):
@@ -188,6 +381,8 @@ def render_data(canoni, zones, unpriced, center, zoom, bounds, overlap_policy, m
 
 def build(slug, cfg, kml_path):
     by_code = parse_kml(kml_path, cfg.get("placemark_mode", "omi"), cfg.get("style_groups"))
+    if canonical_kml_sha256(by_code) != cfg["kml_canonical_sha256"]:
+        raise ValueError(f"SHA-256 canonico KML inatteso per {slug}")
     expected = set(cfg["zone_map"]) | set(cfg["zone_senza_canoni"])
     if set(by_code) != expected:
         raise ValueError(f"Codici KML inattesi per {slug}: {sorted(by_code)} != {sorted(expected)}")
@@ -203,12 +398,10 @@ def build(slug, cfg, kml_path):
     if canoni_confirmed and mapped_zones != {int(zone) for zone in cfg["canoni"]}:
         raise ValueError(f"Zone/canoni non allineati per {slug}")
     overlap_policy = cfg.get("overlap_policy")
-    if overlap_policy and overlap_policy.get("type") not in ("higher_value_first", "kml_last_wins", "agreement_zone_order"):
+    if overlap_policy and overlap_policy.get("type") not in ("higher_value_first", "rural_first", "agreement_zone_order"):
         raise ValueError(f"Regola di sovrapposizione non supportata per {slug}")
-    if overlap_policy and overlap_policy["type"] == "kml_last_wins":
-        if list(by_code) != overlap_policy["expected_kml_order"]:
-            raise ValueError(f"Ordine KML variato per {slug}: {list(by_code)}")
-        oracle = overlap_policy["oracle"]
+    oracle = cfg.get("zone_oracle")
+    if oracle:
         if cfg["zone_map"].get(oracle["expected_omi"]) != oracle["expected_zone"]:
             raise ValueError(f"Oracolo non allineato alla mappa zone per {slug}")
         matching_zones = [
@@ -216,19 +409,24 @@ def build(slug, cfg, kml_path):
             if Decimal(str(oracle["surface_mq"])) * Decimal(bands["sf1"]["min"])
             == Decimal(str(oracle["monthly_min"]))
         ]
-        if matching_zones != [oracle["expected_zone"]] or list(by_code)[-1] != oracle["expected_omi"]:
-            raise ValueError(f"L'oracolo esterno non discrimina l'ultimo poligono KML per {slug}")
+        if matching_zones != [oracle["expected_zone"]]:
+            raise ValueError(f"L'oracolo esterno non discrimina la zona per {slug}")
+        competing_omi = oracle["competing_omi"]
+        competing_zone = cfg["zone_map"].get(competing_omi)
+        competing_min = (Decimal(str(oracle["surface_mq"]))
+                         * Decimal(cfg["canoni"][str(competing_zone)]["sf1"]["min"]))
+        if (competing_min != Decimal(str(oracle["competing_monthly_min"]))
+                or competing_zone == oracle["expected_zone"]):
+            raise ValueError(f"L'oracolo esterno non discrimina il canone concorrente per {slug}")
     zones = [{"o": code, "z": cfg["zone_map"][code], "p": by_code[code]} for code in cfg["zone_map"]]
     if overlap_policy and overlap_policy["type"] == "higher_value_first":
         zones.sort(key=lambda item: (canone_vector(cfg["canoni"], item["z"]), item["o"]), reverse=True)
-    elif overlap_policy and overlap_policy["type"] == "kml_last_wins":
-        zones.sort(key=lambda item: list(by_code).index(item["o"]), reverse=True)
     else:
         zones.sort(key=lambda item: (item["z"], item["o"]))
     unpriced = [{"o": code, "p": by_code[code]} for code in cfg["zone_senza_canoni"]]
-    if overlap_policy and overlap_policy["type"] == "kml_last_wins":
-        unpriced.sort(key=lambda item: list(by_code).index(item["o"]), reverse=True)
-        all_items = sorted(zones + unpriced, key=lambda item: list(by_code).index(item["o"]), reverse=True)
+    if overlap_policy and overlap_policy["type"] == "rural_first":
+        unpriced.sort(key=lambda item: item["o"])
+        all_items = unpriced + zones
     else:
         unpriced.sort(key=lambda item: item["o"])
         all_items = zones + unpriced
@@ -240,6 +438,17 @@ def build(slug, cfg, kml_path):
     delta = (area / cfg["official_area_km2"] - 1) * 100
     if abs(delta) > 10:
         raise ValueError(f"Superficie fuori tolleranza per {slug}: {area:.3f} km2 ({delta:+.1f}%)")
+    exact_overlaps = []
+    for index, first in enumerate(all_items):
+        for second in all_items[index + 1:]:
+            if semantic_zone(first) == semantic_zone(second):
+                continue
+            witness = polygons_overlap_witness(first["p"], second["p"])
+            if not witness:
+                continue
+            hits = [first, second]
+            codes = validate_overlap(slug, cfg, overlap_policy, hits, witness[1], witness[0])
+            exact_overlaps.append({"lat": round(witness[1], 6), "lng": round(witness[0], 6), "zone": codes})
     overlaps = []
     same_zone_overlaps = 0
     for row in range(1, 60):
@@ -252,26 +461,15 @@ def build(slug, cfg, kml_path):
                 for item in hits
             }
             if len(semantic_zones) > 1:
-                if not overlap_policy:
-                    codes = sorted(f'{item["o"]}->{item.get("z", "senza_canoni")}' for item in hits)
-                    raise ValueError(f"Sovrapposizione senza regola ufficiale per {slug} a {lat:.6f},{lng:.6f}: {codes}")
-                if overlap_policy["type"] == "higher_value_first":
-                    if any("z" not in item for item in hits):
-                        raise ValueError(f"La priorità per maggior valore incontra una zona senza canoni per {slug}")
-                    winner = hits[0]
-                    if any(not dominates_canoni(cfg["canoni"], winner["z"], item["z"]) for item in hits[1:]):
-                        raise ValueError(f"La priorità per maggior valore non risolve {slug} a {lat:.6f},{lng:.6f}")
-                elif overlap_policy["type"] == "agreement_zone_order":
-                    if any("z" not in item for item in hits) or hits[0]["z"] != min(item["z"] for item in hits):
-                        raise ValueError(f"L'ordine delle zone contrattuali non risolve {slug} a {lat:.6f},{lng:.6f}")
+                codes = validate_overlap(slug, cfg, overlap_policy, hits, lat, lng)
                 overlaps.append({
                     "lat": round(lat, 6),
                     "lng": round(lng, 6),
-                    "zone": sorted(f'{item["o"]}->{item.get("z", "senza_canoni")}' for item in hits)
+                    "zone": codes
                 })
             elif len(hits) > 1:
                 same_zone_overlaps += 1
-    stats = {"comune": cfg["label"], "area_km2": round(area, 3), "delta_pct": round(delta, 1), "poligoni": sum(len(item["p"]) for item in all_items), "vertici": len(all_points), "campioni_stessa_zona": same_zone_overlaps, "campioni_multi_zona": len(overlaps)}
+    stats = {"comune": cfg["label"], "area_km2": round(area, 3), "delta_pct": round(delta, 1), "poligoni": sum(len(item["p"]) for item in all_items), "vertici": len(all_points), "sovrapposizioni_esatte": len(exact_overlaps), "campioni_stessa_zona": same_zone_overlaps, "campioni_multi_zona": len(overlaps)}
     return render_data(cfg["canoni"], zones, unpriced, center, cfg["zoom"], bounds, overlap_policy, cfg.get("mostra_omi", True)), stats
 
 
@@ -288,6 +486,7 @@ def main():
     args.output_dir.mkdir(parents=True, exist_ok=True)
     for slug, cfg in manifest["comuni"].items():
         kml = ensure_kml(slug, cfg, args.source_dir, args.download)
+        ensure_pdf(slug, {**manifest.get("agreement", {}), **cfg}, args.source_dir, args.download)
         rendered, stats = build(slug, cfg, kml)
         output = args.output_dir / f"data_{slug.replace('-', '_')}.json"
         if args.check:
