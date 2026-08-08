@@ -53,9 +53,10 @@ def parse_ring(node):
     return points
 
 
-def parse_kml(path, placemark_mode="omi"):
+def parse_kml(path, placemark_mode="omi", style_groups=None):
     root = ET.parse(path).getroot()
     by_code = {}
+    styles = {}
     for placemark in root.findall(".//k:Placemark", NS):
         polygons = placemark.findall(".//k:Polygon", NS)
         if not polygons:
@@ -74,6 +75,10 @@ def parse_kml(path, placemark_mode="omi"):
             raise ValueError(f"Modalità placemark non supportata: {placemark_mode}")
         if not match:
             raise ValueError(f"Placemark poligonale non riconosciuto ({placemark_mode}): {name}")
+        style = placemark.findtext("k:styleUrl", default="", namespaces=NS)
+        if code in styles and styles[code] != style:
+            raise ValueError(f"Stili KML discordanti per {code}")
+        styles[code] = style
         target = by_code.setdefault(code, [])
         for polygon in polygons:
             outer = polygon.find("k:outerBoundaryIs/k:LinearRing", NS)
@@ -83,6 +88,18 @@ def parse_kml(path, placemark_mode="omi"):
             for inner in polygon.findall("k:innerBoundaryIs/k:LinearRing", NS):
                 rings.append(parse_ring(inner))
             target.append(rings)
+    if style_groups:
+        grouped_codes = {code for group in style_groups for code in group}
+        if grouped_codes != set(by_code):
+            raise ValueError(f"Gruppi stile incompleti: {sorted(grouped_codes)} != {sorted(by_code)}")
+        group_styles = []
+        for group in style_groups:
+            observed = {styles.get(code) for code in group}
+            if len(observed) != 1 or not next(iter(observed)):
+                raise ValueError(f"Gruppo KML con colori discordanti: {group}")
+            group_styles.append(next(iter(observed)))
+        if len(set(group_styles)) != len(group_styles):
+            raise ValueError("Gruppi KML distinti condividono lo stesso stile")
     return by_code
 
 
@@ -170,7 +187,7 @@ def render_data(canoni, zones, unpriced, center, zoom, bounds, overlap_policy, m
 
 
 def build(slug, cfg, kml_path):
-    by_code = parse_kml(kml_path, cfg.get("placemark_mode", "omi"))
+    by_code = parse_kml(kml_path, cfg.get("placemark_mode", "omi"), cfg.get("style_groups"))
     expected = set(cfg["zone_map"]) | set(cfg["zone_senza_canoni"])
     if set(by_code) != expected:
         raise ValueError(f"Codici KML inattesi per {slug}: {sorted(by_code)} != {sorted(expected)}")
@@ -180,6 +197,9 @@ def build(slug, cfg, kml_path):
     elif cfg["canoni"]:
         raise ValueError(f"Canoni presenti ma non confermati per {slug}")
     mapped_zones = {int(zone) for zone in cfg["zone_map"].values()}
+    for group in cfg.get("style_groups", []):
+        if len({cfg["zone_map"][code] for code in group}) != 1:
+            raise ValueError(f"Un gruppo colore attraversa più zone contrattuali per {slug}: {group}")
     if canoni_confirmed and mapped_zones != {int(zone) for zone in cfg["canoni"]}:
         raise ValueError(f"Zone/canoni non allineati per {slug}")
     overlap_policy = cfg.get("overlap_policy")
