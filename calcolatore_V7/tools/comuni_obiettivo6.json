@@ -7,7 +7,7 @@
       "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "cernusco-sul-naviglio": {
-      "label": "Cernusco sul Naviglio", "mid": "1hRPO3QZrpVyZswiWIY2Y-3cKxYi5yhg", "kml_sha256": "148ab5093825585a4300f61a575e6cd41856c2e6ba97e28c39a223a1f592e079", "pdf_file_id": "16YPqHlYBghMYRochyEvgehl9drW4Wxun", "pdf_sha256": "b038c3ea0da7d27817366f59a71de1c856a97f3afb27c73bc7924f620065d2d8", "official_area_km2": 13.22, "zoom": 13,
+      "label": "Cernusco sul Naviglio", "mid": "1hRPO3QZrpVyZswiWIY2Y-3cKxYi5yhg", "kml_sha256": "148ab5093825585a4300f61a575e6cd41856c2e6ba97e28c39a223a1f592e079", "pdf_file_id": "16YPqHlYBghMYRochyEvgehl9drW4Wxun", "pdf_sha256": "b038c3ea0da7d27817366f59a71de1c856a97f3afb27c73bc7924f620065d2d8", "official_area_km2": 13.22, "zoom": 13, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
       "zone_map": {"B1": 1, "D1": 2, "R1": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "gorgonzola": {
@@ -15,7 +15,7 @@
       "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "legnano": {
-      "label": "Legnano", "mid": "1I1b8DmTNupfK4fdDW-7CXwpUuGaHyHM", "kml_sha256": "091f915c2d657fa849977f03af7ed8d7b4d04757a221384ed9672adfcda07daf", "pdf_file_id": "1s-Gzl2PRSpnIRDiqNp0Q5t9Gq-b7Ppq1", "pdf_sha256": "ce93b9c5005dc77cd066506dcc659be72d3e44dea9fd489767463168a1fb58f9", "official_area_km2": 17.68, "zoom": 13,
+      "label": "Legnano", "mid": "1I1b8DmTNupfK4fdDW-7CXwpUuGaHyHM", "kml_sha256": "091f915c2d657fa849977f03af7ed8d7b4d04757a221384ed9672adfcda07daf", "pdf_file_id": "1s-Gzl2PRSpnIRDiqNp0Q5t9Gq-b7Ppq1", "pdf_sha256": "ce93b9c5005dc77cd066506dcc659be72d3e44dea9fd489767463168a1fb58f9", "official_area_km2": 17.68, "zoom": 13, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
       "zone_map": {"B1": 1, "C1": 2, "D1": 3, "D2": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "melzo": {
