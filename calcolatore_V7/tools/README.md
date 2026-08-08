@@ -41,7 +41,7 @@ I canoni delle pagine 17-18 sono stati confermati riga per riga nel file `VERIFI
 
 ## Obiettivo 3 - Area Rhodense
 
-Il manifesto `comuni_obiettivo3.json` genera nove Comuni. I canoni delle pagine 33, 35 e 37 sono stati confermati riga per riga nel file `VERIFICA_obiettivo3_rhodense_COMPILATA.md` (SHA-256 `167fe15a8e82f48ac1b9e5c73e458ffe70c68fd4e7b34e1357301fb5a9e72ea2`).
+Il manifesto `comuni_obiettivo3.json` genera nove Comuni. I canoni delle pagine 33, 35 e 37 sono stati confermati riga per riga nel file `VERIFICA_obiettivo3_rhodense_COMPILATA.md` (SHA-256 dei byte versionati `cbdac25ab0d4c70c8cef98ec196fce5fc7718c654c53d4e8819e6f234c23758e`; SHA-256 dell'originale fornito `167fe15a8e82f48ac1b9e5c73e458ffe70c68fd4e7b34e1357301fb5a9e72ea2`).
 
 ```powershell
 python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/comuni_obiettivo3.json --source-dir <cartella-kml>
