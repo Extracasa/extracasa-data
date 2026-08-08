@@ -227,6 +227,11 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
       <label class="field-label">In quale comune si trova l'immobile? <span class="req">*</span></label>
       <select id="select_comune">
         <option value="" disabled selected>Seleziona il comune...</option>
+        <option value="bresso">Bresso</option>
+        <option value="cinisello_balsamo">Cinisello Balsamo</option>
+        <option value="cologno_monzese">Cologno Monzese</option>
+        <option value="cormano">Cormano</option>
+        <option value="cusano_milanino">Cusano Milanino</option>
         <option value="milano">Milano</option>
         <option value="sesto">Sesto San Giovanni</option>
       </select>
@@ -465,6 +470,11 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 'use strict';
 
 var COMUNI_URLS={
+bresso:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_bresso.json',
+cinisello_balsamo:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_cinisello_balsamo.json',
+cologno_monzese:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_cologno_monzese.json',
+cormano:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_cormano.json',
+cusano_milanino:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_cusano_milanino.json',
 milano:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_milano.json',
 sesto:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_sesto.json'
 };
