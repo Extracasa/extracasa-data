@@ -60,3 +60,11 @@ Il manifesto `comuni_obiettivo5.json` genera Peschiera Borromeo, Pioltello, Segr
 Pioltello associa D4 alla zona 2 e Segrate associa R1 alla zona 2. Per questi due codici omessi dal testo, la cartografia ufficiale fornisce la corrispondenza tramite il gruppo colore; `style_groups` fa fallire la generazione se i colori contraddicono i raggruppamenti dell'accordo o cambiano struttura.
 
 Peschiera e Segrate confermano che B1 non implica zona 1: il numero di zona viene sempre dal KML o dall'art. 4.1.a, mai dalla famiglia OMI.
+
+## Obiettivo 6 - Completamento
+
+Il manifesto `comuni_obiettivo6.json` genera Cassano d'Adda, Cernusco sul Naviglio, Gorgonzola, Legnano, Melzo, Nerviano, Parabiago e Rescaldina. Noviglio è escluso per decisione esplicita e il relativo dataset preparatorio è stato rimosso.
+
+I canoni sono stati confermati nel file `VERIFICA_obiettivo6_completamento_COMPILATA.md` (SHA-256 `6ca36919396e1088f6bebcf5e770d03d725ddb6f7d9fd143551c9cea9050401d`). Le soglie non standard delle zone 3 sono conservate esattamente: `4,00→4,01→5,51` per Nerviano/Parabiago e `5,00→5,01→6,51` per Rescaldina.
+
+Con questo obiettivo il selettore contiene 40 nuovi Comuni, oltre a Milano e Sesto San Giovanni: 42 Comuni complessivi. Nessun accordo di questo gruppo contiene una clausola locale sui confini; le sovrapposizioni citano esclusivamente la regola generale del §5 del brief.

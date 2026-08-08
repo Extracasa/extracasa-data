@@ -1,173 +1,61 @@
-# Scheda di verifica - Obiettivo 6 completamento
+# Verifica finale - Obiettivo 6 completamento
 
-I valori economici non sono stati trascritti e restano da confermare ai sensi del §3.
+## Perimetro e fonti
 
-## Cassano d'Adda
+- Otto accordi comunali distinti, con hash PDF bloccati in `tools/comuni_obiettivo6.json`.
+- Zone e corrispondenze OMI: pagina PDF 3.
+- Tabelle dei canoni: pagine PDF 14, 15 o 17.
+- Conferma umana: `VERIFICA_obiettivo6_completamento_COMPILATA.md`, SHA-256 originale `6ca36919396e1088f6bebcf5e770d03d725ddb6f7d9fd143551c9cea9050401d`.
+- Superfici: Annuario statistico 2026 della Città metropolitana di Milano.
+- Noviglio è escluso per decisione esplicita: non compare nel manifesto finale, nel selettore o nei dataset pubblicabili.
 
-Accordo: **Accordo locale per il Comune di Cassano d'Adda** · PDF pag. 3 zone · pag. 15 canoni
+## Corrispondenze zona - OMI
 
-| | Voce | Valore letto | CORREZIONE |
+| Comune | Zona 1 | Zona 2 | Zona 3 |
 |---|---|---|---|
-| [ ] | Numero di zone | 3 | |
-| [ ] | Zona 1 | OMI B1 | |
-| [ ] | Zona 2 | OMI D1 | |
-| [ ] | Zona 3 | OMI R1 | |
+| Cassano d'Adda | B1 | D1 | R1 |
+| Cernusco sul Naviglio | B1 | D1 | R1 |
+| Gorgonzola | B1 | D1 | R1, R2 |
+| Legnano | B1 | C1 | D1, D2 |
+| Melzo | B1 | R1 | — |
+| Nerviano | B1 | D1 | R1 |
+| Parabiago | B1 | D1 | R1, D2 |
+| Rescaldina | B1 | D1 | R1 |
 
-| | Zona | Sub-fascia 1 | Sub-fascia 2 | Sub-fascia 3 | CORREZIONE |
-|---|---|---|---|---|---|
-| [ ] | 1 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 2 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 3 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
+Legnano non ha zone R; Melzo non ha una zona D. Tutte le zone R presenti negli altri accordi hanno canoni propri.
 
-Anomalie riscontrate: KML diretto con 11 poligoni; 10 campioni multi-zona risolti dall'ordine previsto dal §5. Geometria 18,534 km² contro 18,60 ufficiali (-0,4%).
+## Canoni confermati
 
-## Cernusco sul Naviglio
+Valori in €/mq al mese; ogni cella è sub-fascia 1 / 2 / 3.
 
-Accordo: **Accordo locale per il Comune di Cernusco sul Naviglio** · PDF pag. 3 zone · pag. 14 canoni
+| Comune | Zona | Canoni |
+|---|---:|---|
+| Cassano d'Adda | 1 | `5,00-6,49 / 6,50-7,99 / 8,00-10,00` |
+| Cassano d'Adda | 2 | `4,00-5,49 / 5,50-6,99 / 7,00-8,50` |
+| Cassano d'Adda | 3 | `3,00-4,49 / 4,50-5,99 / 6,00-7,50` |
+| Cernusco sul Naviglio, Gorgonzola | 1 | `7,00-9,99 / 10,00-12,99 / 13,00-15,00` |
+| Cernusco sul Naviglio, Gorgonzola | 2 | `6,00-8,49 / 8,50-10,99 / 11,00-13,00` |
+| Cernusco sul Naviglio, Gorgonzola | 3 | `3,00-5,99 / 6,00-7,49 / 7,50-9,00` |
+| Legnano | 1 | `6,00-7,99 / 8,00-9,99 / 10,00-12,00` |
+| Legnano | 2 | `4,00-6,49 / 6,50-7,99 / 8,00-10,00` |
+| Legnano | 3 | `3,00-5,99 / 6,00-7,49 / 7,50-9,00` |
+| Melzo | 1 | `4,50-6,99 / 7,00-8,99 / 9,00-10,50` |
+| Melzo | 2 | `3,00-4,99 / 5,00-6,99 / 7,00-9,00` |
+| Nerviano, Parabiago | 1 | `4,00-5,99 / 6,00-7,99 / 8,00-10,00` |
+| Nerviano, Parabiago | 2 | `3,50-4,99 / 5,00-6,49 / 6,50-8,50` |
+| Nerviano, Parabiago | 3 | `3,00-4,00 / 4,01-5,50 / 5,51-6,80` |
+| Rescaldina | 1 | `5,00-6,99 / 7,00-8,99 / 9,00-11,00` |
+| Rescaldina | 2 | `4,50-5,99 / 6,00-7,49 / 7,50-9,50` |
+| Rescaldina | 3 | `3,50-5,00 / 5,01-6,50 / 6,51-7,80` |
 
-| | Voce | Valore letto | CORREZIONE |
-|---|---|---|---|
-| [ ] | Numero di zone | 3 | |
-| [ ] | Zona 1 | OMI B1 | |
-| [ ] | Zona 2 | OMI D1 | |
-| [ ] | Zona 3 | OMI R1 | |
+Le soglie `4,00→4,01→5,51` e `5,00→5,01→6,51` sono trascrizioni confermate, non normalizzazioni automatiche.
 
-| | Zona | Sub-fascia 1 | Sub-fascia 2 | Sub-fascia 3 | CORREZIONE |
-|---|---|---|---|---|---|
-| [ ] | 1 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 2 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 3 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
+## Geometrie e confini
 
-Anomalie riscontrate: nessuna nella corrispondenza PDF/KML. Geometria 13,298 km² contro 13,22 ufficiali (+0,6%).
+Le geometrie bloccate coprono 18,534 km² a Cassano, 13,298 a Cernusco, 10,667 a Gorgonzola, 17,687 a Legnano, 9,657 a Melzo, 13,437 a Nerviano, 14,222 a Parabiago e 8,191 a Rescaldina. Gli scarti dalle superfici ufficiali restano entro il 2,0%.
 
-## Gorgonzola
+Nessuno degli otto accordi contiene una clausola locale sui confini. Le sovrapposizioni seguono soltanto la regola generale del §5 del brief, dichiarata come fonte nei manifesti.
 
-Accordo: **Accordo locale per il Comune di Gorgonzola** · PDF pag. 3 zone · pag. 15 canoni
+## Esito complessivo
 
-| | Voce | Valore letto | CORREZIONE |
-|---|---|---|---|
-| [ ] | Numero di zone | 3 | |
-| [ ] | Zona 1 | OMI B1 | |
-| [ ] | Zona 2 | OMI D1 | |
-| [ ] | Zona 3 | OMI R1 e R2 | |
-
-| | Zona | Sub-fascia 1 | Sub-fascia 2 | Sub-fascia 3 | CORREZIONE |
-|---|---|---|---|---|---|
-| [ ] | 1 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 2 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 3 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-
-Anomalie riscontrate: KML diretto con 9 poligoni; 1 campione multi-zona risolto dall'ordine previsto dal §5. Geometria 10,667 km² contro 10,58 ufficiali (+0,8%).
-
-## Legnano
-
-Accordo: **Accordo locale per il Comune di Legnano** · PDF pag. 3 zone · pag. 17 canoni
-
-| | Voce | Valore letto | CORREZIONE |
-|---|---|---|---|
-| [ ] | Numero di zone | 3 | |
-| [ ] | Zona 1 | OMI B1 | |
-| [ ] | Zona 2 | OMI C1 | |
-| [ ] | Zona 3 | OMI D1 e D2 | |
-
-| | Zona | Sub-fascia 1 | Sub-fascia 2 | Sub-fascia 3 | CORREZIONE |
-|---|---|---|---|---|---|
-| [ ] | 1 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 2 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 3 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-
-Anomalie riscontrate: nessuna nella corrispondenza PDF/KML. Geometria 17,687 km² contro 17,68 ufficiali (+0,0%).
-
-## Melzo
-
-Accordo: **Accordo locale per il Comune di Melzo** · PDF pag. 3 zone · pag. 15 canoni
-
-| | Voce | Valore letto | CORREZIONE |
-|---|---|---|---|
-| [ ] | Numero di zone | 2 | |
-| [ ] | Zona 1 | OMI B1 | |
-| [ ] | Zona 2 | OMI R1 | |
-
-| | Zona | Sub-fascia 1 | Sub-fascia 2 | Sub-fascia 3 | CORREZIONE |
-|---|---|---|---|---|---|
-| [ ] | 1 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 2 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-
-Anomalie riscontrate: KML diretto con 3 poligoni; nessuna sovrapposizione multi-zona rilevata. Geometria 9,657 km² contro 9,82 ufficiali (-1,7%).
-
-## Nerviano
-
-Accordo: **Accordo locale per il Comune di Nerviano** · PDF pag. 3 zone · pag. 15 canoni
-
-| | Voce | Valore letto | CORREZIONE |
-|---|---|---|---|
-| [ ] | Numero di zone | 3 | |
-| [ ] | Zona 1 | OMI B1 | |
-| [ ] | Zona 2 | OMI D1 | |
-| [ ] | Zona 3 | OMI R1 | |
-
-| | Zona | Sub-fascia 1 | Sub-fascia 2 | Sub-fascia 3 | CORREZIONE |
-|---|---|---|---|---|---|
-| [ ] | 1 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 2 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 3 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-
-Anomalie riscontrate: KML diretto; 2 campioni multi-zona risolti dall'ordine previsto dal §5. Geometria 13,437 km² contro 13,26 ufficiali (+1,3%).
-
-## Noviglio
-
-Accordo: **Accordo locale per il Comune di Noviglio** · PDF pag. 3 zone · pag. 13 canoni
-
-| | Voce | Valore letto | CORREZIONE |
-|---|---|---|---|
-| [ ] | Numero di zone | zona unica | |
-| [ ] | Zona unica | intero territorio comunale | |
-| [ ] | Perimetri KML | OMI B1, E1, E2 e R1, tutti associati alla zona 1 | |
-
-| | Zona | Sub-fascia 1 | Sub-fascia 2 | Sub-fascia 3 | CORREZIONE |
-|---|---|---|---|---|---|
-| [ ] | 1 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-
-Anomalie riscontrate: a pag. 3 l'ambito di applicazione cita per errore «Comune di Pieve Emanuele», mentre intestazione, modalità, firme e fonte KML riguardano Noviglio. I 4 perimetri OMI sono mantenuti come geometrie della zona unica; 3 campioni si sovrappongono entro la stessa zona. Geometria 15,560 km² contro 15,86 ufficiali (-1,9%).
-
-## Parabiago
-
-Accordo: **Accordo locale per il Comune di Parabiago** · PDF pag. 3 zone · pag. 15 canoni
-
-| | Voce | Valore letto | CORREZIONE |
-|---|---|---|---|
-| [ ] | Numero di zone | 3 | |
-| [ ] | Zona 1 | OMI B1 | |
-| [ ] | Zona 2 | OMI D1 | |
-| [ ] | Zona 3 | OMI R1 e D2 | |
-
-| | Zona | Sub-fascia 1 | Sub-fascia 2 | Sub-fascia 3 | CORREZIONE |
-|---|---|---|---|---|---|
-| [ ] | 1 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 2 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 3 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-
-Anomalie riscontrate: KML diretto con 9 poligoni; 8 campioni multi-zona risolti dall'ordine previsto dal §5. Geometria 14,222 km² contro 14,29 ufficiali (-0,5%).
-
-## Rescaldina
-
-Accordo: **Accordo locale per il Comune di Rescaldina** · PDF pag. 3 zone · pag. 15 canoni
-
-| | Voce | Valore letto | CORREZIONE |
-|---|---|---|---|
-| [ ] | Numero di zone | 3 | |
-| [ ] | Zona 1 | OMI B1 | |
-| [ ] | Zona 2 | OMI D1 | |
-| [ ] | Zona 3 | OMI R1 | |
-
-| | Zona | Sub-fascia 1 | Sub-fascia 2 | Sub-fascia 3 | CORREZIONE |
-|---|---|---|---|---|---|
-| [ ] | 1 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 2 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-| [ ] | 3 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-
-Anomalie riscontrate: KML diretto con 7 poligoni; 4 campioni multi-zona risolti dall'ordine previsto dal §5. Geometria 8,191 km² contro 8,03 ufficiali (+2,0%).
-
-## Blocco §3
-
-Tutti i nove JSON hanno `canoni: {}` e non sono registrati nel selettore. Nessun Comune supera tre zone contrattuali, quindi `ZONE_COLORS` non richiede estensioni. I valori delle tabelle devono essere confermati prima di qualunque integrazione runtime; per Noviglio va inoltre accettata esplicitamente la gestione del refuso documentale sopra indicato.
+Gli otto JSON hanno `canoni_confirmed: true`, nessuna zona senza canoni e registrazione completa nel selettore. Il perimetro finale è di 40 nuovi Comuni, più Milano e Sesto San Giovanni: 42 Comuni complessivi.
