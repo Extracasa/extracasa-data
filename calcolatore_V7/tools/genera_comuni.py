@@ -67,6 +67,9 @@ def parse_kml(path, placemark_mode="omi"):
         elif placemark_mode == "agreement_zone":
             match = re.search(r"\bZONA\s*([0-9]+)\b", name, re.IGNORECASE)
             code = f"Z{int(match.group(1))}" if match else None
+            if not match:
+                match = re.search(r"\bZONA\s+UNICA\b", name, re.IGNORECASE)
+                code = "Z1" if match else None
         else:
             raise ValueError(f"Modalità placemark non supportata: {placemark_mode}")
         if not match:
