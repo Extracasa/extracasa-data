@@ -53,7 +53,7 @@ def parse_ring(node):
     return points
 
 
-def parse_kml(path):
+def parse_kml(path, placemark_mode="omi"):
     root = ET.parse(path).getroot()
     by_code = {}
     for placemark in root.findall(".//k:Placemark", NS):
@@ -61,10 +61,16 @@ def parse_kml(path):
         if not polygons:
             continue
         name = placemark.findtext("k:name", default="", namespaces=NS)
-        match = re.search(r"Zona OMI\s+([A-Z0-9]+)", name, re.IGNORECASE)
+        if placemark_mode == "omi":
+            match = re.search(r"Zona OMI\s+([A-Z0-9]+)", name, re.IGNORECASE)
+            code = match.group(1).upper() if match else None
+        elif placemark_mode == "agreement_zone":
+            match = re.search(r"\bZONA\s*([0-9]+)\b", name, re.IGNORECASE)
+            code = f"Z{int(match.group(1))}" if match else None
+        else:
+            raise ValueError(f"Modalità placemark non supportata: {placemark_mode}")
         if not match:
-            raise ValueError(f"Placemark poligonale senza codice OMI: {name}")
-        code = match.group(1).upper()
+            raise ValueError(f"Placemark poligonale non riconosciuto ({placemark_mode}): {name}")
         target = by_code.setdefault(code, [])
         for polygon in polygons:
             outer = polygon.find("k:outerBoundaryIs/k:LinearRing", NS)
@@ -130,6 +136,8 @@ def dominates_canoni(canoni, higher, lower):
 
 
 def render_canoni(canoni):
+    if not canoni:
+        return "{}"
     rows = []
     for zone in sorted(canoni, key=int):
         bands = canoni[zone]
@@ -141,8 +149,10 @@ def render_canoni(canoni):
     return "{\n" + ",\n".join(rows) + "\n  }"
 
 
-def render_data(canoni, zones, unpriced, center, zoom, bounds, overlap_policy):
+def render_data(canoni, zones, unpriced, center, zoom, bounds, overlap_policy, mostra_omi):
     lines = ["{", f'  "canoni": {render_canoni(canoni)},', f'  "omi_zones": {json.dumps(zones, separators=(",", ":"))},']
+    if not mostra_omi:
+        lines.append('  "mostra_omi": false,')
     if overlap_policy:
         lines.append(f'  "zone_overlap_policy": "{overlap_policy["type"]}",')
     if unpriced:
@@ -157,16 +167,20 @@ def render_data(canoni, zones, unpriced, center, zoom, bounds, overlap_policy):
 
 
 def build(slug, cfg, kml_path):
-    by_code = parse_kml(kml_path)
+    by_code = parse_kml(kml_path, cfg.get("placemark_mode", "omi"))
     expected = set(cfg["zone_map"]) | set(cfg["zone_senza_canoni"])
     if set(by_code) != expected:
         raise ValueError(f"Codici KML inattesi per {slug}: {sorted(by_code)} != {sorted(expected)}")
-    validate_canoni(cfg["canoni"])
+    canoni_confirmed = cfg.get("canoni_confirmed", True)
+    if canoni_confirmed:
+        validate_canoni(cfg["canoni"])
+    elif cfg["canoni"]:
+        raise ValueError(f"Canoni presenti ma non confermati per {slug}")
     mapped_zones = {int(zone) for zone in cfg["zone_map"].values()}
-    if mapped_zones != {int(zone) for zone in cfg["canoni"]}:
+    if canoni_confirmed and mapped_zones != {int(zone) for zone in cfg["canoni"]}:
         raise ValueError(f"Zone/canoni non allineati per {slug}")
     overlap_policy = cfg.get("overlap_policy")
-    if overlap_policy and overlap_policy.get("type") not in ("higher_value_first", "kml_last_wins"):
+    if overlap_policy and overlap_policy.get("type") not in ("higher_value_first", "kml_last_wins", "agreement_zone_order"):
         raise ValueError(f"Regola di sovrapposizione non supportata per {slug}")
     if overlap_policy and overlap_policy["type"] == "kml_last_wins":
         if list(by_code) != overlap_policy["expected_kml_order"]:
@@ -224,6 +238,9 @@ def build(slug, cfg, kml_path):
                     winner = hits[0]
                     if any(not dominates_canoni(cfg["canoni"], winner["z"], item["z"]) for item in hits[1:]):
                         raise ValueError(f"La priorità per maggior valore non risolve {slug} a {lat:.6f},{lng:.6f}")
+                elif overlap_policy["type"] == "agreement_zone_order":
+                    if any("z" not in item for item in hits) or hits[0]["z"] != min(item["z"] for item in hits):
+                        raise ValueError(f"L'ordine delle zone contrattuali non risolve {slug} a {lat:.6f},{lng:.6f}")
                 overlaps.append({
                     "lat": round(lat, 6),
                     "lng": round(lng, 6),
@@ -232,7 +249,7 @@ def build(slug, cfg, kml_path):
             elif len(hits) > 1:
                 same_zone_overlaps += 1
     stats = {"comune": cfg["label"], "area_km2": round(area, 3), "delta_pct": round(delta, 1), "poligoni": sum(len(item["p"]) for item in all_items), "vertici": len(all_points), "campioni_stessa_zona": same_zone_overlaps, "campioni_multi_zona": len(overlaps)}
-    return render_data(cfg["canoni"], zones, unpriced, center, cfg["zoom"], bounds, overlap_policy), stats
+    return render_data(cfg["canoni"], zones, unpriced, center, cfg["zoom"], bounds, overlap_policy, cfg.get("mostra_omi", True)), stats
 
 
 def main():

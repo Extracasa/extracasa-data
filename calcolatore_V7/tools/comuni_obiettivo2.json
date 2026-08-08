@@ -1,0 +1,35 @@
+{
+  "source_page": "https://www.unioncasamilano.com/copia-di-accordo-di-milano",
+  "area_source": "https://www.cittametropolitana.mi.it/aree-tematiche/statistica/dati-statistici/.galleries/statistica-doc/Annuario-2026-Statistico.pdf",
+  "agreement": {"title": "Accordo locale - ambito territoriale di Garbagnate Milanese", "pdf_file_id": "1lD_-Ty2oWu8WlYyJWpytIhaErfjjisiK", "pdf_sha256": "57987559a29fda0606fd6385ae598c9d90687716ed20026a49800d4381096909", "zone_map_page": 4},
+  "comuni": {
+    "baranzate": {
+      "label": "Baranzate", "mid": "1-Bp4fo-1pUfr3xMHIR6n5bLIiO7FiSk", "kml_sha256": "e054ed3fe283d58f37ffae2a8faef9623a973151c3ce03300b1be47bf2238b4c", "official_area_km2": 2.78, "zoom": 14, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "zone_map": {"D1": 1, "B1": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+    },
+    "bollate": {
+      "label": "Bollate", "mid": "1sbQTyENKI2VLgOGikPEcbRBlnIIjaNk", "kml_sha256": "07201f0a660be7043e2c8f9564089f21e0464e11fcf4877d7c0920cbc7364f2d", "official_area_km2": 13.12, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+    },
+    "cesate": {
+      "label": "Cesate", "mid": "1azZcgUMahK4SKx1_Yj8wxRqRp0KcbPQ", "kml_sha256": "60270ee5376da2aa95c8cd2f570a275f0ada08a23679d262b81615697b098c90", "official_area_km2": 5.77, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+    },
+    "garbagnate-milanese": {
+      "label": "Garbagnate Milanese", "mid": "1vIsZpkHOTkpMv_r-XzezbcMzuL2HQF4", "kml_sha256": "4c871e7e922e5bb439be8e3614cc4512a6bcbc97df04d49942ce1d05edbd2b03", "official_area_km2": 9.00, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+    },
+    "novate-milanese": {
+      "label": "Novate Milanese", "mid": "1IJ4qKFM3JTLkfIu9Zdh0vc3w-UAxwdA", "kml_sha256": "bfae312845f07fafade42793ac0a4acdc9cb73f01f9f64d1a4669230736d76fb", "official_area_km2": 5.46, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+    },
+    "paderno-dugnano": {
+      "label": "Paderno Dugnano", "mid": "1y_ScU35m4IkMXcUZnO_Wub4a-p_jNCU", "kml_sha256": "0c7dd039b8980e8705f259acd0547458da3442be203afa876c2236de5a9c4258", "official_area_km2": 14.11, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+    },
+    "senago": {
+      "label": "Senago", "mid": "1m44BU5CCK38Ws4kNmFn8W1q8dJZ3RKI", "kml_sha256": "49590ee31de89492ac936a35e53605509e324c02443c078cf27fb296de4162f7", "official_area_km2": 8.60, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+    }
+  }
+}
