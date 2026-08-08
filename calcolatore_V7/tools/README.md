@@ -28,13 +28,13 @@ Le aree R1 restano separate in `zone_senza_canoni`: non sono rese calcolabili.
 
 ## Obiettivo 2 - Area Groane
 
-Il manifesto `comuni_obiettivo2.json` prepara Baranzate, Bollate, Cesate, Garbagnate Milanese, Novate Milanese, Paderno Dugnano e Senago. Solaro è escluso dal perimetro richiesto.
+Il manifesto `comuni_obiettivo2.json` genera Baranzate, Bollate, Cesate, Garbagnate Milanese, Novate Milanese, Paderno Dugnano, Senago e Solaro. Solaro è stato recuperato dopo la conferma umana della sua tabella a pagina 18 dell'accordo Groane e della mappa ufficiale a due zone.
 
 ```powershell
 python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/comuni_obiettivo2.json --source-dir <cartella-kml>
 python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/comuni_obiettivo2.json --source-dir <cartella-kml> --check
 ```
 
-I KML di sei Comuni espongono direttamente le zone contrattuali; Baranzate espone i codici OMI. La pagina 4 dell'accordo assegna gli edifici attraversati da un confine alla zona di maggior valore: il dataset conserva l'ordine contrattuale crescente e dichiara `agreement_zone_order`.
+I KML di sette Comuni espongono direttamente le zone contrattuali; Baranzate espone i codici OMI. La pagina 4 dell'accordo assegna gli edifici attraversati da un confine alla zona di maggior valore: il dataset conserva l'ordine contrattuale crescente e dichiara `agreement_zone_order`.
 
-Come richiesto per la fase di preparazione, tutti i `canoni` sono `{}` e `canoni_confirmed` è `false`. I dati non vengono registrati nel selettore e non sono utilizzabili dal motore finché i valori non saranno confermati da una persona.
+I canoni delle pagine 17-18 sono stati confermati riga per riga nel file `VERIFICA_obiettivo2_groane_COMPILATA.md` (SHA-256 `91184b1b854ebf725a4f398a7122fc039445117f47af27033b2e517780a14461`). Gli otto Comuni hanno `canoni_confirmed: true` e sono registrati nel selettore.
