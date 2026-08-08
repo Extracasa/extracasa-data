@@ -4,7 +4,7 @@
   "agreement": {"title": "Accordo locale ambito Rhodense 2024", "pdf_file_id": "1HZLf8y6fjs17ak_Yqm-RUInwLn3nSsqZ", "pdf_sha256": "cc25031db50587e366672ee61332ee22f4be1ae9f64682b3a73d0639ce32d7be", "zone_map_page": 4},
   "comuni": {
     "arese": {
-      "label": "Arese", "mid": "1iw8wTi5hW8N7puEa3_czH_4D_H168wo", "kml_canonical_sha256": "58adfba16920f6408b5d03fbc616b9fae1e81d5e66bdd04120759a599a20e528", "official_area_km2": 6.56, "zoom": 14, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "label": "Arese", "mid": "1iw8wTi5hW8N7puEa3_czH_4D_H168wo", "kml_canonical_sha256": "58adfba16920f6408b5d03fbc616b9fae1e81d5e66bdd04120759a599a20e528", "official_area_km2": 6.56, "area_tolerance_pct": 7.0, "zoom": 14, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
       "zone_map": {"B1": 1, "D2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "cornaredo": {
@@ -24,7 +24,7 @@
       "zone_map": {"Z1": 1}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "pregnana-milanese": {
-      "label": "Pregnana Milanese", "mid": "18PioNfywRmDz4jMOhv4X6CRlqYs-hnE", "kml_canonical_sha256": "4ee2729ca435d8f43a64eeedfc7ad9083a55d7309d6823a893873b4022e96258", "official_area_km2": 5.07, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false,
+      "label": "Pregnana Milanese", "mid": "18PioNfywRmDz4jMOhv4X6CRlqYs-hnE", "kml_canonical_sha256": "4ee2729ca435d8f43a64eeedfc7ad9083a55d7309d6823a893873b4022e96258", "official_area_km2": 5.07, "area_tolerance_pct": 4.0, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false,
       "zone_map": {"Z1": 1}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     },
     "rho": {

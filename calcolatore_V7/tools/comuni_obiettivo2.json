@@ -30,6 +30,10 @@
     "senago": {
       "label": "Senago", "mid": "1m44BU5CCK38Ws4kNmFn8W1q8dJZ3RKI", "kml_canonical_sha256": "c33536a60e28d9a07a70cb003f9bbf72c52c61bb4c41b70b4846574ecdaaeaf3", "official_area_km2": 8.60, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
       "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+    },
+    "solaro": {
+      "label": "Solaro", "mid": "1fGDfeNJtjUS7gTzJ-WgnKrmG6DiA3jE", "kml_canonical_sha256": "9dbe25bcccff8e699be90f13c312d26708f53fa8a72b04e557f69c3d64f87caf", "official_area_km2": 6.68, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
+      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
     }
   }
 }
