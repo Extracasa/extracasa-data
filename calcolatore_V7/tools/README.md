@@ -54,7 +54,7 @@ Arese mantiene un'avvertenza fail-closed: l'accordo associa R1 alla zona 2, ma i
 
 ## Obiettivo 4 - Area Sud
 
-Il manifesto `comuni_obiettivo4.json` genera Buccinasco, Opera, Rozzano, San Donato Milanese, San Giuliano Milanese e Trezzano sul Naviglio. I canoni e le corrispondenze OMI sono stati confermati nel file `VERIFICA_obiettivo4_sud_COMPILATA.md` (SHA-256 `8adaec3d6f5799396293d34a06a156b663c956460295b1dae0801ff41387ab41`).
+Il manifesto `comuni_obiettivo4.json` genera Buccinasco, Opera, Rozzano, San Donato Milanese, San Giuliano Milanese e Trezzano sul Naviglio. I canoni e le corrispondenze OMI sono stati confermati nel file `VERIFICA_obiettivo4_sud_COMPILATA.md` (SHA-256 dei byte versionati `33b89c8fac1aa768526a1db11e94e8ce230a6184a2c6bf7cf06c3500d1e7616e`; SHA-256 dell'originale fornito `8adaec3d6f5799396293d34a06a156b663c956460295b1dae0801ff41387ab41`).
 
 Trezzano è deliberatamente modellata dal numero di zona del KML e dall'art. 4.1.a: zona 1 = D1, zona 2 = B1 e zona 3 = R1. La corrispondenza è dichiarata in `omi_code_map`, validata dal generatore e usata solo per esporre il codice corretto; nessuna zona viene dedotta per convenzione dal codice OMI. Le zone R1/R2 dei sei Comuni hanno canoni propri e non entrano in `zone_senza_canoni`.
 
