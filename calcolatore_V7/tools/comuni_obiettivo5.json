@@ -3,8 +3,8 @@
   "area_source": "https://www.cittametropolitana.mi.it/aree-tematiche/statistica/dati-statistici/.galleries/statistica-doc/Annuario-2026-Statistico.pdf",
   "comuni": {
     "peschiera-borromeo": {
-      "label": "Peschiera Borromeo", "mid": "1nFTD-R6-0gDXnf1tMyI1XTimMAawAl4", "kml_canonical_sha256": "5c42b9c6267105d9d1ae6bd00cd883a60940d183c9d6bfcb7671ddd2f315b701", "pdf_file_id": "1KmpCnqSoWoTbzN6bQSxgsyJnInMaBAVV", "pdf_sha256": "8e4edabce4ca80af8ee72f9035db6928efd6fab9453eec24b2e8afc816f1dbfb", "official_area_km2": 23.22, "zoom": 12, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "label": "Peschiera Borromeo", "mid": "1nFTD-R6-0gDXnf1tMyI1XTimMAawAl4", "kml_canonical_sha256": "5c42b9c6267105d9d1ae6bd00cd883a60940d183c9d6bfcb7671ddd2f315b701", "pdf_file_id": "1KmpCnqSoWoTbzN6bQSxgsyJnInMaBAVV", "pdf_sha256": "8e4edabce4ca80af8ee72f9035db6928efd6fab9453eec24b2e8afc816f1dbfb", "official_area_km2": 23.22, "zoom": 12, "placemark_mode": "agreement_zone", "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
+      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "omi_code_map": {"Z1": "D1", "Z2": "B1", "Z3": "D2"}, "zone_senza_canoni": [], "canoni_confirmed": true,
       "canoni": {"1": {"sf1": {"min": "6.00", "max": "7.99"}, "sf2": {"min": "8.00", "max": "9.99"}, "sf3": {"min": "10.00", "max": "12.00"}}, "2": {"sf1": {"min": "5.00", "max": "5.99"}, "sf2": {"min": "6.00", "max": "7.99"}, "sf3": {"min": "8.00", "max": "9.50"}}, "3": {"sf1": {"min": "4.00", "max": "4.99"}, "sf2": {"min": "5.00", "max": "6.99"}, "sf3": {"min": "7.00", "max": "8.00"}}}
     },
     "pioltello": {
@@ -18,8 +18,8 @@
       "canoni": {"1": {"sf1": {"min": "7.00", "max": "11.99"}, "sf2": {"min": "12.00", "max": "13.99"}, "sf3": {"min": "14.00", "max": "16.00"}}, "2": {"sf1": {"min": "5.00", "max": "8.99"}, "sf2": {"min": "9.00", "max": "10.99"}, "sf3": {"min": "11.00", "max": "13.00"}}, "3": {"sf1": {"min": "3.00", "max": "5.99"}, "sf2": {"min": "6.00", "max": "7.99"}, "sf3": {"min": "8.00", "max": "10.00"}}}
     },
     "vimodrone": {
-      "label": "Vimodrone", "mid": "1vyc9STDATRqMIpSFVv1pQz5q-lPKChI", "kml_canonical_sha256": "aed3c7330535ab28d3f3410fc4194dd16e16ecae17111ba66fe3472bbff8c3a9", "pdf_file_id": "1O4Ui2aiR6YZeWIHWMsRsBBQ8C-5h-nUa", "pdf_sha256": "b223e9ee8740295b3a7bcb69deae3f81ba0a2708ff244d091c5df7055c145edd", "official_area_km2": 4.74, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "label": "Vimodrone", "mid": "1vyc9STDATRqMIpSFVv1pQz5q-lPKChI", "kml_canonical_sha256": "aed3c7330535ab28d3f3410fc4194dd16e16ecae17111ba66fe3472bbff8c3a9", "pdf_file_id": "1O4Ui2aiR6YZeWIHWMsRsBBQ8C-5h-nUa", "pdf_sha256": "b223e9ee8740295b3a7bcb69deae3f81ba0a2708ff244d091c5df7055c145edd", "official_area_km2": 4.74, "zoom": 14, "placemark_mode": "agreement_zone", "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
+      "zone_map": {"Z1": 1, "Z2": 2}, "omi_code_map": {"Z1": "B1", "Z2": "D1"}, "zone_senza_canoni": [], "canoni_confirmed": true,
       "canoni": {"1": {"sf1": {"min": "7.00", "max": "8.99"}, "sf2": {"min": "9.00", "max": "11.99"}, "sf3": {"min": "12.00", "max": "14.00"}}, "2": {"sf1": {"min": "6.00", "max": "7.99"}, "sf2": {"min": "8.00", "max": "9.99"}, "sf3": {"min": "10.00", "max": "12.00"}}}
     }
   }
