@@ -52,6 +52,14 @@ Le geometrie correnti misurano uno scostamento di -6,5% per Arese e -3,5% per Pr
 
 Arese mantiene un'avvertenza fail-closed: l'accordo associa R1 alla zona 2, ma il KML non espone il relativo perimetro. Il simulatore non inventa la geometria mancante; gli indirizzi fuori dai poligoni ufficiali restano non coperti.
 
+## Obiettivo 4 - Area Sud
+
+Il manifesto `comuni_obiettivo4.json` genera Buccinasco, Opera, Rozzano, San Donato Milanese, San Giuliano Milanese e Trezzano sul Naviglio. I canoni e le corrispondenze OMI sono stati confermati nel file `VERIFICA_obiettivo4_sud_COMPILATA.md` (SHA-256 dei byte versionati `33b89c8fac1aa768526a1db11e94e8ce230a6184a2c6bf7cf06c3500d1e7616e`; SHA-256 dell'originale fornito `8adaec3d6f5799396293d34a06a156b663c956460295b1dae0801ff41387ab41`).
+
+Trezzano è deliberatamente modellata dal numero di zona del KML e dall'art. 4.1.a: zona 1 = D1, zona 2 = B1 e zona 3 = R1. La corrispondenza è dichiarata in `omi_code_map`, validata dal generatore e usata solo per esporre il codice corretto; nessuna zona viene dedotta per convenzione dal codice OMI. Le zone R1/R2 dei sei Comuni hanno canoni propri e non entrano in `zone_senza_canoni`.
+
+I sei accordi non contengono una clausola locale sui confini. Le eventuali sovrapposizioni seguono la regola generale del §5 del brief, dichiarata esplicitamente come fonte nei manifesti.
+
 ## Obiettivo 6 - Completamento
 
 Il manifesto `comuni_obiettivo6.json` prepara Cassano d'Adda, Cernusco sul Naviglio, Gorgonzola, Legnano, Melzo, Nerviano, Parabiago e Rescaldina. Noviglio non appartiene al perimetro finale; Solaro è collocato nell'area Groane. Con i manifesti 1-6 risultano quindi 40 nuovi Comuni, oltre a Milano e Sesto San Giovanni. Rescaldina dichiara una tolleranza del 2,5% perché la geometria corrente misura +2,0% rispetto alla superficie amministrativa; gli altri Comuni del gruppo mantengono il limite predefinito del 2%.

@@ -4,27 +4,33 @@
   "comuni": {
     "buccinasco": {
       "label": "Buccinasco", "mid": "1iD6_3IY9q4mUuEZfy8gJev7NaRSVWf8", "kml_canonical_sha256": "06bb83282ffe09020c005e1f4b4daeea00806744d329feab30b28f1391d3dec4", "pdf_file_id": "1psVS3BIJFd_NzZnt0zGT3auu10wMxkXW", "pdf_sha256": "912abb04eeb3b761a4cbcd3c3d123b0fa64c9bea1be218a76b57ca9e2a424939", "official_area_km2": 12.00, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "7.00", "max": "8.99"}, "sf2": {"min": "9.00", "max": "10.99"}, "sf3": {"min": "11.00", "max": "13.00"}}, "2": {"sf1": {"min": "5.00", "max": "6.99"}, "sf2": {"min": "7.00", "max": "8.99"}, "sf3": {"min": "9.00", "max": "11.00"}}, "3": {"sf1": {"min": "4.00", "max": "4.99"}, "sf2": {"min": "5.00", "max": "6.99"}, "sf3": {"min": "7.00", "max": "9.00"}}}
     },
     "opera": {
       "label": "Opera", "mid": "1Joqxbnn5OTfjmWIpFN9fuXl4JMSHv-Q", "kml_canonical_sha256": "8fc2132b011101434311e73472ca429d5586fc37c2d339dc7e1990a761399009", "pdf_file_id": "12MYiwrVlYMFWNGeHpvfh0vGd02pgma-O", "pdf_sha256": "0496a236051ca55a23ee2ef4ba2a33e0af35ea44e825cbea1db319d1dc31e676", "official_area_km2": 7.64, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "5.00", "max": "7.99"}, "sf2": {"min": "8.00", "max": "10.99"}, "sf3": {"min": "11.00", "max": "13.50"}}, "2": {"sf1": {"min": "4.00", "max": "5.29"}, "sf2": {"min": "5.30", "max": "7.99"}, "sf3": {"min": "8.00", "max": "11.00"}}}
     },
     "rozzano": {
       "label": "Rozzano", "mid": "1AGwVz3GDyKz5kir9r1V2mr0P9BDO3rw", "kml_canonical_sha256": "e821561ac8df4a6c5b896b040b8eba4d07d366a87f3e89d8a4e286ee10e9be50", "pdf_file_id": "1i0nfovgC31YesbPj0QHdTEqmkXexn-fz", "pdf_sha256": "7edbbd89fe0ce0757bb2f96c966edfec57b0f3b2153c59c82858bd63f270d310", "official_area_km2": 12.24, "zoom": 13, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"B1": 1, "D1": 2, "R1": 3, "R2": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"B1": 1, "D1": 2, "R1": 3, "R2": 3}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "7.00", "max": "9.99"}, "sf2": {"min": "10.00", "max": "11.99"}, "sf3": {"min": "12.00", "max": "14.00"}}, "2": {"sf1": {"min": "5.00", "max": "6.99"}, "sf2": {"min": "7.00", "max": "8.99"}, "sf3": {"min": "9.00", "max": "11.00"}}, "3": {"sf1": {"min": "3.00", "max": "4.99"}, "sf2": {"min": "5.00", "max": "6.99"}, "sf3": {"min": "7.00", "max": "8.50"}}}
     },
     "san-donato-milanese": {
       "label": "San Donato Milanese", "mid": "1WoXU3scoGSMHQX8ZvmnkRq56OCwYnjE", "kml_canonical_sha256": "4ce57c10d078debdaa7e82df032eeed1b226610a82cf9a4b3ff40627f6f3c8d8", "pdf_file_id": "1fkmLfxVmaMY8QRFfjs6nRpGHHnCJEU8C", "pdf_sha256": "0a611f67638504c8d19de583efc8776ff4898a3f1d0e45e8ddd17e039ea511d2", "official_area_km2": 12.88, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "7.00", "max": "8.99"}, "sf2": {"min": "9.00", "max": "11.99"}, "sf3": {"min": "12.00", "max": "14.00"}}, "2": {"sf1": {"min": "6.00", "max": "7.99"}, "sf2": {"min": "8.00", "max": "9.99"}, "sf3": {"min": "10.00", "max": "12.00"}}, "3": {"sf1": {"min": "4.00", "max": "5.99"}, "sf2": {"min": "6.00", "max": "7.99"}, "sf3": {"min": "8.00", "max": "10.00"}}}
     },
     "san-giuliano-milanese": {
       "label": "San Giuliano Milanese", "mid": "18OR8-qVzRNBTY7Yzg5SICI_RrlyOTOc", "kml_canonical_sha256": "10cf6940cc510e04fa5fc1b0defa768fbc16d9401087509f0df612c07147c810", "pdf_file_id": "1kikwpbn5SrDvceYv50tDbR3ar1O7kVLg", "pdf_sha256": "cd97091f2468bb2bff0f68667be118609afbf76a5465ccc8059e562194b26f7e", "official_area_km2": 30.87, "zoom": 12, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"B1": 1, "E1": 2, "R1": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"B1": 1, "E1": 2, "R1": 3}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "7.00", "max": "9.99"}, "sf2": {"min": "10.00", "max": "11.99"}, "sf3": {"min": "12.00", "max": "14.00"}}, "2": {"sf1": {"min": "5.00", "max": "6.99"}, "sf2": {"min": "7.00", "max": "8.99"}, "sf3": {"min": "9.00", "max": "11.00"}}, "3": {"sf1": {"min": "3.00", "max": "4.99"}, "sf2": {"min": "5.00", "max": "6.99"}, "sf3": {"min": "7.00", "max": "8.50"}}}
     },
     "trezzano-sul-naviglio": {
-      "label": "Trezzano sul Naviglio", "mid": "1RPsbV-t35MwMHzcxKBk-Kqqpvnf4wsQ", "kml_canonical_sha256": "cfc482b55f2ae3dedcab029417f3d1febd0ba16c08f0e956fd787f0f8e9cfaf1", "pdf_file_id": "1xABTRbLmsX0PYiE6joJq_6pJsbHlPqno", "pdf_sha256": "39308247ffe00aa37f0c45d92ac7d6c257c700f98dcc3f9632354f45cebc954e", "official_area_km2": 10.77, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "label": "Trezzano sul Naviglio", "mid": "1RPsbV-t35MwMHzcxKBk-Kqqpvnf4wsQ", "kml_canonical_sha256": "cfc482b55f2ae3dedcab029417f3d1febd0ba16c08f0e956fd787f0f8e9cfaf1", "pdf_file_id": "1xABTRbLmsX0PYiE6joJq_6pJsbHlPqno", "pdf_sha256": "39308247ffe00aa37f0c45d92ac7d6c257c700f98dcc3f9632354f45cebc954e", "official_area_km2": 10.77, "zoom": 13, "placemark_mode": "agreement_zone", "omi_code_map": {"Z1": "D1", "Z2": "B1", "Z3": "R1"}, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
+      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "6.00", "max": "7.99"}, "sf2": {"min": "8.00", "max": "10.99"}, "sf3": {"min": "11.00", "max": "13.00"}}, "2": {"sf1": {"min": "5.00", "max": "6.99"}, "sf2": {"min": "7.00", "max": "8.99"}, "sf3": {"min": "9.00", "max": "11.00"}}, "3": {"sf1": {"min": "3.50", "max": "4.99"}, "sf2": {"min": "5.00", "max": "6.99"}, "sf3": {"min": "7.00", "max": "9.00"}}}
     }
   }
 }
