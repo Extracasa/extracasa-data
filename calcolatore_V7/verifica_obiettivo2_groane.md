@@ -54,8 +54,14 @@
 - Geometria: 8,608 km² contro 8,60 ufficiali (+0,1%); 22 poligoni; 3 campioni multi-zona risolti dall'ordine contrattuale.
 - Nota: i placemark ripetuti Z2/Z3 vengono aggregati, incluse le isole e le cavità interne.
 
+## Solaro
+
+- Mappa: KML diretto `Z1 -> zona 1`, `Z2 -> zona 2`; Google My Maps `1fGDfeNJtjUS7gTzJ-WgnKrmG6DiA3jE`, hash canonico `9dbe25bcccff8e699be90f13c312d26708f53fa8a72b04e557f69c3d64f87caf`.
+- Canoni: pagina 18 dell'accordo Groane, **[DA CONFERMARE - nessun valore trascritto]**.
+- Superficie ufficiale: 6,68 km².
+- Nota: il collegamento PDF errato pubblicato sotto Solaro nella pagina indice non determina un'esclusione; la fonte bloccata resta l'accordo Groane comune, che contiene la tabella di Solaro.
+
 ## Esclusioni e blocco finale
 
-- **Solaro è escluso**, anche se compare nell'accordo comune e nella pagina 18.
-- Nessun Comune di Monza e Brianza, Abbiategrasso o Solaro è incluso.
-- I sette JSON hanno `canoni: {}`; non sono registrati nel selettore. L'integrazione nel motore è bloccata fino alla conferma umana dei valori.
+- Nessun Comune di Monza e Brianza o Abbiategrasso è incluso.
+- Gli otto JSON, compreso Solaro, hanno `canoni: {}` e non sono registrati nel selettore. L'integrazione nel motore è bloccata fino alla conferma umana dei valori.
