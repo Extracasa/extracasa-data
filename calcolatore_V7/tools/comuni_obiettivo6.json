@@ -3,36 +3,44 @@
   "area_source": "https://www.cittametropolitana.mi.it/aree-tematiche/statistica/dati-statistici/.galleries/statistica-doc/Annuario-2026-Statistico.pdf",
   "comuni": {
     "cassano-d-adda": {
-      "label": "Cassano d'Adda", "mid": "17isZXvcGFiYGUMFZMJStkeE5-ZjwMB8", "kml_canonical_sha256": "2ede223d136af2bae06fa6873a686336387fa5f959d9d10bec3bdd0e17bb43d8", "pdf_file_id": "1UGanstZgs9HKdHPQq6ib4cdplpecgOf2", "pdf_sha256": "c62fa0680b0cf4fd190a233c09fac27856475179f961a9a87c17a36d61b7ec80", "official_area_km2": 18.60, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "label": "Cassano d'Adda", "mid": "17isZXvcGFiYGUMFZMJStkeE5-ZjwMB8", "kml_canonical_sha256": "2ede223d136af2bae06fa6873a686336387fa5f959d9d10bec3bdd0e17bb43d8", "pdf_file_id": "1UGanstZgs9HKdHPQq6ib4cdplpecgOf2", "pdf_sha256": "c62fa0680b0cf4fd190a233c09fac27856475179f961a9a87c17a36d61b7ec80", "official_area_km2": 18.60, "zoom": 13, "placemark_mode": "agreement_zone", "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
+      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "omi_code_map": {"Z1": "B1", "Z2": "D1", "Z3": "R1"}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "5.00", "max": "6.49"}, "sf2": {"min": "6.50", "max": "7.99"}, "sf3": {"min": "8.00", "max": "10.00"}}, "2": {"sf1": {"min": "4.00", "max": "5.49"}, "sf2": {"min": "5.50", "max": "6.99"}, "sf3": {"min": "7.00", "max": "8.50"}}, "3": {"sf1": {"min": "3.00", "max": "4.49"}, "sf2": {"min": "4.50", "max": "5.99"}, "sf3": {"min": "6.00", "max": "7.50"}}}
     },
     "cernusco-sul-naviglio": {
       "label": "Cernusco sul Naviglio", "mid": "1hRPO3QZrpVyZswiWIY2Y-3cKxYi5yhg", "kml_canonical_sha256": "ec31880912516e509b7e031c54e0aef52973994bf2629b3f39113c63f58475e1", "pdf_file_id": "16YPqHlYBghMYRochyEvgehl9drW4Wxun", "pdf_sha256": "b038c3ea0da7d27817366f59a71de1c856a97f3afb27c73bc7924f620065d2d8", "official_area_km2": 13.22, "zoom": 13, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"B1": 1, "D1": 2, "R1": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"B1": 1, "D1": 2, "R1": 3}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "7.00", "max": "9.99"}, "sf2": {"min": "10.00", "max": "12.99"}, "sf3": {"min": "13.00", "max": "15.00"}}, "2": {"sf1": {"min": "6.00", "max": "8.49"}, "sf2": {"min": "8.50", "max": "10.99"}, "sf3": {"min": "11.00", "max": "13.00"}}, "3": {"sf1": {"min": "3.00", "max": "5.99"}, "sf2": {"min": "6.00", "max": "7.49"}, "sf3": {"min": "7.50", "max": "9.00"}}}
     },
     "gorgonzola": {
       "label": "Gorgonzola", "mid": "1h5PuEhdmQ7wRK60lSCtU-kP1NqBwzU4", "kml_canonical_sha256": "7159e5b4128ec68ccb3bd85fc99b60cb11a8905791dbdc1d9c8c33037345cbaa", "pdf_file_id": "19IdZx6PiE5EAJcBHQHDV8ja9KoVQBVMi", "pdf_sha256": "4ac9d4b0f0aedfabed1d87075467bc19b0b054e1d40c14a4d937eb7370afdf06", "official_area_km2": 10.58, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "7.00", "max": "9.99"}, "sf2": {"min": "10.00", "max": "12.99"}, "sf3": {"min": "13.00", "max": "15.00"}}, "2": {"sf1": {"min": "6.00", "max": "8.49"}, "sf2": {"min": "8.50", "max": "10.99"}, "sf3": {"min": "11.00", "max": "13.00"}}, "3": {"sf1": {"min": "3.00", "max": "5.99"}, "sf2": {"min": "6.00", "max": "7.49"}, "sf3": {"min": "7.50", "max": "9.00"}}}
     },
     "legnano": {
       "label": "Legnano", "mid": "1I1b8DmTNupfK4fdDW-7CXwpUuGaHyHM", "kml_canonical_sha256": "09ed685649b759532fc43c46bd3342a6d68e399ba372a93594836c394d256e73", "pdf_file_id": "1s-Gzl2PRSpnIRDiqNp0Q5t9Gq-b7Ppq1", "pdf_sha256": "ce93b9c5005dc77cd066506dcc659be72d3e44dea9fd489767463168a1fb58f9", "official_area_km2": 17.68, "zoom": 13, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"B1": 1, "C1": 2, "D1": 3, "D2": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"B1": 1, "C1": 2, "D1": 3, "D2": 3}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "6.00", "max": "7.99"}, "sf2": {"min": "8.00", "max": "9.99"}, "sf3": {"min": "10.00", "max": "12.00"}}, "2": {"sf1": {"min": "4.00", "max": "6.49"}, "sf2": {"min": "6.50", "max": "7.99"}, "sf3": {"min": "8.00", "max": "10.00"}}, "3": {"sf1": {"min": "3.00", "max": "5.99"}, "sf2": {"min": "6.00", "max": "7.49"}, "sf3": {"min": "7.50", "max": "9.00"}}}
     },
     "melzo": {
-      "label": "Melzo", "mid": "1ysKP0L2RamlhfMdB1jsFrFQoVAUCDkI", "kml_canonical_sha256": "fa9cee5324b6437d21f08bf6d99f99e8dff3cdc17dda8d8d402ccce0a36ee9fc", "pdf_file_id": "1MAAj6LIQrzlav5iSTr71-3r3fDVbKqhI", "pdf_sha256": "1def26348572a290f2c8269e7f2b358f4ba9a7efbfe27f4bf42a9f5d81443896", "official_area_km2": 9.82, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "label": "Melzo", "mid": "1ysKP0L2RamlhfMdB1jsFrFQoVAUCDkI", "kml_canonical_sha256": "fa9cee5324b6437d21f08bf6d99f99e8dff3cdc17dda8d8d402ccce0a36ee9fc", "pdf_file_id": "1MAAj6LIQrzlav5iSTr71-3r3fDVbKqhI", "pdf_sha256": "1def26348572a290f2c8269e7f2b358f4ba9a7efbfe27f4bf42a9f5d81443896", "official_area_km2": 9.82, "zoom": 13, "placemark_mode": "agreement_zone", "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
+      "zone_map": {"Z1": 1, "Z2": 2}, "omi_code_map": {"Z1": "B1", "Z2": "R1"}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "4.50", "max": "6.99"}, "sf2": {"min": "7.00", "max": "8.99"}, "sf3": {"min": "9.00", "max": "10.50"}}, "2": {"sf1": {"min": "3.00", "max": "4.99"}, "sf2": {"min": "5.00", "max": "6.99"}, "sf3": {"min": "7.00", "max": "9.00"}}}
     },
     "nerviano": {
-      "label": "Nerviano", "mid": "1AB0hr232D7xqrvPiWOR6L7no2SdjAP4", "kml_canonical_sha256": "d48c844dd9647756da48043ce7c17f640643a294159687924e6188948e62b55c", "pdf_file_id": "1Ad2WzqLQ-G1QUr--xIb3IkrOiLaLtjag", "pdf_sha256": "bc17bffa29125d71de0bf308b78c0a935ab03d77299bbeed7056f549b131cd87", "official_area_km2": 13.26, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "label": "Nerviano", "mid": "1AB0hr232D7xqrvPiWOR6L7no2SdjAP4", "kml_canonical_sha256": "d48c844dd9647756da48043ce7c17f640643a294159687924e6188948e62b55c", "pdf_file_id": "1Ad2WzqLQ-G1QUr--xIb3IkrOiLaLtjag", "pdf_sha256": "bc17bffa29125d71de0bf308b78c0a935ab03d77299bbeed7056f549b131cd87", "official_area_km2": 13.26, "zoom": 13, "placemark_mode": "agreement_zone", "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
+      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "omi_code_map": {"Z1": "B1", "Z2": "D1", "Z3": "R1"}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "4.00", "max": "5.99"}, "sf2": {"min": "6.00", "max": "7.99"}, "sf3": {"min": "8.00", "max": "10.00"}}, "2": {"sf1": {"min": "3.50", "max": "4.99"}, "sf2": {"min": "5.00", "max": "6.49"}, "sf3": {"min": "6.50", "max": "8.50"}}, "3": {"sf1": {"min": "3.00", "max": "4.00"}, "sf2": {"min": "4.01", "max": "5.50"}, "sf3": {"min": "5.51", "max": "6.80"}}}
     },
     "parabiago": {
       "label": "Parabiago", "mid": "1AfSH_EwnK63xFG-DQRO6Ujmkvo1JXq4", "kml_canonical_sha256": "0e217f8e13c2eb8af1fd09d7edc76566093bd6b8b395c6fc587f50f4f737ca2e", "pdf_file_id": "1it1rMSDt9FlaTOVmD60VFjFQLqLsLq6f", "pdf_sha256": "344899d4412f62e3ef6d9c65551ca865262cfd216475ce05a8bc0611690c8036", "official_area_km2": 14.29, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "4.00", "max": "5.99"}, "sf2": {"min": "6.00", "max": "7.99"}, "sf3": {"min": "8.00", "max": "10.00"}}, "2": {"sf1": {"min": "3.50", "max": "4.99"}, "sf2": {"min": "5.00", "max": "6.49"}, "sf3": {"min": "6.50", "max": "8.50"}}, "3": {"sf1": {"min": "3.00", "max": "4.00"}, "sf2": {"min": "4.01", "max": "5.50"}, "sf3": {"min": "5.51", "max": "6.80"}}}
     },
     "rescaldina": {
-      "label": "Rescaldina", "mid": "1AAoubUlmOJuS0HhmSelJDEWsYiYl6cg", "kml_canonical_sha256": "bb2eeb55b8712855964f3afe319dc13f28cfbc21d4629980e9807ff96644cd4d", "pdf_file_id": "1p5XnYUo5hOvUy1JMaGKqevrSXo0WqS3a", "pdf_sha256": "99bd4654b6fc96dbacfaef2cfde9b89593e17f6260e5b384aa59e6113b324245", "official_area_km2": 8.03, "area_tolerance_pct": 2.5, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "label": "Rescaldina", "mid": "1AAoubUlmOJuS0HhmSelJDEWsYiYl6cg", "kml_canonical_sha256": "bb2eeb55b8712855964f3afe319dc13f28cfbc21d4629980e9807ff96644cd4d", "pdf_file_id": "1p5XnYUo5hOvUy1JMaGKqevrSXo0WqS3a", "pdf_sha256": "99bd4654b6fc96dbacfaef2cfde9b89593e17f6260e5b384aa59e6113b324245", "official_area_km2": 8.03, "area_tolerance_pct": 2.5, "zoom": 13, "placemark_mode": "agreement_zone", "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
+      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "omi_code_map": {"Z1": "B1", "Z2": "D1", "Z3": "R1"}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "5.00", "max": "6.99"}, "sf2": {"min": "7.00", "max": "8.99"}, "sf3": {"min": "9.00", "max": "11.00"}}, "2": {"sf1": {"min": "4.50", "max": "5.99"}, "sf2": {"min": "6.00", "max": "7.49"}, "sf3": {"min": "7.50", "max": "9.50"}}, "3": {"sf1": {"min": "3.50", "max": "5.00"}, "sf2": {"min": "5.01", "max": "6.50"}, "sf3": {"min": "6.51", "max": "7.80"}}}
     }
   }
 }

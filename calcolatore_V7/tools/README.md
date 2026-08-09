@@ -72,4 +72,10 @@ Peschiera e Segrate confermano che B1 non implica zona 1: il numero di zona vien
 
 ## Obiettivo 6 - Completamento
 
-Il manifesto `comuni_obiettivo6.json` prepara Cassano d'Adda, Cernusco sul Naviglio, Gorgonzola, Legnano, Melzo, Nerviano, Parabiago e Rescaldina. Noviglio non appartiene al perimetro finale; Solaro è collocato nell'area Groane. Con i manifesti 1-6 risultano quindi 40 nuovi Comuni, oltre a Milano e Sesto San Giovanni. Rescaldina dichiara una tolleranza del 2,5% perché la geometria corrente misura +2,0% rispetto alla superficie amministrativa; gli altri Comuni del gruppo mantengono il limite predefinito del 2%.
+Il manifesto `comuni_obiettivo6.json` genera Cassano d'Adda, Cernusco sul Naviglio, Gorgonzola, Legnano, Melzo, Nerviano, Parabiago e Rescaldina. Noviglio non appartiene al perimetro finale e il relativo dataset preparatorio è stato rimosso; Solaro è collocato nell'area Groane.
+
+I canoni sono stati confermati nel file `VERIFICA_obiettivo6_completamento_COMPILATA.md` (SHA-256 dei byte versionati `6d9931cc9791d615a6b66623b959d304c96bb9757e33e84ee4b0951d6afba868`; SHA-256 dell'originale fornito `6ca36919396e1088f6bebcf5e770d03d725ddb6f7d9fd143551c9cea9050401d`, che contiene una riga vuota finale rimossa nella copia versionata). Le soglie non standard delle zone 3 sono conservate esattamente: `4,00→4,01→5,51` per Nerviano/Parabiago e `5,00→5,01→6,51` per Rescaldina. Rescaldina dichiara inoltre una tolleranza geometrica del 2,5% perché la copertura corrente misura +2,0% rispetto alla superficie amministrativa; gli altri Comuni mantengono il limite predefinito del 2%.
+
+Cassano d'Adda, Melzo, Nerviano e Rescaldina espongono etichette contrattuali nel KML ma hanno una corrispondenza OMI univoca, conservata con `omi_code_map` e pubblicata nel badge e nei payload. Cernusco e Legnano espongono già codici OMI reali nel KML. Gorgonzola e Parabiago mantengono invece `mostra_omi: false`, perché la rispettiva zona 3 aggrega più codici OMI e non esiste un singolo codice corretto da mostrare o persistere.
+
+Con questo obiettivo il selettore contiene 40 nuovi Comuni, oltre a Milano e Sesto San Giovanni: 42 Comuni complessivi. Nessun accordo di questo gruppo contiene una clausola locale sui confini; le sovrapposizioni citano esclusivamente la regola generale del §5 del brief.
