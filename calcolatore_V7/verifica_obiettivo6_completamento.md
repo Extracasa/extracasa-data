@@ -93,7 +93,7 @@ Accordo: **Accordo locale per il Comune di Melzo** · PDF pag. 3 zone · pag. 15
 | [ ] | 1 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
 | [ ] | 2 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
 
-Anomalie riscontrate: KML diretto con 3 poligoni; nessuna sovrapposizione multi-zona rilevata. Geometria 9,657 km² contro 9,82 ufficiali (-1,7%).
+Anomalie riscontrate: KML diretto con 3 poligoni; il controllo geometrico esatto rileva una sovrapposizione tra Z1/zona 1 e Z2/zona 2 intorno a `45.509460, 9.432986`, risolta deterministicamente dall'ordine contrattuale dichiarato nel manifesto ai sensi del §5. Geometria 9,657 km² contro 9,82 ufficiali (-1,7%).
 
 ## Nerviano
 
@@ -113,22 +113,6 @@ Accordo: **Accordo locale per il Comune di Nerviano** · PDF pag. 3 zone · pag.
 | [ ] | 3 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
 
 Anomalie riscontrate: KML diretto; 2 campioni multi-zona risolti dall'ordine previsto dal §5. Geometria 13,437 km² contro 13,26 ufficiali (+1,3%).
-
-## Noviglio
-
-Accordo: **Accordo locale per il Comune di Noviglio** · PDF pag. 3 zone · pag. 13 canoni
-
-| | Voce | Valore letto | CORREZIONE |
-|---|---|---|---|
-| [ ] | Numero di zone | zona unica | |
-| [ ] | Zona unica | intero territorio comunale | |
-| [ ] | Perimetri KML | OMI B1, E1, E2 e R1, tutti associati alla zona 1 | |
-
-| | Zona | Sub-fascia 1 | Sub-fascia 2 | Sub-fascia 3 | CORREZIONE |
-|---|---|---|---|---|---|
-| [ ] | 1 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
-
-Anomalie riscontrate: a pag. 3 l'ambito di applicazione cita per errore «Comune di Pieve Emanuele», mentre intestazione, modalità, firme e fonte KML riguardano Noviglio. I 4 perimetri OMI sono mantenuti come geometrie della zona unica; 3 campioni si sovrappongono entro la stessa zona. Geometria 15,560 km² contro 15,86 ufficiali (-1,9%).
 
 ## Parabiago
 
@@ -170,4 +154,4 @@ Anomalie riscontrate: KML diretto con 7 poligoni; 4 campioni multi-zona risolti 
 
 ## Blocco §3
 
-Tutti i nove JSON hanno `canoni: {}` e non sono registrati nel selettore. Nessun Comune supera tre zone contrattuali, quindi `ZONE_COLORS` non richiede estensioni. I valori delle tabelle devono essere confermati prima di qualunque integrazione runtime; per Noviglio va inoltre accettata esplicitamente la gestione del refuso documentale sopra indicato.
+Tutti gli otto JSON hanno `canoni: {}` e non sono registrati nel selettore. Noviglio è escluso dal perimetro di questa preparazione. Nessun Comune supera tre zone contrattuali, quindi `ZONE_COLORS` non richiede estensioni. I valori delle tabelle devono essere confermati prima di qualunque integrazione runtime.
