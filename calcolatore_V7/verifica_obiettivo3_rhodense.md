@@ -5,7 +5,7 @@
 - Accordo: **Accordo locale ambito Rhodense 2024**, Google Drive `1HZLf8y6fjs17ak_Yqm-RUInwLn3nSsqZ`, SHA-256 `cc25031db50587e366672ee61332ee22f4be1ae9f64682b3a73d0639ce32d7be`.
 - Zone e corrispondenze OMI: pagina PDF 4.
 - Tabelle dei canoni: pagine PDF 33, 35 e 37.
-- Conferma umana: `VERIFICA_obiettivo3_rhodense_COMPILATA.md`, SHA-256 originale `167fe15a8e82f48ac1b9e5c73e458ffe70c68fd4e7b34e1357301fb5a9e72ea2`.
+- Conferma umana: `VERIFICA_obiettivo3_rhodense_COMPILATA.md`, SHA-256 dei byte versionati `167fe15a8e82f48ac1b9e5c73e458ffe70c68fd4e7b34e1357301fb5a9e72ea2`, identico all'originale fornito.
 - Superfici: Annuario statistico 2026 della Città metropolitana di Milano.
 
 ## Canoni confermati

@@ -5,7 +5,7 @@
 - Pagina indice: Unioncasa Milano, URL in `tools/comuni_obiettivo2.json`.
 - Accordo: **Accordo locale - ambito territoriale di Garbagnate Milanese**, Google Drive `1lD_-Ty2oWu8WlYyJWpytIhaErfjjisiK`, SHA-256 `57987559a29fda0606fd6385ae598c9d90687716ed20026a49800d4381096909`.
 - Zone e corrispondenze OMI: pagina PDF 4.
-- Tabelle dei canoni: pagine PDF 17-18, confermate riga per riga nel file umano `VERIFICA_obiettivo2_groane_COMPILATA.md` (SHA-256 `91184b1b854ebf725a4f398a7122fc039445117f47af27033b2e517780a14461`).
+- Tabelle dei canoni: pagine PDF 17-18, confermate riga per riga nel file umano `VERIFICA_obiettivo2_groane_COMPILATA.md` (SHA-256 dei byte versionati `91184b1b854ebf725a4f398a7122fc039445117f47af27033b2e517780a14461`, identico all'originale fornito).
 - Superfici: Annuario statistico 2026 della Città metropolitana di Milano.
 - Regola di confine: pagina PDF 4; l'edificio attraversato dal confine appartiene alla zona di maggior valore. L'ordine contrattuale 1, 2, 3 è stato validato contro i canoni confermati.
 

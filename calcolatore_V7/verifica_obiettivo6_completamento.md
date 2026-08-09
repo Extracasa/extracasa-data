@@ -5,7 +5,7 @@
 - Otto accordi comunali distinti, con hash PDF bloccati in `tools/comuni_obiettivo6.json`.
 - Zone e corrispondenze OMI: pagina PDF 3.
 - Tabelle dei canoni: pagine PDF 14, 15 o 17.
-- Conferma umana: `VERIFICA_obiettivo6_completamento_COMPILATA.md`, SHA-256 originale `6ca36919396e1088f6bebcf5e770d03d725ddb6f7d9fd143551c9cea9050401d`.
+- Conferma umana: `VERIFICA_obiettivo6_completamento_COMPILATA.md`, SHA-256 dei byte versionati `6d9931cc9791d615a6b66623b959d304c96bb9757e33e84ee4b0951d6afba868`; SHA-256 dell'originale fornito `6ca36919396e1088f6bebcf5e770d03d725ddb6f7d9fd143551c9cea9050401d`, che contiene una riga vuota finale rimossa nella copia versionata.
 - Superfici: Annuario statistico 2026 della Città metropolitana di Milano.
 - Noviglio è escluso per decisione esplicita: non compare nel manifesto finale, nel selettore o nei dataset pubblicabili.
 
