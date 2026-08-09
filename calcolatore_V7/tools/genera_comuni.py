@@ -346,32 +346,30 @@ def validate_overlap(slug, cfg, overlap_policy, hits, lat, lng):
     codes = sorted(f'{item["o"]}->{item.get("z", "senza_canoni")}' for item in hits)
     if not overlap_policy:
         raise ValueError(f"Sovrapposizione senza regola ufficiale per {slug} a {lat:.6f},{lng:.6f}: {codes}")
+    policy_type = overlap_policy["type"]
     if not (overlap_policy.get("source") or overlap_policy.get("source_page")):
         raise ValueError(f"Fonte della regola di sovrapposizione mancante per {slug}")
-    if overlap_policy["type"] == "higher_value_first":
+    if policy_type == "higher_value_first":
         if any("z" not in item for item in hits):
             raise ValueError(f"La priorità per maggior valore incontra una zona senza canoni per {slug}")
         if any(not dominates_canoni(cfg["canoni"], hits[0]["z"], item["z"]) for item in hits[1:]):
             raise ValueError(f"La priorità per maggior valore non risolve {slug} a {lat:.6f},{lng:.6f}")
-    elif overlap_policy["type"] == "rural_first":
+    elif policy_type == "rural_first":
         unpriced = [item for item in hits if "z" not in item]
-        if unpriced and "z" in hits[0]:
-            raise ValueError(f"La zona rurale non precede le zone calcolabili per {slug}")
-        priced = [item for item in hits if "z" in item]
-        if len(priced) > 1 and any(
-            not dominates_canoni(cfg["canoni"], priced[0]["z"], item["z"])
-            for item in priced[1:]
-        ):
+        if unpriced:
+            if "z" in hits[0]:
+                raise ValueError(f"La zona rurale non precede le zone calcolabili per {slug}")
+        elif any(not dominates_canoni(cfg["canoni"], hits[0]["z"], item["z"]) for item in hits[1:]):
             raise ValueError(f"La priorità per maggior valore non risolve {slug} a {lat:.6f},{lng:.6f}")
-    elif overlap_policy["type"] == "agreement_zone_order":
-        if any("z" not in item for item in hits) or hits[0]["z"] != min(item["z"] for item in hits):
+    elif policy_type == "agreement_zone_order":
+        ranks = [item.get("z", math.inf) for item in hits]
+        if ranks[0] != min(ranks):
             raise ValueError(f"L'ordine delle zone contrattuali non risolve {slug} a {lat:.6f},{lng:.6f}")
-        if cfg.get("canoni_confirmed", True) and any(
-            not dominates_canoni(cfg["canoni"], hits[0]["z"], item["z"])
-            for item in hits[1:]
-        ):
-            raise ValueError(f"L'ordine contrattuale non segue i canoni per {slug} a {lat:.6f},{lng:.6f}")
-    else:
+        priced = [item for item in hits if "z" in item]
+        if cfg.get("canoni_confirmed", True) and len({item["z"] for item in priced}) > 1:
+            if any(not dominates_canoni(cfg["canoni"], priced[0]["z"], item["z"]) for item in priced[1:]):
+                raise ValueError(f"L'ordine contrattuale non segue i canoni per {slug} a {lat:.6f},{lng:.6f}")
+    elif policy_type != "agreement_zone_order":
         raise ValueError(f"Regola di sovrapposizione non supportata per {slug}")
     return codes
 
@@ -479,7 +477,8 @@ def build(slug, cfg, kml_path):
             witness = polygons_overlap_witness(first["p"], second["p"])
             if not witness:
                 continue
-            codes = validate_overlap(slug, cfg, overlap_policy, [first, second], witness[1], witness[0])
+            hits = [first, second]
+            codes = validate_overlap(slug, cfg, overlap_policy, hits, witness[1], witness[0])
             exact_overlaps.append({"lat": round(witness[1], 6), "lng": round(witness[0], 6), "zone": codes})
     overlaps = []
     same_zone_overlaps = 0
@@ -494,7 +493,7 @@ def build(slug, cfg, kml_path):
                 overlaps.append({
                     "lat": round(lat, 6),
                     "lng": round(lng, 6),
-                    "zone": sorted(f'{item["o"]}->{item.get("z", "senza_canoni")}' for item in hits)
+                    "zone": codes
                 })
             elif len(hits) > 1:
                 same_zone_overlaps += 1
