@@ -35,7 +35,7 @@ python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/com
 python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/comuni_obiettivo2.json --source-dir <cartella-kml> --check
 ```
 
-I KML di sei Comuni espongono direttamente le zone contrattuali; Baranzate espone i codici OMI. La pagina 4 dell'accordo assegna gli edifici attraversati da un confine alla zona di maggior valore: il dataset conserva l'ordine contrattuale crescente e dichiara `agreement_zone_order`.
+I KML di sette Comuni espongono direttamente le zone contrattuali; Baranzate espone i codici OMI. La pagina 4 dell'accordo assegna gli edifici attraversati da un confine alla zona di maggior valore: il dataset conserva l'ordine contrattuale crescente e dichiara `agreement_zone_order`.
 
 Come richiesto per la fase di preparazione, tutti i `canoni` sono `{}` e `canoni_confirmed` è `false`. I dati non vengono registrati nel selettore e non sono utilizzabili dal motore finché i valori non saranno confermati da una persona.
 
