@@ -159,7 +159,9 @@ def parse_kml(path, placemark_mode="omi", style_groups=None):
                 raise ValueError(f"Gruppo KML con colori discordanti: {codes}")
             observed_color = next(iter(observed))
             if observed_color != expected_color:
-                raise ValueError(f"Colore KML inatteso per {codes}: {observed_color} != {expected_color}")
+                raise ValueError(
+                    f"Colore KML inatteso per {codes}: {observed_color} != {expected_color}"
+                )
             group_styles.append(observed_color)
         if len(set(group_styles)) != len(group_styles):
             raise ValueError("Gruppi KML distinti condividono lo stesso stile")
@@ -412,6 +414,18 @@ def build(slug, cfg, kml_path):
     expected = set(cfg["zone_map"]) | set(cfg["zone_senza_canoni"])
     if set(by_code) != expected:
         raise ValueError(f"Codici KML inattesi per {slug}: {sorted(by_code)} != {sorted(expected)}")
+    omi_code_map = cfg.get("omi_code_map")
+    if omi_code_map is not None:
+        if set(omi_code_map) != set(cfg["zone_map"]):
+            raise ValueError(f"Mappa codici OMI incompleta per {slug}")
+        omi_codes = list(omi_code_map.values())
+        if any(not isinstance(code, str) or not re.fullmatch(r"[A-Z][0-9]+", code)
+               for code in omi_codes):
+            raise ValueError(f"Codice OMI non valido per {slug}: {omi_code_map}")
+        if len(set(omi_codes)) != len(omi_codes):
+            raise ValueError(f"Codici OMI non univoci per {slug}: {omi_code_map}")
+        if cfg.get("mostra_omi") is False:
+            raise ValueError(f"Codici OMI espliciti nascosti per {slug}")
     canoni_confirmed = cfg.get("canoni_confirmed", True)
     if canoni_confirmed:
         validate_canoni(cfg["canoni"])
@@ -424,17 +438,6 @@ def build(slug, cfg, kml_path):
             raise ValueError(f"Un gruppo colore attraversa più zone contrattuali per {slug}: {codes}")
     if canoni_confirmed and mapped_zones != {int(zone) for zone in cfg["canoni"]}:
         raise ValueError(f"Zone/canoni non allineati per {slug}")
-    omi_code_map = cfg.get("omi_code_map")
-    if omi_code_map:
-        if set(omi_code_map) != set(cfg["zone_map"]):
-            raise ValueError(f"Mappa codici OMI incompleta per {slug}")
-        omi_codes = list(omi_code_map.values())
-        if len(set(omi_codes)) != len(omi_codes) or any(
-                not isinstance(code, str) or not re.fullmatch(r"[A-Z][0-9]+", code)
-                for code in omi_codes):
-            raise ValueError(f"Codici OMI espliciti non validi per {slug}")
-        if cfg.get("mostra_omi") is False:
-            raise ValueError(f"Codici OMI espliciti nascosti per {slug}")
     overlap_policy = cfg.get("overlap_policy")
     if overlap_policy and overlap_policy.get("type") not in ("higher_value_first", "rural_first", "agreement_zone_order"):
         raise ValueError(f"Regola di sovrapposizione non supportata per {slug}")
@@ -457,8 +460,11 @@ def build(slug, cfg, kml_path):
         if (competing_min != Decimal(str(oracle["competing_monthly_min"]))
                 or competing_zone == oracle["expected_zone"]):
             raise ValueError(f"L'oracolo esterno non discrimina il canone concorrente per {slug}")
-    zones = [{"o": omi_code_map.get(code, code) if omi_code_map else code,
-              "z": cfg["zone_map"][code], "p": by_code[code]} for code in cfg["zone_map"]]
+    zones = [
+        {"o": omi_code_map.get(code, code) if omi_code_map else code,
+         "z": cfg["zone_map"][code], "p": by_code[code]}
+        for code in cfg["zone_map"]
+    ]
     if overlap_policy and overlap_policy["type"] == "higher_value_first":
         zones.sort(key=lambda item: (canone_vector(cfg["canoni"], item["z"]), item["o"]), reverse=True)
     else:

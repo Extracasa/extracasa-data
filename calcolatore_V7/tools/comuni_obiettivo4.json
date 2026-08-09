@@ -28,8 +28,8 @@
       "canoni": {"1": {"sf1": {"min": "7.00", "max": "9.99"}, "sf2": {"min": "10.00", "max": "11.99"}, "sf3": {"min": "12.00", "max": "14.00"}}, "2": {"sf1": {"min": "5.00", "max": "6.99"}, "sf2": {"min": "7.00", "max": "8.99"}, "sf3": {"min": "9.00", "max": "11.00"}}, "3": {"sf1": {"min": "3.00", "max": "4.99"}, "sf2": {"min": "5.00", "max": "6.99"}, "sf3": {"min": "7.00", "max": "8.50"}}}
     },
     "trezzano-sul-naviglio": {
-      "label": "Trezzano sul Naviglio", "mid": "1RPsbV-t35MwMHzcxKBk-Kqqpvnf4wsQ", "kml_canonical_sha256": "cfc482b55f2ae3dedcab029417f3d1febd0ba16c08f0e956fd787f0f8e9cfaf1", "pdf_file_id": "1xABTRbLmsX0PYiE6joJq_6pJsbHlPqno", "pdf_sha256": "39308247ffe00aa37f0c45d92ac7d6c257c700f98dcc3f9632354f45cebc954e", "official_area_km2": 10.77, "zoom": 13, "placemark_mode": "agreement_zone", "omi_code_map": {"Z1": "D1", "Z2": "B1", "Z3": "R1"}, "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
-      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "label": "Trezzano sul Naviglio", "mid": "1RPsbV-t35MwMHzcxKBk-Kqqpvnf4wsQ", "kml_canonical_sha256": "cfc482b55f2ae3dedcab029417f3d1febd0ba16c08f0e956fd787f0f8e9cfaf1", "pdf_file_id": "1xABTRbLmsX0PYiE6joJq_6pJsbHlPqno", "pdf_sha256": "39308247ffe00aa37f0c45d92ac7d6c257c700f98dcc3f9632354f45cebc954e", "official_area_km2": 10.77, "zoom": 13, "placemark_mode": "agreement_zone", "overlap_policy": {"type": "agreement_zone_order", "source": "brief §5"},
+      "zone_map": {"Z1": 1, "Z2": 2, "Z3": 3}, "omi_code_map": {"Z1": "D1", "Z2": "B1", "Z3": "R1"}, "zone_senza_canoni": [], "canoni_confirmed": true,
       "canoni": {"1": {"sf1": {"min": "6.00", "max": "7.99"}, "sf2": {"min": "8.00", "max": "10.99"}, "sf3": {"min": "11.00", "max": "13.00"}}, "2": {"sf1": {"min": "5.00", "max": "6.99"}, "sf2": {"min": "7.00", "max": "8.99"}, "sf3": {"min": "9.00", "max": "11.00"}}, "3": {"sf1": {"min": "3.50", "max": "4.99"}, "sf2": {"min": "5.00", "max": "6.99"}, "sf3": {"min": "7.00", "max": "9.00"}}}
     }
   }

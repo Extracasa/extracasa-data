@@ -5,7 +5,7 @@
 - Quattro accordi comunali distinti, con hash PDF bloccati in `tools/comuni_obiettivo5.json`.
 - Zone e corrispondenze OMI: art. 4.1.a, pagine PDF 3 o 4.
 - Tabelle dei canoni: pagine PDF 15 o 17.
-- Conferma umana: `VERIFICA_obiettivo5_est_COMPILATA.md`, SHA-256 dei byte versionati `5bc48f51edbf4abe44057cd44c593bed7a5f4fd2ef145027726bbc6f89f718c4`; SHA-256 dell'originale fornito `80ae0a26e022b3e48419bcb4c9b33c7e9fe4e9859946f8dc1ca431dfb450781a`.
+- Conferma umana: `VERIFICA_obiettivo5_est_COMPILATA.md`, SHA-256 dei byte versionati `80ae0a26e022b3e48419bcb4c9b33c7e9fe4e9859946f8dc1ca431dfb450781a`, identico all'originale fornito.
 - Superfici: Annuario statistico 2026 della Città metropolitana di Milano.
 
 ## Corrispondenze zona - OMI
