@@ -54,9 +54,11 @@ Le soglie `4,00→4,01→5,51` e `5,00→5,01→6,51` sono trascrizioni conferma
 
 Le geometrie bloccate coprono 18,534 km² a Cassano, 13,298 a Cernusco, 10,667 a Gorgonzola, 17,687 a Legnano, 9,657 a Melzo, 13,437 a Nerviano, 14,222 a Parabiago e 8,191 a Rescaldina. Gli scarti dalle superfici ufficiali restano entro il 2,0%.
 
-A Melzo il controllo geometrico esatto rileva una sovrapposizione tra Z1/zona 1 e Z2/zona 2 intorno a `45.509460, 9.432986`; l'esito è risolto deterministicamente dall'ordine contrattuale dichiarato nel manifesto.
+- Cernusco: sovrapposizioni esatte B1/D1, B1/R1 e D1/R1, con un testimone intorno a `45.528243, 9.356498`.
+- Legnano: sovrapposizioni esatte B1/C1, C1/D1 e C1/D2, con un testimone C1/D2 intorno a `45.600339, 8.933320`.
+- Melzo: sovrapposizione esatta Z1/zona 1 e Z2/zona 2 intorno a `45.509460, 9.432986`.
 
-Nessuno degli otto accordi contiene una clausola locale sui confini. Le sovrapposizioni seguono soltanto la regola generale del §5 del brief, dichiarata come fonte nei manifesti.
+In tutti e tre i casi l'esito è risolto deterministicamente dall'ordine contrattuale dichiarato nel manifesto. Nessuno degli otto accordi contiene una clausola locale sui confini: le sovrapposizioni seguono soltanto la regola generale del §5 del brief, dichiarata come fonte nei manifesti.
 
 ## Esito complessivo
 
