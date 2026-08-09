@@ -58,7 +58,7 @@
 
 - Mappa: KML diretto `Z1 -> zona 1`, `Z2 -> zona 2`; Google My Maps `1fGDfeNJtjUS7gTzJ-WgnKrmG6DiA3jE`, hash canonico `9dbe25bcccff8e699be90f13c312d26708f53fa8a72b04e557f69c3d64f87caf`.
 - Canoni: pagina 18 dell'accordo Groane, **[DA CONFERMARE - nessun valore trascritto]**.
-- Superficie ufficiale: 6,68 km².
+- Geometria: 6,677 km² contro 6,68 ufficiali (-0,0%); 3 poligoni; sovrapposizione esatta Z1/Z2 intorno a `45.613734, 9.094900` e 2 campioni multi-zona, risolti dall'ordine contrattuale.
 - Nota: il collegamento PDF errato pubblicato sotto Solaro nella pagina indice non determina un'esclusione; la fonte bloccata resta l'accordo Groane comune, che contiene la tabella di Solaro.
 
 ## Esclusioni e blocco finale
