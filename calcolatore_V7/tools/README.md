@@ -41,7 +41,7 @@ I canoni delle pagine 17-18 sono stati confermati riga per riga nel file `VERIFI
 
 ## Obiettivo 3 - Area Rhodense
 
-Il manifesto `comuni_obiettivo3.json` prepara Arese, Cornaredo, Lainate, Pero, Pogliano Milanese, Pregnana Milanese, Rho, Settimo Milanese e Vanzago. Il PDF condiviso dell'accordo viene verificato prima dei KML.
+Il manifesto `comuni_obiettivo3.json` genera nove Comuni. I canoni delle pagine 33, 35 e 37 sono stati confermati riga per riga nel file `VERIFICA_obiettivo3_rhodense_COMPILATA.md` (SHA-256 dei byte versionati `cbdac25ab0d4c70c8cef98ec196fce5fc7718c654c53d4e8819e6f234c23758e`; SHA-256 dell'originale fornito `167fe15a8e82f48ac1b9e5c73e458ffe70c68fd4e7b34e1357301fb5a9e72ea2`).
 
 ```powershell
 python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/comuni_obiettivo3.json --source-dir <cartella-kml>
@@ -50,7 +50,7 @@ python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/com
 
 Le geometrie correnti misurano uno scostamento di -6,5% per Arese e -3,5% per Pregnana Milanese rispetto alla superficie amministrativa. Le due tolleranze sono dichiarate esplicitamente nel manifesto (7% e 4%); tutti gli altri Comuni conservano il limite predefinito del 2%. La tolleranza segnala una differenza di copertura, non la interpreta come prova che il confine KML coincida con quello amministrativo.
 
-Anche in questa fase i `canoni` restano `{}` e `canoni_confirmed` è `false`: i dataset sono preparatori e non vengono registrati nel selettore.
+Arese mantiene un'avvertenza fail-closed: l'accordo associa R1 alla zona 2, ma il KML non espone il relativo perimetro. Il simulatore non inventa la geometria mancante; gli indirizzi fuori dai poligoni ufficiali restano non coperti.
 
 ## Obiettivo 6 - Completamento
 

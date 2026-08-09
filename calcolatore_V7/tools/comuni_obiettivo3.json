@@ -5,39 +5,48 @@
   "comuni": {
     "arese": {
       "label": "Arese", "mid": "1iw8wTi5hW8N7puEa3_czH_4D_H168wo", "kml_canonical_sha256": "58adfba16920f6408b5d03fbc616b9fae1e81d5e66bdd04120759a599a20e528", "official_area_km2": 6.56, "area_tolerance_pct": 7.0, "zoom": 14, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
-      "zone_map": {"B1": 1, "D2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"B1": 1, "D2": 2}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "5.75", "max": "7.19"}, "sf2": {"min": "7.20", "max": "8.10"}, "sf3": {"min": "8.11", "max": "9.00"}}, "2": {"sf1": {"min": "4.80", "max": "5.99"}, "sf2": {"min": "6.00", "max": "6.79"}, "sf3": {"min": "6.80", "max": "8.00"}}}
     },
     "cornaredo": {
       "label": "Cornaredo", "mid": "13kCHXzNGEaoEZtYMnuGGgCgSDlvVGyk", "kml_canonical_sha256": "c5e4460b973f4b8696059ba0ef006113b304373fd77fa6287384a3b3c1609fe9", "official_area_km2": 11.07, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
-      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "5.75", "max": "7.19"}, "sf2": {"min": "7.20", "max": "8.10"}, "sf3": {"min": "8.11", "max": "9.00"}}, "2": {"sf1": {"min": "4.80", "max": "5.99"}, "sf2": {"min": "6.00", "max": "6.79"}, "sf3": {"min": "6.80", "max": "8.00"}}}
     },
     "lainate": {
       "label": "Lainate", "mid": "1WI07dClFqdl9wGfTa4obaIV1fY8Al3k", "kml_canonical_sha256": "83648296751f770cc4eb48ca6d5562dda6b7904e86941297e4d69184efd0fffe", "official_area_km2": 12.93, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
-      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "5.75", "max": "7.19"}, "sf2": {"min": "7.20", "max": "8.10"}, "sf3": {"min": "8.11", "max": "9.00"}}, "2": {"sf1": {"min": "4.80", "max": "5.99"}, "sf2": {"min": "6.00", "max": "6.79"}, "sf3": {"min": "6.80", "max": "8.00"}}}
     },
     "pero": {
       "label": "Pero", "mid": "15s95KaRlEnKfo8FqZME-ws8bpR0yPZQ", "kml_canonical_sha256": "2d730e9d2236dbaaf522c2fb243064716fc2ee62923cc00dbcaa5b33dad2a7d4", "official_area_km2": 4.98, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
-      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "5.75", "max": "7.19"}, "sf2": {"min": "7.20", "max": "8.10"}, "sf3": {"min": "8.11", "max": "9.00"}}, "2": {"sf1": {"min": "4.80", "max": "5.99"}, "sf2": {"min": "6.00", "max": "6.79"}, "sf3": {"min": "6.80", "max": "8.00"}}}
     },
     "pogliano-milanese": {
       "label": "Pogliano Milanese", "mid": "1lOwlP78d1TFIiMdomhDz9ykuXfgg4M4", "kml_canonical_sha256": "506688d61f566c3f5a4c4946bc2e35ee423a36588c35b56838075ed666e3ac7c", "official_area_km2": 4.78, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false,
-      "zone_map": {"Z1": 1}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"Z1": 1}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "4.00", "max": "4.99"}, "sf2": {"min": "5.00", "max": "5.99"}, "sf3": {"min": "6.00", "max": "7.20"}}}
     },
     "pregnana-milanese": {
       "label": "Pregnana Milanese", "mid": "18PioNfywRmDz4jMOhv4X6CRlqYs-hnE", "kml_canonical_sha256": "4ee2729ca435d8f43a64eeedfc7ad9083a55d7309d6823a893873b4022e96258", "official_area_km2": 5.07, "area_tolerance_pct": 4.0, "zoom": 14, "placemark_mode": "agreement_zone", "mostra_omi": false,
-      "zone_map": {"Z1": 1}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"Z1": 1}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "4.00", "max": "4.99"}, "sf2": {"min": "5.00", "max": "5.99"}, "sf3": {"min": "6.00", "max": "7.20"}}}
     },
     "rho": {
       "label": "Rho", "mid": "1nvF8PJILaorbAuQkzCd9vgvOLzVNg14", "kml_canonical_sha256": "6314f8402a8c35e9eaa76afb65dddf0ffd7cf42821c43ddd0033c36a64297bf7", "official_area_km2": 22.24, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
-      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "6.00", "max": "6.99"}, "sf2": {"min": "7.00", "max": "7.99"}, "sf3": {"min": "8.00", "max": "10.00"}}, "2": {"sf1": {"min": "5.50", "max": "6.49"}, "sf2": {"min": "6.50", "max": "7.19"}, "sf3": {"min": "7.20", "max": "8.20"}}}
     },
     "settimo-milanese": {
       "label": "Settimo Milanese", "mid": "1qmnAVVTCe7djZ7sQdc9MZqjlFX335Dc", "kml_canonical_sha256": "d19bb61ea4b5bf3a3c603cb4147da3451ee1bf35e4bda0cc0ffaaf5e19de48a3", "official_area_km2": 10.72, "zoom": 13, "placemark_mode": "agreement_zone", "mostra_omi": false, "overlap_policy": {"type": "agreement_zone_order", "source_page": 4},
-      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"Z1": 1, "Z2": 2}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "5.75", "max": "7.19"}, "sf2": {"min": "7.20", "max": "8.10"}, "sf3": {"min": "8.11", "max": "9.00"}}, "2": {"sf1": {"min": "4.80", "max": "5.99"}, "sf2": {"min": "6.00", "max": "6.79"}, "sf3": {"min": "6.80", "max": "8.00"}}}
     },
     "vanzago": {
       "label": "Vanzago", "mid": "1DLAr_-6o5z0yzbJr9ARWfUIx-WN49cY", "kml_canonical_sha256": "d17c705c22b02abd7ea7451e068b13ee51300faa3ee94d7a59d7d84a91b9b3cf", "official_area_km2": 6.05, "zoom": 14,
-      "zone_map": {"R1": 1, "B1": 1, "E1": 1}, "zone_senza_canoni": [], "canoni_confirmed": false, "canoni": {}
+      "zone_map": {"R1": 1, "B1": 1, "E1": 1}, "zone_senza_canoni": [], "canoni_confirmed": true,
+      "canoni": {"1": {"sf1": {"min": "4.00", "max": "4.99"}, "sf2": {"min": "5.00", "max": "5.99"}, "sf3": {"min": "6.00", "max": "7.20"}}}
     }
   }
 }

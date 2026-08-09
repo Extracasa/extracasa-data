@@ -227,6 +227,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
       <label class="field-label">In quale comune si trova l'immobile? <span class="req">*</span></label>
       <select id="select_comune">
         <option value="" disabled selected>Seleziona il comune...</option>
+        <option value="arese">Arese</option>
         <option value="baranzate">Baranzate</option>
         <option value="bollate">Bollate</option>
         <option value="bresso">Bresso</option>
@@ -234,14 +235,22 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
         <option value="cinisello_balsamo">Cinisello Balsamo</option>
         <option value="cologno_monzese">Cologno Monzese</option>
         <option value="cormano">Cormano</option>
+        <option value="cornaredo">Cornaredo</option>
         <option value="cusano_milanino">Cusano Milanino</option>
         <option value="garbagnate_milanese">Garbagnate Milanese</option>
+        <option value="lainate">Lainate</option>
         <option value="milano">Milano</option>
         <option value="novate_milanese">Novate Milanese</option>
         <option value="paderno_dugnano">Paderno Dugnano</option>
+        <option value="pero">Pero</option>
+        <option value="pogliano_milanese">Pogliano Milanese</option>
+        <option value="pregnana_milanese">Pregnana Milanese</option>
+        <option value="rho">Rho</option>
         <option value="senago">Senago</option>
         <option value="sesto">Sesto San Giovanni</option>
+        <option value="settimo_milanese">Settimo Milanese</option>
         <option value="solaro">Solaro</option>
+        <option value="vanzago">Vanzago</option>
       </select>
     </div>
     <div class="field">
@@ -478,6 +487,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 'use strict';
 
 var COMUNI_URLS={
+arese:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_arese.json',
 baranzate:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_baranzate.json',
 bollate:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_bollate.json',
 bresso:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_bresso.json',
@@ -485,14 +495,22 @@ cesate:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/ma
 cinisello_balsamo:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_cinisello_balsamo.json',
 cologno_monzese:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_cologno_monzese.json',
 cormano:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_cormano.json',
+cornaredo:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_cornaredo.json',
 cusano_milanino:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_cusano_milanino.json',
 garbagnate_milanese:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_garbagnate_milanese.json',
+lainate:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_lainate.json',
 milano:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_milano.json',
 novate_milanese:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_novate_milanese.json',
 paderno_dugnano:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_paderno_dugnano.json',
+pero:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_pero.json',
+pogliano_milanese:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_pogliano_milanese.json',
+pregnana_milanese:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_pregnana_milanese.json',
+rho:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_rho.json',
 senago:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_senago.json',
 sesto:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_sesto.json',
-solaro:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_solaro.json'
+settimo_milanese:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_settimo_milanese.json',
+solaro:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_solaro.json',
+vanzago:'https://raw.githubusercontent.com/Extracasa/extracasa-data/refs/heads/main/calcolatore_V7/data_vanzago.json'
 };
 
 var CANONI=null;
