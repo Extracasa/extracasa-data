@@ -38,7 +38,7 @@ Accordo: **Accordo locale per il Comune di Cernusco sul Naviglio** · PDF pag. 3
 | [ ] | 2 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
 | [ ] | 3 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
 
-Anomalie riscontrate: nessuna nella corrispondenza PDF/KML. Geometria 13,298 km² contro 13,22 ufficiali (+0,6%).
+Anomalie riscontrate: il controllo geometrico esatto rileva sovrapposizioni B1/D1, B1/R1 e D1/R1, con un testimone intorno a `45.528243, 9.356498`; l'esito è risolto deterministicamente dall'ordine contrattuale dichiarato nel manifesto ai sensi del §5. Geometria 13,298 km² contro 13,22 ufficiali (+0,6%).
 
 ## Gorgonzola
 
@@ -76,7 +76,7 @@ Accordo: **Accordo locale per il Comune di Legnano** · PDF pag. 3 zone · pag. 
 | [ ] | 2 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
 | [ ] | 3 | [DA CONFERMARE] | [DA CONFERMARE] | [DA CONFERMARE] | |
 
-Anomalie riscontrate: nessuna nella corrispondenza PDF/KML. Geometria 17,687 km² contro 17,68 ufficiali (+0,0%).
+Anomalie riscontrate: il controllo geometrico esatto rileva sovrapposizioni B1/C1, C1/D1 e C1/D2, con un testimone C1/D2 intorno a `45.600339, 8.933320`; l'esito è risolto deterministicamente dall'ordine contrattuale dichiarato nel manifesto ai sensi del §5. Geometria 17,687 km² contro 17,68 ufficiali (+0,0%).
 
 ## Melzo
 
