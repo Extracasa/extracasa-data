@@ -66,6 +66,8 @@ Il manifesto `comuni_obiettivo5.json` genera Peschiera Borromeo, Pioltello, Segr
 
 Pioltello associa D4 alla zona 2 e Segrate associa R1 alla zona 2. Per questi due codici omessi dal testo, la cartografia ufficiale fornisce la corrispondenza tramite il gruppo colore; ogni `style_group` include il colore effettivo atteso e fa fallire la generazione se uno `StyleMap` cambia colore, se i raggruppamenti contraddicono l'accordo o se cambiano struttura.
 
+Peschiera Borromeo e Vimodrone espongono nel KML etichette contrattuali Z1/Z2/Z3 anziché codici OMI. Le corrispondenze confermate sono conservate separatamente con `omi_code_map`: Peschiera `Z1 -> D1`, `Z2 -> B1`, `Z3 -> D2`; Vimodrone `Z1 -> B1`, `Z2 -> D1`. Il generatore mantiene il numero di zona determinato dal KML, ma pubblica nel badge e nel payload il codice OMI reale.
+
 Peschiera e Segrate confermano che B1 non implica zona 1: il numero di zona viene sempre dal KML o dall'art. 4.1.a, mai dalla famiglia OMI.
 
 ## Obiettivo 6 - Completamento
