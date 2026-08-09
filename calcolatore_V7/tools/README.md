@@ -26,14 +26,14 @@ Le aree R1 restano separate in `zone_senza_canoni`: non sono rese calcolabili.
 
 ## Obiettivo 2 - Area Groane
 
-Il manifesto `comuni_obiettivo2.json` prepara Baranzate, Bollate, Cesate, Garbagnate Milanese, Novate Milanese, Paderno Dugnano e Senago. Solaro è escluso dal perimetro richiesto.
+Il manifesto `comuni_obiettivo2.json` prepara Baranzate, Bollate, Cesate, Garbagnate Milanese, Novate Milanese, Paderno Dugnano, Senago e Solaro. Solaro è stato aggiunto nella fase di completamento per chiudere il perimetro dei 40 nuovi Comuni.
 
 ```powershell
 python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/comuni_obiettivo2.json --source-dir <cartella-kml>
 python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/comuni_obiettivo2.json --source-dir <cartella-kml> --check
 ```
 
-I KML di sei Comuni espongono direttamente le zone contrattuali; Baranzate espone i codici OMI. La pagina 4 dell'accordo assegna gli edifici attraversati da un confine alla zona di maggior valore: il dataset conserva l'ordine contrattuale crescente e dichiara `agreement_zone_order`.
+I KML di sette Comuni espongono direttamente le zone contrattuali; Baranzate espone i codici OMI. La pagina 4 dell'accordo assegna gli edifici attraversati da un confine alla zona di maggior valore: il dataset conserva l'ordine contrattuale crescente e dichiara `agreement_zone_order`.
 
 Come richiesto per la fase di preparazione, tutti i `canoni` sono `{}` e `canoni_confirmed` è `false`. I dati non vengono registrati nel selettore e non sono utilizzabili dal motore finché i valori non saranno confermati da una persona.
 
@@ -49,3 +49,7 @@ python calcolatore_V7/tools/genera_comuni.py --manifest calcolatore_V7/tools/com
 Le geometrie correnti misurano uno scostamento di -6,5% per Arese e -3,5% per Pregnana Milanese rispetto alla superficie amministrativa. Le due tolleranze sono dichiarate esplicitamente nel manifesto (7% e 4%); tutti gli altri Comuni conservano il limite predefinito del 2%. La tolleranza segnala una differenza di copertura, non la interpreta come prova che il confine KML coincida con quello amministrativo.
 
 Anche in questa fase i `canoni` restano `{}` e `canoni_confirmed` è `false`: i dataset sono preparatori e non vengono registrati nel selettore.
+
+## Obiettivo 6 - Completamento
+
+Il manifesto `comuni_obiettivo6.json` prepara Cassano d'Adda, Cernusco sul Naviglio, Gorgonzola, Legnano, Melzo, Nerviano, Parabiago e Rescaldina. Noviglio non appartiene al perimetro finale; Solaro è collocato nell'area Groane. Con i manifesti 1-6 risultano quindi 40 nuovi Comuni, oltre a Milano e Sesto San Giovanni. Rescaldina dichiara una tolleranza del 2,5% perché la geometria corrente misura +2,0% rispetto alla superficie amministrativa; gli altri Comuni del gruppo mantengono il limite predefinito del 2%.
