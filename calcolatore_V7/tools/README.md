@@ -62,7 +62,7 @@ I sei accordi non contengono una clausola locale sui confini. Le eventuali sovra
 
 ## Obiettivo 5 - Area Est
 
-Il manifesto `comuni_obiettivo5.json` genera Peschiera Borromeo, Pioltello, Segrate e Vimodrone. I canoni e le corrispondenze zona-OMI sono stati confermati nel file `VERIFICA_obiettivo5_est_COMPILATA.md` (SHA-256 `80ae0a26e022b3e48419bcb4c9b33c7e9fe4e9859946f8dc1ca431dfb450781a`).
+Il manifesto `comuni_obiettivo5.json` genera Peschiera Borromeo, Pioltello, Segrate e Vimodrone. I canoni e le corrispondenze zona-OMI sono stati confermati nel file `VERIFICA_obiettivo5_est_COMPILATA.md` (SHA-256 dei byte versionati `5bc48f51edbf4abe44057cd44c593bed7a5f4fd2ef145027726bbc6f89f718c4`; SHA-256 dell'originale fornito `80ae0a26e022b3e48419bcb4c9b33c7e9fe4e9859946f8dc1ca431dfb450781a`).
 
 Pioltello associa D4 alla zona 2 e Segrate associa R1 alla zona 2. Per questi due codici omessi dal testo, la cartografia ufficiale fornisce la corrispondenza tramite il gruppo colore; ogni `style_group` include il colore effettivo atteso e fa fallire la generazione se uno `StyleMap` cambia colore, se i raggruppamenti contraddicono l'accordo o se cambiano struttura.
 
