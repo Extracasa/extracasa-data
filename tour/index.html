@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tour virtuale 360° · Extracasa</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.css">
+<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.7/build/pannellum.js"></script>
+<style>
+  :root{--accent:#F03E6B;--ink:#1F2937;--navy:#2B2C4F}
+  html,body{margin:0;height:100%;background:#111;font-family:Montserrat,system-ui,sans-serif;overflow:hidden}
+  #pano{position:absolute;inset:0}
+  .pnlm-load-box,.pnlm-info-box{font-family:Montserrat,system-ui,sans-serif}
+  .pnlm-load-button{display:none!important}
+  #bar{position:absolute;left:0;right:0;bottom:0;z-index:5;padding:12px 12px calc(12px + env(safe-area-inset-bottom));
+       background:linear-gradient(transparent,rgba(17,17,17,.75));display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+  #bar::-webkit-scrollbar{display:none}
+  #bar button{flex:0 0 auto;font:600 13px/1 Montserrat,system-ui,sans-serif;color:#fff;background:rgba(255,255,255,.16);
+       border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:10px 16px;cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  #bar button[aria-current="true"]{background:var(--accent);border-color:var(--accent)}
+  #bar:empty{display:none}
+  #head{position:absolute;top:0;left:0;right:0;z-index:5;padding:12px 56px 24px 14px;color:#fff;
+        background:linear-gradient(rgba(17,17,17,.6),transparent);font-weight:700;font-size:14px;pointer-events:none}
+  #head small{display:block;font-weight:500;opacity:.8;margin-top:2px}
+  #msg{position:absolute;inset:0;display:none;align-items:center;justify-content:center;padding:24px;text-align:center;color:#fff;font-weight:600;line-height:1.5}
+  .pnlm-controls-container{top:56px!important}
+</style>
+</head>
+<body>
+<div id="pano"></div>
+<div id="head"></div>
+<nav id="bar" aria-label="Stanze"></nav>
+<div id="msg"></div>
+<script>
+(function(){
+  var q = new URLSearchParams(location.search);
+  // Formato link: ?t=<titolo>&s=<percorso1>~<Stanza1>|<percorso2>~<Stanza2>
+  // Le foto si caricano SOLO dall'archivio Extracasa (cartella annunci/<ID>/360): ogni altro percorso viene scartato.
+  var CLOUD = 'dsdjcqlyr', OK_PATH = /^v\d+\/annunci\/\d+\/360\/[\w.-]+\.(jpe?g|png)$/i;
+  var title = (q.get('t') || '').slice(0, 120), raw = q.get('s') || '';
+  function fail(t){var m=document.getElementById('msg');m.textContent=t;m.style.display='flex'}
+
+  // Larghezza massima che questo dispositivo regge (Pannellum accetta larghezza <= 2 x MAX_TEXTURE_SIZE)
+  var maxW = 4096;
+  try{var gl=document.createElement('canvas').getContext('webgl')||document.createElement('canvas').getContext('experimental-webgl');
+      if(gl){maxW=Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE)*2,8192)}else{return fail('Il tuo browser non supporta la visualizzazione 360°.')}
+  }catch(e){}
+
+  function src(path){
+    return 'https://res.cloudinary.com/'+CLOUD+'/image/upload/c_limit,w_'+maxW+',q_auto:good,f_jpg/'+path;
+  }
+
+  var list = [];
+  raw.split('|').slice(0, 30).forEach(function(p){ if(!p) return; var i=p.lastIndexOf('~'); var path=i>0?p.slice(0,i):p;
+    if(OK_PATH.test(path)) list.push({path:path,label:(i>0?p.slice(i+1):'').slice(0,40)}) });
+  if(!list.length) return fail('Link del tour non valido.');
+
+  var scenes = {};
+  list.forEach(function(s,i){
+    scenes['s'+i] = {type:'equirectangular', panorama:src(s.path), title:s.label||('Vista '+(i+1)), hfov:100, pitch:0, yaw:0};
+  });
+
+  document.getElementById('head').innerHTML = title ? (esc(title)+'<small>Tour virtuale 360°</small>') : 'Tour virtuale 360°';
+  function esc(t){return t.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+  var viewer = pannellum.viewer('pano', {
+    default:{firstScene:'s0', autoLoad:true, sceneFadeDuration:600, showControls:true, compass:false,
+             autoRotate:-2, autoRotateInactivityDelay:4000, strings:{loadingLabel:'Caricamento…', bylineLabel:''}},
+    scenes:scenes
+  });
+  viewer.on('error', function(){ fail('Non riesco a caricare questa vista. Riprova tra poco.') });
+
+  var bar = document.getElementById('bar');
+  if(list.length > 1){
+    list.forEach(function(s,i){
+      var b=document.createElement('button'); b.type='button'; b.textContent=scenes['s'+i].title;
+      b.onclick=function(){ if(viewer.getScene()!=='s'+i) viewer.loadScene('s'+i) };
+      bar.appendChild(b);
+    });
+  }
+  function mark(){ var cur=viewer.getScene(); [].forEach.call(bar.children,function(b,i){ b.setAttribute('aria-current', cur==='s'+i?'true':'false') }) }
+  viewer.on('scenechange', function(){ setTimeout(mark,0) }); mark();
+  // Nasconde il titolo della scena di Pannellum: lo mostriamo nella barra
+  var st=document.createElement('style'); st.textContent='.pnlm-panorama-info{display:none!important}'; document.head.appendChild(st);
+})();
+</script>
+</body>
+</html>
