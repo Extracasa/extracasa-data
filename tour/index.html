@@ -58,9 +58,20 @@
     if(OK_PATH.test(path)) list.push({path:path,label:(i>0?p.slice(i+1):'').slice(0,40)}) });
   if(!list.length) return fail('Link del tour non valido.');
 
+  // Schermo verticale: 120° orizzontali diventano ~150° in altezza e la stanza si deforma,
+  // quindi lì il campo visivo si calcola sull'altezza. Schermi orizzontali restano a 120°.
+  function fov(){
+    if(innerHeight <= innerWidth) return {start:120, max:120};
+    var a = innerWidth/innerHeight;
+    function h(v){ return Math.round(2*Math.atan(Math.tan(v*Math.PI/360)*a)*180/Math.PI) }
+    var start = Math.max(50, h(110));
+    return {start:start, max:Math.max(start, h(125))};
+  }
+  var f0 = fov();
+
   var scenes = {};
   list.forEach(function(s,i){
-    scenes['s'+i] = {type:'equirectangular', panorama:src(s.path), title:s.label||('Vista '+(i+1)), hfov:120, minHfov:50, maxHfov:120, pitch:0, yaw:0};
+    scenes['s'+i] = {type:'equirectangular', panorama:src(s.path), title:s.label||('Vista '+(i+1)), hfov:f0.start, minHfov:50, maxHfov:f0.max, pitch:0, yaw:0};
   });
 
   document.getElementById('head').innerHTML = title ? (esc(title)+'<small>Tour virtuale 360°</small>') : 'Tour virtuale 360°';
@@ -83,6 +94,13 @@
   }
   function mark(){ var cur=viewer.getScene(); [].forEach.call(bar.children,function(b,i){ b.setAttribute('aria-current', cur==='s'+i?'true':'false') }) }
   viewer.on('scenechange', function(){ setTimeout(mark,0) }); mark();
+
+  var startPortrait = innerHeight > innerWidth, wasPortrait = startPortrait;
+  function applyFov(){ var f = fov(); viewer.setHfovBounds([50, f.max]); viewer.setHfov(f.start, false); }
+  addEventListener('resize', function(){
+    var p = innerHeight > innerWidth; if(p === wasPortrait) return; wasPortrait = p; applyFov();
+  });
+  viewer.on('load', function(){ if(wasPortrait !== startPortrait) applyFov(); });
   // Nasconde il titolo della scena di Pannellum: lo mostriamo nella barra
   var st=document.createElement('style'); st.textContent='.pnlm-panorama-info{display:none!important}'; document.head.appendChild(st);
 })();
