@@ -60,7 +60,7 @@
 
   var scenes = {};
   list.forEach(function(s,i){
-    scenes['s'+i] = {type:'equirectangular', panorama:src(s.path), title:s.label||('Vista '+(i+1)), hfov:100, pitch:0, yaw:0};
+    scenes['s'+i] = {type:'equirectangular', panorama:src(s.path), title:s.label||('Vista '+(i+1)), hfov:120, minHfov:50, maxHfov:120, pitch:0, yaw:0};
   });
 
   document.getElementById('head').innerHTML = title ? (esc(title)+'<small>Tour virtuale 360°</small>') : 'Tour virtuale 360°';
